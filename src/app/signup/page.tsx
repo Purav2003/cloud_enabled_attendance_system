@@ -58,13 +58,13 @@ const Signup = () => {
                                         required />
                                 </div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Photograph</label>
-                                <div className="flex flex-col space-y-4">
-                                    <label htmlFor="profile-photo" className="cursor-pointer">
+                                <div className="flex flex-col">
+                                    <label htmlFor="profile-photo" className="w-24 h-24 cursor-pointer">
                                         <input
                                             type="file"
                                             id="profile-photo"
                                             accept="image/*"
-                                            className="hidden"
+                                            className="hidden w-24 h-24 "
                                             onChange={handleFileChange}
                                         />
                                         <div className="w-24 h-24 bg-gray-200 border-2 rounded-md border-gray-300 flex items-center justify-center overflow-hidden">
@@ -72,7 +72,7 @@ const Signup = () => {
                                                 <img
                                                     src={URL.createObjectURL(selectedFile)}
                                                     alt="Selected Profile Photo"
-                                                    className="w-full h-full object-cover"
+                                                    className="object-cover"
                                                 />
                                             ) : (
                                                 <span className="text-center text-gray-500">Select Photo</span>
