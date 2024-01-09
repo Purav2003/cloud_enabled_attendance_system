@@ -1,9 +1,12 @@
-import Image from 'next/image'
-
+"use client";
+import { useEffect } from "react";
 export default function Home() {
+  useEffect(()=>{
+    window.location.replace('/dashboard')
+  })
   return (
   
-        <h1>Hello</h1>
+        <h1>&nbsp;</h1>
  
   )
 }
