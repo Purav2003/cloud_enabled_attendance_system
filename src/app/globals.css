@@ -10,3 +10,22 @@ input{
 body{
   font-family: 'Poppins' !important;
 }
+
+.ehe{
+  border-bottom: 2px solid #fff;
+  border-radius: 0px !important;
+  border-image: linear-gradient(to right, #fff 40%, transparent 100%) 100% 2;
+
+}
+
+
+.ehea{
+  border-bottom: 2px solid #fff;
+  border-radius: 0px !important;
+  border-image: linear-gradient(to right, #fff 10%, transparent 32%) 100% 2;
+
+}
+
+a:hover{
+  text-decoration: none !important;
+}

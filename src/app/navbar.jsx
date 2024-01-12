@@ -72,23 +72,23 @@ export default function Navbar() {
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       item.name !== 'Logout'?
-                     ( <a
+                     ( <Link
                         key={item.name}
                         href={item.href}
                         onClick={() => setActive(item.name)}
                         className={`${active === item.name
-                          ? "bg-gray-900 text-white"
-                          : "text-white"} rounded-md px-3 py-2 text-sm font-medium`}
+                          ? " text-white font-bold ehe"
+                          : "text-white"} rounded-md px-3 py-2 text-sm hover:no-underline hover:text-white`}
 
                         aria-current={item.current ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>):(
+                      </Link>):(
                         <a
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'border hover:bg-[tomato] hover:border-[tomato] text-gray-300 hover:text-white',
+                          item.current ? 'ehe text-white' : 'border hover:bg-[tomato] hover:border-[tomato] text-gray-300 hover:text-white hover:no-underline',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -112,8 +112,8 @@ export default function Navbar() {
                   href={item.href}
                
                   className={`${active === item.name
-                    ? "bg-gray-900 text-white"
-                    : "text-white"} block rounded-md px-3 py-2 text-base font-medium`}
+                    ? "ehea text-white"
+                    : "text-white"} block rounded-md px-3 py-2 text-base font-medium `}
 
                   aria-current={item.current ? 'page' : undefined}
                 >
