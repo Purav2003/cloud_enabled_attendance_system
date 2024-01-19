@@ -4,8 +4,7 @@ import logo from '../../assets/images/logo.png'
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
 import { useState } from 'react';
-
-
+import { useEffect } from 'react';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -40,6 +39,7 @@ const Login = () => {
             console.log(data);
             localStorage.removeItem("token");
             localStorage.setItem("token",data.jwt)
+            localStorage.setItem("id",data.id)
             if (data.status === 'success') {
                 console.log('Successfully logged in');
                 window.location.replace('/dashboard')
@@ -51,6 +51,13 @@ const Login = () => {
             console.error(err);
         }
     };
+
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if(token){
+            window.location.replace('/dashboard')
+        }
+    },[])
     return (
         <>    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
             <link rel="icon" href={logo.src} type="image/icon type" />

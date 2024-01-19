@@ -47,7 +47,14 @@ export default function Dashboard() {
     }
   };
 
+  const url_img = localStorage.getItem("IMG")
+
+
   useEffect(() => {
+    const token = localStorage.getItem("token")
+    if(!token){
+        window.location.replace('/login')
+    }
     fetchData();
   }, []);
 
@@ -91,6 +98,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div>
+                    <img src={url_img?url_img:""} ></img>
 
                     <br></br>
                     <div className="lg:px-20 w-[100%] lg:flex">
