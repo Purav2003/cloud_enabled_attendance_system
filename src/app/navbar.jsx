@@ -10,7 +10,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: true },
   { name: 'Reports', href: '/reports'  , current: false },
   { name: 'Profile', href: '/profile', current: false },
-  { name: 'Logout', href: '#', current: false },
+  { name: 'Logout', href: '/logout', current: false },
 ]
 
 

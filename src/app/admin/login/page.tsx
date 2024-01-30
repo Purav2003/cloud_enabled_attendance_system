@@ -1,12 +1,12 @@
 "use client";
-import hello from '../../assets/images/login.jpg'
-import logo from '../../assets/images/logo.png'
+import hello from '../../../assets/images/login.jpg'
+import logo from '../../../assets/images/logo.png'
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
 import { useState } from 'react';
 import { useEffect } from 'react';
 import  { toast, Toaster } from 'react-hot-toast';
-const Login = () => {
+const AdminLogin = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''      
@@ -29,7 +29,7 @@ const Login = () => {
             return
         }
         try {                   
-            const response = await fetch('http://localhost:8000/api/login/', {
+            const response = await fetch('http://localhost:8000/api/admin/login', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -39,13 +39,13 @@ const Login = () => {
             });
 
             const data = await response.json();
-            console.log(data);
             localStorage.removeItem("token");
             localStorage.setItem("token",data.jwt)
             localStorage.setItem("id",data.id)
             if (data.status === 'success') {
                 console.log('Successfully logged in');
-                window.location.replace('/dashboard')
+                toast.success("Successfully logged in")
+                // window.location.replace('/dashboard')
             }
             else{
                 toast.error(data.message)
@@ -56,11 +56,12 @@ const Login = () => {
     };
 
     useEffect(()=>{
-        const token = localStorage.getItem("token")
-        if(token){
-            window.location.replace('/dashboard')
-        }
+        // const token = localStorage.getItem("token")
+        // if(token){
+        //     window.location.replace('/dashboard')
+        // }
     },[])
+
     return (
         <>    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
             <link rel="icon" href={logo.src} type="image/icon type" />
@@ -70,7 +71,7 @@ const Login = () => {
             <div className="lg:grid lg:grid-cols-2 md:grid md:grid-cols-2 gap-4 bg-[#000010] h-[100vh]">
                 <div><img src={hello.src} className="w-0 h-0 invisible sm:visible md:visible lg:visible lg:w-[50vw] object-cover md:w-[45vw] md:h-[100%] lg:h-[100vh]" /></div>
                 <div className="p-8 px-16 mt-[5%] bg-[#000010]">
-                    <h1 className="lg:text-[65px] text-[35px] font-bold text-[white]">Login</h1><br />
+                    <h1 className="lg:text-[65px] text-[35px] font-bold text-[white]">Admin Login</h1><br />
                     {/* <h3 className="lg:text-[35px] text-[20px] text-[white] font-semibold">Login</h3><br></br> */}
                     <form className="max-w-sm">
                         <div className="mb-5">
@@ -98,7 +99,7 @@ const Login = () => {
                             <hr className='w-[170px] bg-[#4a4a4a] h-[1px] border-none'></hr><h1 className='px-2 text-center text-[white]'>OR</h1><hr className='w-[170px] bg-[#4a4a4a] h-[1px] border-none'></hr>
                         </div><br></br>
                         <div>
-                            <h1 className='text-white'>Admin? <Link href="/admin/login" className="font-bold underline">Login</Link></h1>
+                            <h1 className='text-white'>Employee? <Link href="/login" className="font-bold underline">Login</Link></h1>
                         </div>
                         {/* <center> <div className='bg-[white] w-[53%] p-3 hover:cursor-pointer rounded-lg flex '>
                             <FcGoogle className="text-2xl" />
@@ -108,7 +109,7 @@ const Login = () => {
                         <br></br>
 
 
-                        <h1 className='text-[white]'>New user? <Link href="/signup" className="font-bold underline">Signup</Link></h1>
+                        <h1 className='text-[white]'>Want to create? <Link href="/admin/signup" className="font-bold underline">Signup</Link></h1>
                     </form>
                 </div>
             </div>
@@ -118,4 +119,4 @@ const Login = () => {
     );
 }
 
-export default Login;
+export default AdminLogin;

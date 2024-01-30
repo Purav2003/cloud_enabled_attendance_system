@@ -62,11 +62,11 @@ export default function Dashboard() {
     <div className="flex flex-col h-screen justify-between">
       <Navbar />
       <br></br>
-
+{/* 
       {data?.map((datas) => {
         const { email } = datas;
         return <div key={email}>{email}</div>;
-      })}
+      })} */}
             <div>
                 <div className="lg:flex">
                     <div className="cards flex items-center bg-[#eee] rounded-lg mx-12 p-4 lg:w-[25%] lg:ml-20">
@@ -98,7 +98,7 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div>
-                    <img src={url_img?url_img:""} ></img>
+                    {/* <img src={url_img?url_img:""} ></img> */}
 
                     <br></br>
                     <div className="lg:px-20 w-[100%] lg:flex">
