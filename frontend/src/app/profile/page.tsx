@@ -54,6 +54,10 @@ export default function Profile() {
     useEffect(() => {
         const token = localStorage.getItem("token")
         const companyName = localStorage.getItem("companyName")
+        const isAuthorized = localStorage.getItem("isAuthorized")
+        if(isAuthorized === "false"){
+            window.location.replace('/landing')
+        }
         if(!token){
             window.location.replace('/login')
         }

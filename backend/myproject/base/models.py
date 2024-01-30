@@ -19,5 +19,6 @@ class User(models.Model):
     companyCode = models.CharField(max_length=20 )
     profilePhoto = models.ImageField(upload_to='user_images/', null=True, blank=True)
     isAuthorized = models.BooleanField(default=False)
+    otp = models.IntegerField(max_length=10, null=True, blank=True)
     def __str__(self):
         return(f"{self.email}")

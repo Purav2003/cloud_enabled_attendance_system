@@ -65,7 +65,9 @@ const Signup = () => {
 
             if (data.status === 'success') {                
                 toast.success('Successfully signed up');
-                window.location.replace('/login');
+                localStorage.setItem("userEmail",data.email)
+                localStorage.setItem("otpVerified","false")
+                window.location.replace('/verification');
             }
             else{
                 toast.error(data.message)

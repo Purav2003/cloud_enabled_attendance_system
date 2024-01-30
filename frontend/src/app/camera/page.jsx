@@ -8,6 +8,8 @@ const FaceDetector = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
+  const [capturedPhoto, setCapturedPhoto] = useState(null);
+
   const loadModel = async () => {
     try {
       const model = await blazeface.load();
@@ -44,14 +46,44 @@ const FaceDetector = () => {
     }
   };
 
+  const sendPhotoToBackend = async () => {
+    // Send the captured photo to the backend
+    if (capturedPhoto) {
+      try {
+        const response = await fetch('http://localhost:8000/api/faceMatch/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ image: capturedPhoto }),
+        });
+
+        if (response.status === "success") {
+          console.log('Photo successfully sent to backend');
+        } else {
+          console.error('Failed to send photo to backend');
+        }
+      } catch (error) {
+        console.error('Error sending photo to backend:', error);
+      }
+    }
+  };
+
+  const capturePhoto = (ctx) => {
+    const video = webcamRef.current.video;
+    const photo = document.createElement("canvas");
+    photo.width = video.width;
+    photo.height = video.height;
+    const photoCtx = photo.getContext("2d");
+    photoCtx.drawImage(video, 0, 0, video.width, video.height);
+    setCapturedPhoto(photo.toDataURL("image/jpeg")); // Save the photo in the state
+  };
+
   const detectFaces = async (model) => {
-    if (
-      webcamRef.current &&
-      webcamRef.current.video.readyState === 4
-    ) {
+    if (webcamRef.current && webcamRef.current.video.readyState === 4) {
       const video = webcamRef.current.video;
-      const videoWidth = webcamRef.current.video.videoWidth;
-      const videoHeight = webcamRef.current.video.videoHeight;
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
 
       webcamRef.current.video.width = videoWidth;
       webcamRef.current.video.height = videoHeight;
@@ -87,7 +119,8 @@ const FaceDetector = () => {
     <div>
       <Webcam ref={webcamRef} />
       <canvas ref={canvasRef} />
-    </div> 
+      <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
+    </div>
   );
 };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import Navbar from "../navbar";
 import Footer from "../footer";
 import logo from "../../assets/images/login.jpg";
@@ -23,29 +23,7 @@ export default function Dashboard() {
     marginRight: 10,
   };
 
-  const fetchData = async () => {
-    const API_URL = `http://localhost:8000/api/all`;
-    const token = localStorage.getItem("token")
-    // alert(token)
-    try {
-      const response = await fetch(API_URL, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `${token}`,
-        },
-      });
-      const data_new: UserData[] = await response.json();
-      console.log("hello", data_new);
-      if (Array.isArray(data_new) && data_new.length > 0) {
-        setData(data_new);
-      } else {
-        setData([{"email": "none", "name": "hello"}, {"email": "none"}, {"email": "none"}]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+
 
   const url_img = localStorage.getItem("IMG")
 
@@ -53,15 +31,18 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token")
     const companyName = localStorage.getItem("companyName")
-    const data = localStorage.getItem("userData")
-    const isApproved = data?.isAuthorized
-    if(!token || isApproved === false){
+    const userData = localStorage.getItem("isAuthorized")
+    // alert(data)
+    // const isApproved = data?.isAuthorized
+    if(userData === "false"){
+        window.location.replace('/landing')
+    }
+    if(!token){
         window.location.replace('/login')
     }
     if(companyName){
         window.location.replace('/admin/dashboard')
     }
-    fetchData();
   }, []);
 
   return (

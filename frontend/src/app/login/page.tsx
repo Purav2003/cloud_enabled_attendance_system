@@ -43,7 +43,6 @@ const Login = () => {
             localStorage.removeItem("token");        
             if (data.status === 'success') {
                 localStorage.setItem("token",data.jwt)
-                localStorage.setItem("userData",data)
                 localStorage.setItem("id",data.id)
                 localStorage.setItem("isAuthorized",data.isAuthorized)
                 console.log('Successfully logged in');
@@ -67,10 +66,14 @@ const Login = () => {
         const token = localStorage.getItem("token")
         const companyName = localStorage.getItem("companyName")
         const isAuthorized = localStorage.getItem("isAuthorized")
-        if(token && isAuthorized){
+        const otpVerified = localStorage.getItem("otpVerified")
+        if(otpVerified === "false"){
+            window.location.replace('/verification')
+        }
+        if(token && isAuthorized === "true"){
             window.location.replace('/dashboard')
         }
-        if(token && !isAuthorized){
+        if(token && isAuthorized === "false"){
             window.location.replace('/landing')
         }
         if(companyName){

@@ -21,6 +21,7 @@ const Landing = () => {
                 const data_new = await response.json();
                 setDatab(data_new);
                 if(data_new.isAuthorized === true){
+                    localStorage.setItem("isAuthorized",data_new.isAuthorized)
                     window.location.replace('/dashboard')
                 }                   
                 console.log(data_new)
