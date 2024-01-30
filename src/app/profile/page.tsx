@@ -38,13 +38,27 @@ export default function Profile() {
     };
 
     useEffect(() => {
+        const token = localStorage.getItem("token")
+        const companyName = localStorage.getItem("companyName")
+        const data = localStorage.getItem("userData")
+        const isApproved = data?.isAuthorized
+        if(!token || isApproved === false){
+            window.location.replace('/login')
+        }
+        if(companyName){
+            window.location.replace('/admin/dashboard')
+        }
         fetchData();
     }, []);
 
     useEffect(() => {
         const token = localStorage.getItem("token")
+        const companyName = localStorage.getItem("companyName")
         if(!token){
             window.location.replace('/login')
+        }
+        if(companyName){
+            window.location.replace('/admin/dashboard')
         }
         fetchData();
       }, []);
@@ -85,10 +99,10 @@ export default function Profile() {
                     {/* Right Side - User Details */}
                     <div>
                         <div className="text-lg text-black">
-                            <div className="flex mt-4"><h3 className="font-bold pr-2">Name:</h3> {data?.name}</div><br />
-                            <div className="flex"><h3 className="font-bold pr-2">Mobile:</h3> {data?.mobile}</div><br />
-                            <div className="flex"><h3 className="font-bold pr-2">Email: </h3>{data?.email}</div><br />
-                            <div className="flex"><h3 className="font-bold pr-2">Company Code: </h3>{data?.companyCode}</div>
+                            <div className="flex mt-4"><p className="font-bold pr-2">Name:</p> {data?.name}</div><br />
+                            <div className="flex"><p className="font-bold pr-2">Mobile:</p> {data?.mobile}</div><br />
+                            <div className="flex"><p className="font-bold pr-2">Email: </p>{data?.email}</div><br />
+                            <div className="flex"><p className="font-bold pr-2">Company Code: </p>{data?.companyCode}</div>
                         </div>
                     </div>
                 </div>

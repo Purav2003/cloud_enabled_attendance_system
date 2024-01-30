@@ -40,12 +40,20 @@ const Login = () => {
 
             const data = await response.json();
             console.log(data);
-            localStorage.removeItem("token");
-            localStorage.setItem("token",data.jwt)
-            localStorage.setItem("id",data.id)
+            localStorage.removeItem("token");        
             if (data.status === 'success') {
+                localStorage.setItem("token",data.jwt)
+                localStorage.setItem("userData",data)
+                localStorage.setItem("id",data.id)
+                localStorage.setItem("isAuthorized",data.isAuthorized)
                 console.log('Successfully logged in');
-                window.location.replace('/dashboard')
+                if(data.isAuthorized === false){
+                    window.location.replace('/landing')                
+                }
+                else{
+                    window.location.replace('/dashboard')
+                }
+                
             }
             else{
                 toast.error(data.message)
@@ -57,8 +65,16 @@ const Login = () => {
 
     useEffect(()=>{
         const token = localStorage.getItem("token")
-        if(token){
+        const companyName = localStorage.getItem("companyName")
+        const isAuthorized = localStorage.getItem("isAuthorized")
+        if(token && isAuthorized){
             window.location.replace('/dashboard')
+        }
+        if(token && !isAuthorized){
+            window.location.replace('/landing')
+        }
+        if(companyName){
+            window.location.replace('/admin/dashboard')
         }
     },[])
     return (

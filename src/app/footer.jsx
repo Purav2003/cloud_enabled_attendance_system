@@ -1,7 +1,7 @@
 import { BsEnvelope } from "react-icons/bs";
 import { FiPhone } from "react-icons/fi";
 import { CiLocationOn } from "react-icons/ci";
-
+import Link from "next/link";
 export default function Footer() {
     return (
 
@@ -13,13 +13,13 @@ export default function Footer() {
                         <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Attendance System</h2>
                         <ul className="text-gray-500 dark:text-gray-400 font-medium">
                             <li className="mb-4">
-                                <a href="#" className=" hover:underline text-gray-400">Dashboard</a>
+                                <Link href="/dashboard" className=" hover:underline text-gray-400">Dashboard</Link>
                             </li>
                             <li className="mb-4">
-                                <a href="#" className="hover:underline text-gray-400">Reports</a>
+                                <Link href="/reports" className="hover:underline text-gray-400">Reports</Link>
                             </li>
                             <li className="mb-4">
-                                <a href="#" className="hover:underline text-gray-400">Profile</a>
+                                <Link href="/profile" className="hover:underline text-gray-400">Profile</Link>
                             </li>
                         </ul>
                     </div>
@@ -43,7 +43,7 @@ export default function Footer() {
                         <ul className="text-gray-500 dark:text-gray-400 font-medium">
                             <li className="mb-4">
                                 <a href="#" className="hover:underline flex items-center"><CiLocationOn className="text-[17px] text-gray-400" />
-                                    <label className="pl-1 text-[14px] text-gray-400">786 Bauch Mills, Muellerland, UT 51968-8910</label>
+                                    <label className="pl-1 text-[14px] text-gray-400">Lorem ipsum dolor sit amet consectetur</label>
                                 </a>
                             </li>
 

@@ -7,10 +7,9 @@ import { useEffect } from 'react';
 import data from '../assets/images/logo.png'
 import Link from 'next/link';
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
-  { name: 'Reports', href: '/reports'  , current: false },
-  { name: 'Profile', href: '/profile', current: false },
-  { name: 'Logout', href: '/logout', current: false },
+  { name: 'Dashboard', href: '/admin/dashboard', current: true },
+  { name: 'Profile', href: '/admin/profile', current: false },
+  { name: 'Logout', href: '/admin/logout', current: false },
 ]
 
 
@@ -19,7 +18,7 @@ function classNames(...classes) {
 }
 
 
-export default function Navbar() {
+export default function Adminnavbar() {
   const [active, setActive] = useState(' ');
   console.log(active)
   useEffect(() => {
@@ -63,7 +62,7 @@ export default function Navbar() {
                     className="h-8 w-auto"
                     src={data.src}
                     alt="Your Company"
-                  /> <Link href="/dashboard" className="text-white px-2"> Attendance System</Link>
+                  /> <Link href="/dashboard" className="text-white px-2"> Attendance System Admin</Link>
                 </div>
 
               </div>
@@ -77,7 +76,7 @@ export default function Navbar() {
                         href={item.href}
                         onClick={() => setActive(item.name)}
                         className={`${active === item.name
-                          ? " text-white font-bold "
+                          ? " text-white font-bold ehe"
                           : "text-white"} rounded-md px-3 py-2 text-sm hover:no-underline hover:text-white`}
 
                         aria-current={item.current ? 'page' : undefined}

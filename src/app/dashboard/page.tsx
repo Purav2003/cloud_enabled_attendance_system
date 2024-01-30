@@ -24,7 +24,7 @@ export default function Dashboard() {
   };
 
   const fetchData = async () => {
-    const API_URL = `http://localhost:8000/api/all/`;
+    const API_URL = `http://localhost:8000/api/all`;
     const token = localStorage.getItem("token")
     // alert(token)
     try {
@@ -52,8 +52,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
-    if(!token){
+    const companyName = localStorage.getItem("companyName")
+    const data = localStorage.getItem("userData")
+    const isApproved = data?.isAuthorized
+    if(!token || isApproved === false){
         window.location.replace('/login')
+    }
+    if(companyName){
+        window.location.replace('/admin/dashboard')
     }
     fetchData();
   }, []);

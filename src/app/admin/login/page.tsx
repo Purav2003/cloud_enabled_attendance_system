@@ -42,10 +42,12 @@ const AdminLogin = () => {
             localStorage.removeItem("token");
             localStorage.setItem("token",data.jwt)
             localStorage.setItem("id",data.id)
+            localStorage.setItem("companyName",data.companyName)
+            localStorage.setItem("companyCode",data.companyCode)
             if (data.status === 'success') {
                 console.log('Successfully logged in');
                 toast.success("Successfully logged in")
-                // window.location.replace('/dashboard')
+                window.location.replace('/admin/dashboard')
             }
             else{
                 toast.error(data.message)
@@ -56,10 +58,11 @@ const AdminLogin = () => {
     };
 
     useEffect(()=>{
-        // const token = localStorage.getItem("token")
-        // if(token){
-        //     window.location.replace('/dashboard')
-        // }
+        const token = localStorage.getItem("token")
+        const companyName = localStorage.getItem("companyName")
+        if(token){
+            window.location.replace('/admin/dashboard')
+        }        
     },[])
 
     return (

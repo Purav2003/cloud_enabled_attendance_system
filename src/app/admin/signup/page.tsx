@@ -14,6 +14,7 @@ const AdminSignup = () => {
         name: '',
         email: '',
         password: '',
+        rePassword: '',
         mobile: '',
         companyCode: '',
         companyName:'',
@@ -44,6 +45,21 @@ const AdminSignup = () => {
 
     const handleSignupClick = async (e: React.FormEvent) => {
         e.preventDefault();
+        if(formData.mobile.length !== 10){
+            toast.error('Mobile number should be 10 digits');
+            setStep(1)
+            return;
+        }        
+        if(formData.password !== formData.rePassword){
+            toast.error('Passwords do not match');
+            setStep(2)
+            return;
+        }
+        if(formData.companyCode.length !== 6){
+            toast.error('Company Code should be 6 digits');
+            setStep(3)
+            return;
+        }
 
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
@@ -64,7 +80,10 @@ const AdminSignup = () => {
 
             if (data.status === 'success') {
                 toast.success('Successfully signed up');
-                window.location.replace('/admin/login');
+                const timer = setTimeout(() => {
+                    window.location.replace('/admin/login');
+                }, 2000);
+                return () => clearTimeout(timer);
             }
             else {
                 toast.error(data.message)
@@ -170,8 +189,10 @@ const AdminSignup = () => {
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Retype Your Password</label>
                                         <input
                                             type="password"
-                                            id="repassword"
-                                            className="repassword bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            id="rePassword"
+                                            className="rePassword bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            value={formData.rePassword}
+                                            onChange={handleInputChange}
                                             placeholder="Enter your password"                                                                                        
                                         />
                                     </div>
