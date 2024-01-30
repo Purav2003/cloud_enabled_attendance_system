@@ -5,8 +5,9 @@ export default function Home() {
     window.location.replace('/dashboard')
   })
   return (
+  <>
   
         <h1>&nbsp;</h1>
- 
+ </>
   )
 }

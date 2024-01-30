@@ -1,4 +1,5 @@
 "use client";
+import Link from 'next/link';
 import React from 'react';
 import { useState,useEffect } from 'react';
 const Landing = () => {
@@ -38,9 +39,19 @@ const Landing = () => {
             fetchData();
         }, []);
   return (
-    <div>
-        <h1>Request Sent to Admin</h1>
+    <div className='min-h-screen bg-gradient-to-br from-purple-900 via-purple-700 to-purple-500'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+  
+    <div className='grid items-center justify-center min-h-screen'>
+    
+  
+      <div>
+        <h1 className="font-bold text-3xl mb-4 text-white">Request Sent to Admin</h1>
+        <p className="text-lg text-white">Your request has been submitted to the admin. You will receive a confirmation shortly.</p>      
+      </div>
     </div>
+  </div>
+  
   );
 }
 
