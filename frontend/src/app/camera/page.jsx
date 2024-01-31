@@ -29,14 +29,15 @@ const FaceDetector = () => {
         const endY = prediction.bottomRight[1];
         const width = endX - startX;
         const height = endY - startY;
-
-        // Get the canvas context
-        ctx.strokeStyle = "white";
+  
+        // Modify this part to draw the box with a different style or not at all
+        // Example: Draw a red rectangle without fill
+        ctx.strokeStyle = "red";
         ctx.lineWidth = 2;
         ctx.strokeRect(startX, startY, width, height);
-
+  
         const landmarks = prediction.landmarks;
-
+  
         // Draw the landmarks
         ctx.fillStyle = "blue";
         landmarks.forEach((landmark) => {
@@ -45,10 +46,22 @@ const FaceDetector = () => {
       });
     }
   };
+  
+
+  const capturePhoto = (ctx) => {
+    const video = webcamRef.current.video;
+    const photo = document.createElement("canvas");
+    photo.width = video.width;
+    photo.height = video.height;
+    const photoCtx = photo.getContext("2d");
+    photoCtx.drawImage(video, 0, 0, video.width, video.height);
+    setCapturedPhoto(photo.toDataURL("image/jpeg")); // Save the photo in the state
+  };
 
   const sendPhotoToBackend = async () => {
     // Send the captured photo to the backend
     if (capturedPhoto) {
+      console.log(capturedPhoto);
       try {
         const response = await fetch('http://localhost:8000/api/faceMatch/', {
           method: 'POST',
@@ -69,45 +82,39 @@ const FaceDetector = () => {
     }
   };
 
-  const capturePhoto = (ctx) => {
+const detectFaces = async (model) => {
+  if (webcamRef.current && webcamRef.current.video.readyState === 4) {
     const video = webcamRef.current.video;
-    const photo = document.createElement("canvas");
-    photo.width = video.width;
-    photo.height = video.height;
-    const photoCtx = photo.getContext("2d");
-    photoCtx.drawImage(video, 0, 0, video.width, video.height);
-    setCapturedPhoto(photo.toDataURL("image/jpeg")); // Save the photo in the state
-  };
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
 
-  const detectFaces = async (model) => {
-    if (webcamRef.current && webcamRef.current.video.readyState === 4) {
-      const video = webcamRef.current.video;
-      const videoWidth = video.videoWidth;
-      const videoHeight = video.videoHeight;
+    webcamRef.current.video.width = videoWidth;
+    webcamRef.current.video.height = videoHeight;
 
-      webcamRef.current.video.width = videoWidth;
-      webcamRef.current.video.height = videoHeight;
+    canvasRef.current.width = videoWidth;
+    canvasRef.current.height = videoHeight;
 
-      canvasRef.current.width = videoWidth;
-      canvasRef.current.height = videoHeight;
+    const ctx = canvasRef.current.getContext("2d");
 
-      const ctx = canvasRef.current.getContext("2d");
+    // Remove the drawImage line
+    // ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
 
-      // Draw the video on the canvas
-      ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+    const predictions = await model.estimateFaces(video);
 
-      const predictions = await model.estimateFaces(video);
+    // ctx.clearRect(0, 0, videoWidth, videoHeight); // Clear the canvas
+    drawFaceDetections(ctx, predictions);
+    capturePhoto(ctx);
 
-      drawFaceDetections(ctx, predictions);
+    // Loop through the frames with a delay
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        detectFaces(model);
+      });
+    }, 100); // Adjust the delay as needed
+  }
+};
 
-      // Loop through the frames with a delay
-      setTimeout(() => {
-        requestAnimationFrame(() => {
-          detectFaces(model);
-        });
-      }, 100); // Adjust the delay as needed
-    }
-  };
+  
 
   useEffect(() => {
     loadModel().then((model) => {
@@ -117,8 +124,10 @@ const FaceDetector = () => {
 
   return (
     <div>
-      <Webcam ref={webcamRef} />
-      <canvas ref={canvasRef} />
+      <Webcam ref={webcamRef} mirrored={0} />
+      <canvas ref={canvasRef} className="absolute top-0"/>
+      <button id="myCheck" onClick={() => capturePhoto(canvasRef.current.getContext("2d"))}>Capture Photo</button>
+      <img src={capturedPhoto} alt="Captured" />
       <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
     </div>
   );

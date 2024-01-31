@@ -9,63 +9,74 @@ from .decoretors import jwt_authorization
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 import random
+import requests
+import base64
+from io import BytesIO
+from PIL import Image
+from django.contrib.auth.models import User
+import cv2
+import numpy as np
 
+@api_view(['POST'])
+def match_face(request):
+    try:
+        # Get the image data from the request
+        image_data = request.data.get('data')  # Assuming 'data' is the key for the image data
 
-# from facenet_pytorch import InceptionResnetV1, MTCNN, extract_face
-# from PIL import Image
-# import numpy as np
+        # Decode base64 and convert to PIL Image
+        image = Image.open(BytesIO(base64.b64decode(image_data)))
 
-# @api_view(['POST'])
-# def match_face(request):
-#     # Get the image link from the request data
-#     image_url = request.data.get('image_url')  # Assuming the image URL is provided in the request data
-#     response = requests.get(image_url)
+        # Convert PIL Image to OpenCV format (BGR)
+        cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
 
-#     if response.status_code == 200:
-#         # Save the image to a file
-#         image_path = '/content/downloaded_image.png'
-#         with open(image_path, 'wb') as f:
-#             f.write(response.content)
-#     model = InceptionResnetV1(pretrained='vggface2').eval()
+        # Load the pre-trained face recognition model
+        model = cv2.dnn.readNetFromTensorflow('path/to/pretrained/model.pb')
 
-#     image_path_1 = '/content/Untitled.png'
-#     image_path_2 = '/content/vk.jpg'
+        # Get face locations using a face detection model (e.g., MTCNN)
+        face_locations = face_detection(cv_image)
 
-#     img_1 = Image.open(image_path_1)
-#     img_2 = Image.open(image_path_2)
+        if not face_locations:
+            return Response({'message': 'No face found in the image'}, status=404)
 
-#     img_1 = img_1.convert('RGB')
-#     img_2 = img_2.convert('RGB')
+        # Extract face embeddings using the pre-trained model
+        embeddings = []
+        for face_location in face_locations:
+            face = cv_image[face_location[0]:face_location[2], face_location[3]:face_location[1]]
+            blob = cv2.dnn.blobFromImage(face, 1.0, (96, 96), (0, 0, 0), swapRB=True, crop=False)
+            model.setInput(blob)
+            embedding = model.forward()
+            embeddings.append(embedding.flatten())
 
-#     # Convert images to PyTorch tensors
-#     img_tensor_1 = MTCNN()(img_1)
-#     img_tensor_2 = MTCNN()(img_2)
+        # Loop through all users and their photos
+        for user in User.objects.all():
+            for user_photo in user.userprofile.photos.all():
+                # Load the user's photo and get its embedding
+                user_photo_path = user_photo.photo.path
+                user_photo_image = cv2.imread(user_photo_path)
+                user_photo_blob = cv2.dnn.blobFromImage(user_photo_image, 1.0, (96, 96), (0, 0, 0), swapRB=True, crop=False)
+                model.setInput(user_photo_blob)
+                user_photo_embedding = model.forward().flatten()
 
+                # Compare the embeddings
+                distance = np.linalg.norm(embeddings - user_photo_embedding)
+                
+                # If the distance is below a certain threshold, consider it a match
+                if distance < 0.6:  # You can adjust this threshold based on your needs
+                    return Response({'message': f'Match found for user: {user.username}'}, status=200)
 
+        # If no match is found, return 'User not found'
+        return Response({'message': 'User not found'}, status=404)
 
-#     # Expand dimensions to create batches with a single image each
-#     img_tensor_1 = img_tensor_1.unsqueeze(0)
-#     img_tensor_2 = img_tensor_2.unsqueeze(0)
+    except Exception as e:
+        # Handle exceptions appropriately
+        return Response({'error': str(e)}, status=500)
 
-# # Get face embeddings
-#     embeddings_1 = model(img_tensor_1)
-#     embeddings_2 = model(img_tensor_2)
-
-# # Convert embeddings to numpy arrays for comparison
-#     embeddings_1_np = embeddings_1.cpu().detach().numpy()
-#     embeddings_2_np = embeddings_2.cpu().detach().numpy()
-
-# # Calculate the Euclidean distance between the embeddings
-#     distance = np.linalg.norm(embeddings_1_np - embeddings_2_np)
-
-# # Set a threshold for recognition
-#     threshold = 0.7
-
-# # Compare distances for recognition
-#     if distance < threshold:
-#         print("The faces are recognized as the same person.")
-#     else:
-#         print("The faces are recognized as different persons.")
+def face_detection(image):
+    # Use a face detection model (e.g., MTCNN) to get face locations
+    # Example: You can replace this with your preferred face detection approach
+    # and modify the return format as needed.
+    # Refer to the documentation of the chosen face detection model.
+    pass
 
 
 @api_view(['POST'])
@@ -79,7 +90,7 @@ def login(request):
         if check_password(password, user.password):
             payload = {
                 'id': user.id,
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=48),
                 'iat': datetime.datetime.utcnow()
             }
                                 

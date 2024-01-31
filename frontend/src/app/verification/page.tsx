@@ -29,6 +29,7 @@ const Verification = () => {
         localStorage.setItem("otpVerified","true")
         window.location.replace('/login')
     }
+    
       // Handle the response from the server
       console.log(data);
       // You can implement further logic based on the API response

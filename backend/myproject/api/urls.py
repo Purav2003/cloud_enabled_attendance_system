@@ -6,7 +6,7 @@ urlpatterns = [
     path('api/notAuth/<int:pk>',views.access),
     path('api/checkOtp/<str:pk>',views.checkOtp),
     path('api/signup/',views.signup),
-    # path('api/faceMatch/',views.match_face),
+    path('api/faceMatch/',views.match_face),
     path('api/admin/signup',views.adminSignup),
     path('api/admin/login',views.adminLogin),
     path('api/login/',views.login),
