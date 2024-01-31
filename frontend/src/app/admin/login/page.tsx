@@ -60,9 +60,12 @@ const AdminLogin = () => {
     useEffect(()=>{
         const token = localStorage.getItem("token")
         const companyName = localStorage.getItem("companyName")
-        if(token){
+        if(token && companyName){
             window.location.replace('/admin/dashboard')
-        }        
+        }  
+        if(token && !companyName){
+           window.location.replace('/login')
+        }
     },[])
 
     return (

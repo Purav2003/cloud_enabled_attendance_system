@@ -76,7 +76,7 @@ export default function Adminnavbar() {
                         href={item.href}
                         onClick={() => setActive(item.name)}
                         className={`${active === item.name
-                          ? " text-white font-bold ehe"
+                          ? " text-white font-bold"
                           : "text-white"} rounded-md px-3 py-2 text-sm hover:no-underline hover:text-white`}
 
                         aria-current={item.current ? 'page' : undefined}

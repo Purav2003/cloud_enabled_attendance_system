@@ -16,6 +16,7 @@ const Signup = () => {
         password: '',
         mobile: '',
         companyCode: '',
+        department:'',
     });
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +51,7 @@ const Signup = () => {
         formDataToSend.append('password', formData.password);
         formDataToSend.append('mobile', formData.mobile);
         formDataToSend.append('companyCode', formData.companyCode);
+        formDataToSend.append('department', formData.department);
         if (selectedFile) {
             formDataToSend.append('profilePhoto', selectedFile);
         }
@@ -193,6 +195,18 @@ const Signup = () => {
                                         onChange={handleInputChange}
                                         required
                                     />
+                                </div>
+                                <div className="mb-5 max-w-sm">
+                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Department</label>
+                                <input
+                                    type="text"
+                                    id="department"
+                                    className="department bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Enter your Department"
+                                    value={formData.department}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                                 </div>
                                 <div className="flex justify-between mt-5 max-w-sm">
                                     <button type="button" onClick={handleBackClick} className="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800">Back</button>

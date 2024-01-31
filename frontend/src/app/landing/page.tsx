@@ -21,7 +21,7 @@ const Landing = () => {
                 });
                 const data_new = await response.json();
                 setDatab(data_new);
-                if(data_new.isAuthorized === true){
+                if(data_new.isAuthorized === "AccessGranted"){
                     localStorage.setItem("isAuthorized",data_new.isAuthorized)
                     window.location.replace('/dashboard')
                 }                   
@@ -33,7 +33,7 @@ const Landing = () => {
     
         useEffect(() => {
             const isAuthorized = localStorage.getItem("isAuthorized")
-            if(isAuthorized === true){
+            if(isAuthorized === "AccessGranted"){
                 window.location.replace('/dashboard')
             }            
             fetchData();

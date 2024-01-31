@@ -34,7 +34,7 @@ export default function Dashboard() {
     const userData = localStorage.getItem("isAuthorized")
     // alert(data)
     // const isApproved = data?.isAuthorized
-    if(userData === "false"){
+    if(userData === "sendRequest"){
         window.location.replace('/landing')
     }
     if(!token){
@@ -72,7 +72,7 @@ export default function Dashboard() {
                             <Progress.Circle percent={10} strokeColor="green" />
                         </div>
                         <div className="pl-4">
-                            <h1 className="text-2xl font-bold text-black">January's Attendance</h1>
+                            <h1 className="text-2xl font-bold text-black">February's Attendance</h1>
                         </div>
                     </div>
                     <div className="cards flex items-center bg-[#eee] rounded-lg z-[-1000] mt-3 lg:mt-0 mx-12 p-4 lg:w-[25%] lg:ml-20">
@@ -80,7 +80,7 @@ export default function Dashboard() {
                             <Progress.Circle percent={76} strokeColor="green" />
                         </div>
                         <div className="pl-4">
-                            <h1 className="text-2xl font-bold text-black">December's Attendance</h1>
+                            <h1 className="text-2xl font-bold text-black">January's Attendance</h1>
                         </div>
                     </div>
                 </div>
@@ -89,86 +89,7 @@ export default function Dashboard() {
 
                     <br></br>
                     <div className="lg:px-20 w-[100%] lg:flex">
-                        <div className="w-full">
-                            <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-3">
-                                            Sr. Number
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Date
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Time
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Attendance
-                                        </th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                        <td className="px-6 py-4">
-                                            1
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            09-01-2024
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            10:14:04
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            Present
-                                        </td>
-
-                                    </tr>
-                                    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                        <td className="px-6 py-4">
-                                            2
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            08-01-2024                </td>
-                                        <td className="px-6 py-4">
-                                            10:10:43
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            Present
-                                        </td>
-
-                                    </tr>
-                                    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                        <td className="px-6 py-4">
-                                            3
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            07-01-2024                </td>
-                                        <td className="px-6 py-4">
-                                            -------
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            Absent
-                                        </td>
-
-                                    </tr>
-                                    <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                                        <td className="px-6 py-4">
-                                            4
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            06-01-2024                </td>
-                                        <td className="px-6 py-4">
-                                            10:24:32
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            Present
-                                        </td>
-
-                                    </tr>
-
-                                </tbody>
-                            </table>
+                        <div className="w-full">                        
                         </div>
 
                     </div>

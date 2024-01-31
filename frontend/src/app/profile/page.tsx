@@ -55,7 +55,7 @@ export default function Profile() {
         const token = localStorage.getItem("token")
         const companyName = localStorage.getItem("companyName")
         const isAuthorized = localStorage.getItem("isAuthorized")
-        if(isAuthorized === "false"){
+        if(isAuthorized === "sendRequest"){
             window.location.replace('/landing')
         }
         if(!token){

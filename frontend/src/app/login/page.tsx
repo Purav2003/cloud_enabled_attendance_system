@@ -46,7 +46,7 @@ const Login = () => {
                 localStorage.setItem("id",data.id)
                 localStorage.setItem("isAuthorized",data.isAuthorized)
                 console.log('Successfully logged in');
-                if(data.isAuthorized === false){
+                if(data.isAuthorized === "sendRequest"){                    
                     window.location.replace('/landing')                
                 }
                 else{
@@ -70,10 +70,10 @@ const Login = () => {
         if(otpVerified === "false"){
             window.location.replace('/verification')
         }
-        if(token && isAuthorized === "true"){
+        if(token && isAuthorized === "AccessGranted"){
             window.location.replace('/dashboard')
         }
-        if(token && isAuthorized === "false"){
+        if(token && isAuthorized === "sendRequest"){
             window.location.replace('/landing')
         }
         if(companyName){

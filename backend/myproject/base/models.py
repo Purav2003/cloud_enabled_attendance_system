@@ -17,8 +17,9 @@ class User(models.Model):
     mobile = models.CharField(max_length=15 )     
     password = models.CharField(max_length=100 ) 
     companyCode = models.CharField(max_length=20 )
+    department = models.CharField(max_length=20 )
     profilePhoto = models.ImageField(upload_to='user_images/', null=True, blank=True)
-    isAuthorized = models.BooleanField(default=False)
-    otp = models.IntegerField(max_length=10, null=True, blank=True)
+    isAuthorized = models.CharField(default=False,max_length=100)
+    otp = models.IntegerField( null=True, blank=True)
     def __str__(self):
         return(f"{self.email}")
