@@ -2,23 +2,36 @@
 "use client";
 import Navbar from "../navbar";
 import Footer from '../footer';
+// import Navbar from "../navbar";
 import { useState, useEffect } from "react";
+import { toast, Toaster } from "react-hot-toast";
+import Link from "next/link";
 interface UserData {
     name: string;
     email: string;
     mobile: string;
-    password: string;
-    companyCode: string;
+    department: string;
 }
 
-export default function Profile() {
+const Profile = () => {
     const [data, setData] = useState<UserData | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const fetchData = async () => {
-        let id = localStorage.getItem("id");
-        let idAsInt = parseInt(id, 10);
-        const API_URL = `http://localhost:8000/api/user/${idAsInt}`;
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        mobile: '',
+        department: '',
 
+    });
+
+
+   
+
+
+    const fetchData = async () => {
+        const id = localStorage.getItem("id")
+        const API_URL = `http://localhost:8000/api/user/${id}`;
+        console.log(API_URL);
         const token = localStorage.getItem("token");
 
         try {
@@ -31,102 +44,129 @@ export default function Profile() {
             });
             const data_new: UserData = await response.json();
             setData(data_new);
-            console.log(data_new)
+         
+            setFormData({
+                name: data_new.name,
+                email: data_new.email,
+                mobile: data_new.mobile,
+                department: data_new.department,
+            });
+            console.log(data_new);
         } catch (error) {
             console.error(error);
         }
     };
 
+  
+
+
     useEffect(() => {
-        const token = localStorage.getItem("token")
-        const companyName = localStorage.getItem("companyName")
-        const data = localStorage.getItem("userData")
-        const isApproved = data?.isAuthorized
-        if(!token || isApproved === false){
-            window.location.replace('/login')
+        const token = localStorage.getItem("token");
+        if (!token) {
+            window.location.replace('/login');
         }
-        if(companyName){
-            window.location.replace('/admin/dashboard')
-        }
+
         fetchData();
     }, []);
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
-        const companyName = localStorage.getItem("companyName")
-        const isAuthorized = localStorage.getItem("isAuthorized")
-        if(isAuthorized === "sendRequest"){
-            window.location.replace('/landing')
-        }
-        if(!token){
-            window.location.replace('/login')
-        }
-        if(companyName){
-            window.location.replace('/admin/dashboard')
-        }
-        fetchData();
-      }, []);
-
-    useEffect(() => {
         if (showModal) {
-          document.body.classList.add('overflow-hidden');
+            document.body.classList.add('overflow-hidden');
         } else {
-          document.body.classList.remove('overflow-hidden');
+            document.body.classList.remove('overflow-hidden');
         }
-    
+
         return () => {
-          document.body.classList.remove('overflow-hidden');
+            document.body.classList.remove('overflow-hidden');
         };
-      }, [showModal]);
+    }, [showModal]);
 
     return (
-        <div className="min-h-screen items-center justify-center bg-[#eee]">
-          
-            <Navbar />
+        <><Navbar />
+<div className="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
+      <Toaster />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+        rel="stylesheet"
+      />
 
-            <div className="bg-gray-200 my-12 p-8 rounded-lg  shadow-lg w-full md:w-1/2 lg:w-1/3 mx-auto ">
-                <h1 className="text-4xl pl-8 font-bold text-black mb-4">Profile</h1>
+      <div className="bg-white w-full max-w-xl p-8 rounded-md shadow-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">User Profile</h1>
 
-                <div className="flex-1 items-center space-x-8">
-                    <div className="flex items-center justify-center"
-                        onClick={()=>setShowModal(true)}
-                    >
-                        <img
-                            src={`http://localhost:8000${data?.profilePhoto}`}
-                            className="border border-[#4a4a4a] rounded-full w-32 h-32 object-cover"
-                            alt="User Profile"
-                        />
-                    </div>
-
-
-                    <div>
-                        <div className="text-lg text-black">
-                            <div className="flex mt-4"><p className="font-bold pr-2">Name:</p> {data?.name}</div><br />
-                            <div className="flex"><p className="font-bold pr-2">Mobile:</p> {data?.mobile}</div><br />
-                            <div className="flex"><p className="font-bold pr-2">Email: </p>{data?.email}</div><br />
-                            <div className="flex"><p className="font-bold pr-2">Company Code: </p>{data?.companyCode}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div className={showModal ? "visible top-0 left-0 absolute w-full min-h-screen" : "hidden"}>
-        <div className="bg-[rgba(0,0,0,0.5)] min-h-screen w-full flex items-center justify-center" onClick={() => setShowModal(false)}>
-          <div className="bg-white p-8 rounded-lg">
+        <div className="flex items-center space-x-4">
+          <div
+            className="flex items-center justify-center cursor-pointer"
+            onClick={() => setShowModal(true)}
+          >
             <img
               src={`http://localhost:8000${data?.profilePhoto}`}
-              className="border border-[#4a4a4a] rounded-full w-64 h-64 object-cover"
+              className="rounded-full w-[200px] h-[200px] object-cover border-2 border-gray-300"
               alt="User Profile"
             />
-            <button className="mt-4 p-2 bg-gray-300 rounded" onClick={() => setShowModal(false)}>
-              Go Back
-            </button>
+          </div>
+
+          <div className="flex-1">
+            <div>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Name:
+                </label>
+                <p>{formData?.name}</p>
+                
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Email:
+                </label>
+                <p>
+                 {formData?.email}
+                </p>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Mobile:
+                </label>
+                <p>
+                 {formData?.mobile}
+                </p>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Department:
+                </label>
+                <p>
+                 {formData?.department}
+                </p>
+              </div>
+            
+             </div>
           </div>
         </div>
       </div>
 
-            <Footer />
+      {showModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
+          <div className="bg-white p-8 rounded-lg">
+            <img
+              src={`http://localhost:8000${data?.profilePhoto}`}
+              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300 mb-4"
+              alt="User Profile"
+            />
+            <button
+              className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600"
+              onClick={() => setShowModal(false)}
+            >
+              Go Back
+            </button>
+            
+          </div>
         </div>
-    );
+      )}
+    </div>
+    <Footer />
+    </>
+  );
 }
+
+export default Profile;

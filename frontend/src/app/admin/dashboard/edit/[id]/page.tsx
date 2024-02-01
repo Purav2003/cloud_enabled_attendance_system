@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
+import Adminnavbar from "@/app/AdminNavbar";
 interface UserData {
     name: string;
     email: string;
@@ -114,7 +115,8 @@ const Edit = ({ id }) => {
             console.log(data);
 
             if (data.status === 'success') {
-                toast.success('Successfully signed up');
+                toast.success(data.message);
+                fetchData();
             }
             else {
                 toast.error(data.message)
@@ -147,7 +149,8 @@ const Edit = ({ id }) => {
         };
     }, [showModal]);
 
-    return (
+    return (<>
+    <Adminnavbar />
 <div className="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
       <Toaster />
       <link
@@ -268,7 +271,7 @@ const Edit = ({ id }) => {
           </div>
         </div>
       )}
-    </div>
+    </div></>
   );
 }
 

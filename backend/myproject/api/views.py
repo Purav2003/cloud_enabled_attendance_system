@@ -460,7 +460,7 @@ def checkOtp(request,pk):
         return Response({'status': 'error', 'message': 'Wrong OTP'}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PUT'])
-def updateItem(request, pk):
+def updateUser(request, pk):
     try:
         user = User.objects.get(id=pk)
     except User.DoesNotExist:
@@ -480,7 +480,6 @@ def updateItem(request, pk):
     serializer = UserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
-        print(serializer.data)
         return Response({'status': 'success', 'message': 'User Updated'}, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'error', 'message': 'Validation Error', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)  
