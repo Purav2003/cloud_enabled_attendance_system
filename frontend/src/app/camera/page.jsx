@@ -48,39 +48,51 @@ const FaceDetector = () => {
   };
   
 
-  const capturePhoto = (ctx) => {
+  const capturePhoto = async () => {
     const video = webcamRef.current.video;
-    const photo = document.createElement("canvas");
-    photo.width = video.width;
-    photo.height = video.height;
-    const photoCtx = photo.getContext("2d");
+    const photoCanvas = document.createElement("canvas");
+    photoCanvas.width = video.width;
+    photoCanvas.height = video.height;
+    const photoCtx = photoCanvas.getContext("2d");
     photoCtx.drawImage(video, 0, 0, video.width, video.height);
-    setCapturedPhoto(photo.toDataURL("image/jpeg")); // Save the photo in the state
+
+    const photoDataUrl = photoCanvas.toDataURL("image/jpeg");
+    setCapturedPhoto(photoDataUrl);
+
+    // Convert the base64-encoded image to a binary Blob
   };
 
   const sendPhotoToBackend = async () => {
-    // Send the captured photo to the backend
-    if (capturedPhoto) {
-      console.log(capturedPhoto);
-      try {
-        const response = await fetch('http://localhost:8000/api/faceMatch/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ image: capturedPhoto }),
-        });
+    
+    const base64WithoutHeader = capturedPhoto?.split(",")[1];
+    const binaryString = atob(base64WithoutHeader);
+    const uint8Array = new Uint8Array(binaryString.length);
+  
+    for (let i = 0; i < binaryString.length; i++) {
+      uint8Array[i] = binaryString.charCodeAt(i);
+    }
+  
+    const blob = new Blob([uint8Array], { type: "image/jpeg" });   
+    const formData = new FormData();
+    formData.append("image", blob);
+    console.log(formData)
+    try {
+      const response = await fetch("http://localhost:8000/api/faceMatch/", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (response.status === "success") {
-          console.log('Photo successfully sent to backend');
-        } else {
-          console.error('Failed to send photo to backend');
-        }
-      } catch (error) {
-        console.error('Error sending photo to backend:', error);
+      if (response.ok) {
+        console.log("Photo successfully sent to backend");
+      } else {
+        console.error("Failed to send photo to backend");
       }
+    } catch (error) {
+      console.error("Error sending photo to backend:", error);
     }
   };
+
+
 
 const detectFaces = async (model) => {
   if (webcamRef.current && webcamRef.current.video.readyState === 4) {

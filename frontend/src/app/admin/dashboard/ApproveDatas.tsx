@@ -19,7 +19,7 @@ const ApproveData = () => {
     const fetchData = async () => {
         let companyCode = localStorage.getItem("companyCode");
         let idAsInt = parseInt(companyCode || "0", 10);
-        const API_URL = `http://localhost:8000/api/all/${idAsInt}`;
+        const API_URL = `http://localhost:8000/api/pending/${idAsInt}`;
         const token = localStorage.getItem("token");
 
         try {
@@ -33,13 +33,7 @@ const ApproveData = () => {
             const data_new: UserData[] = await response.json();
 
             if (Array.isArray(data_new) && data_new.length > 0) {
-                setData(data_new);
-
-                const newApproveData = data_new.filter(
-                    (item) => item.isAuthorized === "sendRequest"
-                );
-
-                setApproveData(newApproveData);
+                setData(data_new);              
             }
         } catch (error) {
             console.error(error);
@@ -112,7 +106,7 @@ const ApproveData = () => {
     return (
         <div className="py-4 px-12">
             <h1 className="font-bold text-2xl pb-4">Pending Requests</h1>
-            {approveData?.length > 0 ? (
+            {data?.length > 0 ? (
                 <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 text-white">
                         <tr>
@@ -140,7 +134,7 @@ const ApproveData = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-[#eee]  overflow-scroll">
-                        {approveData?.map((item: UserData) => (
+                        {data?.map((item: UserData) => (
                             <tr key={item.id} className="p-4  text-[#4a4a4a] ">
 
                                 <td className="p-4 text-center">{item.id}</td>

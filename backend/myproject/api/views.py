@@ -12,75 +12,100 @@ import random
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-# import requests
 # import base64
 # from io import BytesIO
+# # import requests
+# # import base64
+# # from io import BytesIO
+# # from PIL import Image
+# # from django.contrib.auth.models import User
+# # from cv2 import cv2
+# # import numpy as np
+# from django.http import JsonResponse
+# from facenet_pytorch import InceptionResnetV1, MTCNN
 # from PIL import Image
-# from django.contrib.auth.models import User
-# import cv2
+# import os
+# import torch
 # import numpy as np
+# from django.shortcuts import render
 
 # @api_view(['POST'])
 # def match_face(request):
+#     model = InceptionResnetV1(pretrained='vggface2').eval()
+#     mtcnn = MTCNN()
+#     images_folder = '/media/user_images/'
+
+#     # List to store results
+#     results = []
+
+#     # Get base64-encoded image from the request
+#     base64_image = request.data.get('image')  # Assuming you send the base64 image in the 'base64_image' field
+
+#     # Decode base64 string into binary data
 #     try:
-#         # Get the image data from the request
-#         image_data = request.data.get('data')  # Assuming 'data' is the key for the image data
+#         # Decode base64 string into binary data
+#         binary_data = base64.b64decode(base64_image)    
+#         # Convert binary data to PIL Image
+#         api_image = Image.open(BytesIO(binary_data))
+#         api_image = api_image.convert('RGB')
+#         api_image_tensor = mtcnn(api_image).unsqueeze(0)
+#         print(api_image_tensor)
+#         # If using GPU, move the tensor to GPU
+#         if torch.cuda.is_available():
+#             api_image_tensor = api_image_tensor.cuda()
 
-#         # Decode base64 and convert to PIL Image
-#         image = Image.open(BytesIO(base64.b64decode(image_data)))
+#         # Get face embeddings for the API image
+#         api_embeddings = model(api_image_tensor)
 
-#         # Convert PIL Image to OpenCV format (BGR)
-#         cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+#         # Convert embeddings to numpy array for comparison
+#         api_embeddings_np = api_embeddings.cpu().detach().numpy()
 
-#         # Load the pre-trained face recognition model
-#         model = cv2.dnn.readNetFromTensorflow('path/to/pretrained/model.pb')
+#         # Loop through images in the user_images folder
+#         for filename in os.listdir(images_folder):
+#             if filename.endswith(".png") or filename.endswith(".jpg"):
+#                 # Load the image from the folder
+#                 image_path = os.path.join(images_folder, filename)
+#                 folder_image = Image.open(image_path)
+#                 folder_image = folder_image.convert('RGB')
+#                 folder_image_tensor = mtcnn(folder_image).unsqueeze(0)
 
-#         # Get face locations using a face detection model (e.g., MTCNN)
-#         face_locations = face_detection(cv_image)
+#                 # If using GPU, move the tensor to GPU
+#                 if torch.cuda.is_available():
+#                     folder_image_tensor = folder_image_tensor.cuda()
 
-#         if not face_locations:
-#             return Response({'message': 'No face found in the image'}, status=404)
+#                 # Get face embeddings for the folder image
+#                 folder_embeddings = model(folder_image_tensor)
 
-#         # Extract face embeddings using the pre-trained model
-#         embeddings = []
-#         for face_location in face_locations:
-#             face = cv_image[face_location[0]:face_location[2], face_location[3]:face_location[1]]
-#             blob = cv2.dnn.blobFromImage(face, 1.0, (96, 96), (0, 0, 0), swapRB=True, crop=False)
-#             model.setInput(blob)
-#             embedding = model.forward()
-#             embeddings.append(embedding.flatten())
+#                 # Convert embeddings to numpy array for comparison
+#                 folder_embeddings_np = folder_embeddings.cpu().detach().numpy()
 
-#         # Loop through all users and their photos
-#         for user in User.objects.all():
-#             for user_photo in user.userprofile.photos.all():
-#                 # Load the user's photo and get its embedding
-#                 user_photo_path = user_photo.photo.path
-#                 user_photo_image = cv2.imread(user_photo_path)
-#                 user_photo_blob = cv2.dnn.blobFromImage(user_photo_image, 1.0, (96, 96), (0, 0, 0), swapRB=True, crop=False)
-#                 model.setInput(user_photo_blob)
-#                 user_photo_embedding = model.forward().flatten()
+#                 # Calculate the Euclidean distance between the embeddings
+#                 distance = np.linalg.norm(api_embeddings_np - folder_embeddings_np)
 
-#                 # Compare the embeddings
-#                 distance = np.linalg.norm(embeddings - user_photo_embedding)
-                
-#                 # If the distance is below a certain threshold, consider it a match
-#                 if distance < 0.6:  # Y   ou can adjust this threshold based on your needs
-#                     return Response({'message': f'Match found for user: {user.username}'}, status=200)
+#                 # Set a threshold for recognition
+#                 threshold = 0.7
 
-#         # If no match is found, return 'User not found'
-#         return Response({'message': 'User not found'}, status=404)
+#                 # Compare distances for recognition
+#                 if distance < threshold:
+#                     result = {
+#                         'filename': filename,
+#                         'status': 'recognized',
+#                     }
+#                     print("Ho gaya")
+#                 else:
+#                     result = {
+#                         'filename': filename,
+#                         'status': 'not recognized',
+#                     }
+#                     print("Nahi hua")
+
+#                 results.append(result)
+
+#         return JsonResponse({'results': results})
 
 #     except Exception as e:
-#         # Handle exceptions appropriately
-#         return Response({'error': str(e)}, status=500)
-
-# def face_detection(image):
-#     # Use a face detection model (e.g., MTCNN) to get face locations
-#     # Example: You can replace this with your preferred face detection approach
-#     # and modify the return format as needed.
-#     # Refer to the documentation of the chosen face detection model.
-#     pass
-
+#         print(e)
+#         return JsonResponse({'error': f'Error processing image: {str(e)}'})
 
 @api_view(['POST'])
 def login(request):
@@ -434,19 +459,26 @@ def checkOtp(request,pk):
     else:
         return Response({'status': 'error', 'message': 'Wrong OTP'}, status=status.HTTP_400_BAD_REQUEST)
     
-@api_view(['POST'])
-def updateItem(request,pk):
-    items = User.objects.get(id=pk)
-    serializer = UserSerializer(data=request.data,instance=items)
+@api_view(['PUT'])
+def updateItem(request, pk):
+    try:
+        user = User.objects.get(id=pk)
+    except User.DoesNotExist:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
-
+        print(serializer.data)
+        return Response({'status': 'success', 'message': 'User Updated'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'error', 'message': 'Validation Error', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['GET'])
 def delUser(request,pk):
     item = User.objects.get(id=pk)
     if item is not None:
-        item.delete()
+        item.delete()        
         return Response({'status': 'success', 'message': 'User Deleted'}, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
@@ -461,6 +493,38 @@ def customer_record(request,pk):
         return Response(serializer.data)
     else:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@jwt_authorization
+def customer_record_pending(request,pk):   
+    items = User.objects.filter(isAuthorized="sendRequest",companyCode=pk)
+    if items.exists():
+        serializer = UserSerializer(items, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'status': 'error', 'message': 'No users found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+@jwt_authorization
+def customer_record_approved(request, pk):
+    items = User.objects.filter(isAuthorized="AccessGranted", companyCode=pk)
+    
+    if items.exists():
+        serializer = UserSerializer(items, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'status': 'error', 'message': 'No users found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@jwt_authorization
+def customer_record_rejected(request,pk):   
+    items = User.objects.filter(isAuthorized="AccessDenied",companyCode=pk)
+    if items.exists():
+        serializer = UserSerializer(items, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'status': 'error', 'message': 'No users found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])

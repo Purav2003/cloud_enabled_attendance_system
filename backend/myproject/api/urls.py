@@ -13,6 +13,9 @@ urlpatterns = [
     path('api/login/',views.login),
     path('api/del/<int:pk>',views.delUser),
     path('api/user/<int:pk>',views.customer_record),
+    path('api/approved/<int:pk>',views.customer_record_approved),
+    path('api/rejected/<int:pk>',views.customer_record_rejected),
+    path('api/pending/<int:pk>',views.customer_record_pending),
     path('api/update/<int:pk>',views.updateItem),
 ]
 
