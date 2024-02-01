@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
-
+import Link from "next/link";
 interface UserData {
     name: string;
     email: string;
@@ -87,9 +87,17 @@ const Edit = ({ id }) => {
 
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (formData.email === '' || formData.mobile === '' || formData.department === '') {
+            toast.error("All fields are required")
+            return
+        }
+        if(formData.email === formDataone.email && formData.mobile === formDataone.mobile && formData.department === formDataone.department){   
+            toast.error("No changes made")
+            return
+        }
 
         const formDataToSend = new FormData();
-        formDataToSend.append('name', formData.name + "hehe");
+        formDataToSend.append('name', formData.name );
         formDataToSend.append('email', formData.email);
         formDataToSend.append('mobile', formData.mobile);
         formDataToSend.append('department', formData.department);
@@ -140,91 +148,128 @@ const Edit = ({ id }) => {
     }, [showModal]);
 
     return (
-        <div className="min-h-screen items-center justify-center bg-[#eee]">
-            <Toaster />
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+<div className="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
+      <Toaster />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+        rel="stylesheet"
+      />
 
-            <div className="bg-gray-200 my-12 p-8 rounded-lg  shadow-lg w-full md:w-1/2 lg:w-1/3 mx-auto ">
-                <h1 className="text-4xl pl-8 font-bold text-black mb-4">Profile</h1>
+      <div className="bg-white w-full max-w-xl p-8 rounded-md shadow-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">User Profile</h1>
 
-                <div className="flex-1 items-center space-x-8">
-                    {/* Left Side - User Photo */}
-                    <div className="flex items-center justify-center"
-                        onClick={() => setShowModal(true)}
-                    >
-                        <img
-                            src={`http://localhost:8000${data?.profilePhoto}`}
-                            className="border border-[#4a4a4a] rounded-full w-32 h-32 object-cover"
-                            alt="User Profile"
-                        />
-                    </div>
+        <div className="flex items-center space-x-4">
+          <div
+            className="flex items-center justify-center cursor-pointer"
+            onClick={() => setShowModal(true)}
+          >
+            <img
+              src={`http://localhost:8000${data?.profilePhoto}`}
+              className="rounded-full w-[200px] h-[200px] object-cover border-2 border-gray-300"
+              alt="User Profile"
+            />
+          </div>
 
+          <div className="flex-1">
+            <form>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Name:
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full"
+                  placeholder="Enter your name"
+                  value={formData?.name}
+                  required
+                />
+              </div>
 
-                    {/* Right Side - User Details */}
-                    <div>
-                        <div className="text-lg text-black">
-                            <form>
-                                <div className="flex mt-4 items-center"><p className="font-bold pr-2">Name:</p>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        className="name bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Enter your name"
-                                        value={formData?.name}
-                                        required
-                                    />                                </div><br />
-                                <div className="flex items-center"><p className="font-bold pr-2">Mobile:</p>
-                                    <input
-                                        type="text"
-                                        id="mobile"
-                                        className="mobile bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Enter your Phone Number"
-                                        value={formData?.mobile}
-                                        onChange={handleMobileChange}
-                                        required
-                                    />                                </div><br />
-                                <div className="flex items-center"><p className="font-bold pr-2">Email: </p>
-                                    <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        value={formData?.email}
-                                        onChange={handleEmailChange}
-                                        placeholder="Enter your email"
-                                        required
-                                    />                                </div><br />
-                                <div className="flex items-center"><p className="font-bold pr-2 ">Department: </p>
-                                    <input
-                                        type="text"
-                                        id="department"
-                                        className="department bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Enter your Department"
-                                        value={formData?.department}
-                                        onChange={handleDepartmentChange}
-                                        required
-                                    />                                </div>
-                                <button onClick={handleUpdate}>Update Values</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div className={showModal ? "visible top-0 left-0 absolute w-full min-h-screen" : "hidden"}>
-                <div className="bg-[rgba(0,0,0,0.5)] min-h-screen w-full flex items-center justify-center" onClick={() => setShowModal(false)}>
-                    <div className="bg-white p-8 rounded-lg">
-                        <img
-                            src={`http://localhost:8000${data?.profilePhoto}`}
-                            className="border border-[#4a4a4a] rounded-full w-64 h-64 object-cover"
-                            alt="User Profile"
-                        />
-                        <button className="mt-4 p-2 bg-gray-300 rounded" onClick={() => setShowModal(false)}>
-                            Go Back
-                        </button>
-                    </div>
-                </div>
-            </div>
-
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Email:
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="w-full"
+                  placeholder="Enter your Email"
+                  value={formData?.email}
+                  onChange={handleEmailChange}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Mobile:
+                </label>
+                <input
+                  type="text"
+                  id="mobile"
+                  className="w-full"
+                  placeholder="Enter your Moobile"
+                  value={formData?.mobile}
+                  onChange={handleMobileChange}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                  Department:
+                </label>
+                <input
+                  type="text"
+                  id="department"
+                  className="w-full"
+                  placeholder="Enter your Department"
+                  value={formData?.department}
+                  onChange={handleDepartmentChange}
+                  required
+                />
+              </div>
+              {/* Repeat the above structure for other form fields */}
+<Link href='/admin/dashboard'>
+              <button
+                type="button"                
+                className="w-[1/2] px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+              >
+                Go Back
+              </button>
+              </Link>
+              <button
+                type="button"
+                className="w-[1/2] ml-2 px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                onClick={handleUpdate}
+              >
+                Update Profile
+              </button>
+              
+            </form>
+          </div>
         </div>
-    );
+      </div>
+
+      {showModal && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
+          <div className="bg-white p-8 rounded-lg">
+            <img
+              src={`http://localhost:8000${data?.profilePhoto}`}
+              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300 mb-4"
+              alt="User Profile"
+            />
+            <button
+              className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600"
+              onClick={() => setShowModal(false)}
+            >
+              Go Back
+            </button>
+            
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default Edit;

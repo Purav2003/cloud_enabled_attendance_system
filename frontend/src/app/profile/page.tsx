@@ -88,7 +88,6 @@ export default function Profile() {
                 <h1 className="text-4xl pl-8 font-bold text-black mb-4">Profile</h1>
 
                 <div className="flex-1 items-center space-x-8">
-                    {/* Left Side - User Photo */}
                     <div className="flex items-center justify-center"
                         onClick={()=>setShowModal(true)}
                     >
@@ -100,7 +99,6 @@ export default function Profile() {
                     </div>
 
 
-                    {/* Right Side - User Details */}
                     <div>
                         <div className="text-lg text-black">
                             <div className="flex mt-4"><p className="font-bold pr-2">Name:</p> {data?.name}</div><br />

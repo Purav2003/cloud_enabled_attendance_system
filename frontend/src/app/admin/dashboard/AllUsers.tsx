@@ -6,6 +6,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast, Toaster } from "react-hot-toast";
 
+
 interface UserData {
     id: string;
     email: string;
@@ -150,7 +151,7 @@ const AllUsers = () => {
                         >
                             <li>
                                 <a
-                                    className="block px-4 py-2 hover:bg-gray-100 text-black"
+                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
                                     onClick={() => handleItemClick('All Users')}
                                 >
                                     All Users
@@ -158,7 +159,7 @@ const AllUsers = () => {
                             </li>
                             <li>
                                 <a
-                                    className="block px-4 py-2 hover:bg-gray-100 text-black"
+                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
                                     onClick={() => handleItemClick('Request Approved')}
                                 >
                                     Request Approved
@@ -166,7 +167,7 @@ const AllUsers = () => {
                             </li>
                             <li>
                                 <a
-                                    className="block px-4 py-2 hover:bg-gray-100 text-black"
+                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
                                     onClick={() => handleItemClick('Request Pending')}
                                 >
                                     Request Pending
@@ -174,7 +175,7 @@ const AllUsers = () => {
                             </li>
                             <li>
                                 <a
-                                    className="block px-4 py-2 hover:bg-gray-100 text-black"
+                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
                                     onClick={() => handleItemClick('Request Denied')}
                                 >
                                     Request Denied
@@ -186,7 +187,9 @@ const AllUsers = () => {
                 </div>
                 <button onClick={fetchData} className="bg-gray-200 w-12 h-12 rounded-lg mb-2 flex justify-center items-center"><IoMdRefresh className="text-2xl" /></button>
             </div>
-            {loading ? <Loading /> :
+            {loading ?       <Loading />
+
+ :
                 <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 text-white">
                         <tr>

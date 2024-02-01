@@ -466,13 +466,24 @@ def updateItem(request, pk):
     except User.DoesNotExist:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    new_email = request.data.get('email')
+    new_mobile = request.data.get('mobile')
+
+    # Check if the new email already exists
+    if User.objects.exclude(id=pk).filter(email=new_email).exists():
+        return Response({'status': 'error', 'message': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the new mobile number already exists
+    if User.objects.exclude(id=pk).filter(mobile=new_mobile).exists():
+        return Response({'status': 'error', 'message': 'Mobile number already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
     serializer = UserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         print(serializer.data)
         return Response({'status': 'success', 'message': 'User Updated'}, status=status.HTTP_200_OK)
     else:
-        return Response({'status': 'error', 'message': 'Validation Error', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'status': 'error', 'message': 'Validation Error', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)  
     
 @api_view(['GET'])
 def delUser(request,pk):

@@ -29,3 +29,9 @@ body{
 a:hover{
   text-decoration: none !important;
 }
+
+
+.loader{
+  width: 30px !important;
+  margin-top: 6% !important;
+}
