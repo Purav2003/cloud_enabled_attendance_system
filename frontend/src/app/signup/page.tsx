@@ -1,12 +1,13 @@
+// Import necessary dependencies and styles
 "use client";
-import hello from '../../assets/images/login.jpg'
-import logo from '../../assets/images/logo.png'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { FcGoogle } from "react-icons/fc";
-import { RxUpload } from "react-icons/rx";
-import  { toast, Toaster } from 'react-hot-toast';
+import { FcGoogle } from 'react-icons/fc';
+import { toast, Toaster } from 'react-hot-toast';
+import helloImage from '../../assets/images/login.jpg';
+import logo from '../../assets/images/logo.png';
 
+// Define the Signup component
 const Signup = () => {
     const [step, setStep] = useState(1);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -16,9 +17,10 @@ const Signup = () => {
         password: '',
         mobile: '',
         companyCode: '',
-        department:'',
+        department: '',
     });
 
+    // Function to handle file change for the profile photo
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files && e.target.files[0];
 
@@ -27,14 +29,17 @@ const Signup = () => {
         }
     };
 
+    // Function to handle moving to the next step
     const handleNextClick = () => {
         setStep((prevStep) => prevStep + 1);
     };
 
+    // Function to handle moving back to the previous step
     const handleBackClick = () => {
         setStep((prevStep) => Math.max(prevStep - 1, 1));
     };
 
+    // Function to handle input changes in the form
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -42,9 +47,11 @@ const Signup = () => {
         });
     };
 
+    // Function to handle signup submission
     const handleSignupClick = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Create FormData object to send data
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
         formDataToSend.append('email', formData.email);
@@ -65,168 +72,214 @@ const Signup = () => {
             const data = await response.json();
             console.log(data);
 
-            if (data.status === 'success') {                
+            if (data.status === 'success') {
                 toast.success('Successfully signed up');
-                localStorage.setItem("userEmail",data.email)
-                localStorage.setItem("otpVerified","false")
+                localStorage.setItem('userEmail', data.email);
+                localStorage.setItem('otpVerified', 'false');
                 window.location.replace('/verification');
-            }
-            else{
-                toast.error(data.message)
-                if(data.message === 'Email already exists'){
-                    setStep(1)
-                }
-                else if(data.message === 'Mobile already exists'){
-                    setStep(3)
+            } else {
+                toast.error(data.message);
+                if (data.message === 'Email already exists') {
+                    setStep(1);
+                } else if (data.message === 'Mobile already exists') {
+                    setStep(3);
                 }
             }
         } catch (err) {
             console.error(err);
         }
     };
+
     return (
         <>
-              <Toaster />
+            <Toaster />
 
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
-            <link rel="icon" href={logo.src} type="image/icon type" />
-            <title>Attendace System</title>
-            <div className={`overflow-hidden lg:grid lg:grid-cols-2 md:grid md:grid-cols-2 gap-4 bg-[#000010] h-[100vh] ${step === 2 ? 'next' : step === 1 ? 'prev' : ''}`}>
-                <div><img src={hello.src} className="w-0 h-0 invisible sm:visible md:visible lg:visible lg:w-[50vw] object-cover md:w-[45vw] md:h-[100%] lg:h-[100vh]" /></div>
-                <div className="p-8 px-16 mt-[5%] bg-[#000010]">
-                    <h1 className="lg:text-[65px] text-[35px] font-bold text-[white]">Sign up</h1><br />
-                    <form className="max-w-full ">
+            {/* Main content of the Signup component */}
+            <div className="flex justify-center items-center w-full min-h-screen bg-gray-100">
+                <div className="w-1/2 p-16 bg-white rounded-md shadow-lg">
+                    <h1 className="text-[60px] font-extrabold text-gray-800">Sign up</h1>
+                    <form className="mt-4">
+                        {/* Form fields */}
+                        {/* Step 1 */}
                         {step === 1 && (
                             <>
-                                <div className="signup-page mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                                <div className="mb-4">
+                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                        Your Name
+                                    </label>
                                     <input
                                         type="text"
                                         id="name"
-                                        className="name bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your name"
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         required
                                     />
                                 </div>
-
-                                <div className="signup-page mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
+                                <div className="mb-4">
+                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                        Your Email
+                                    </label>
                                     <input
                                         type="email"
                                         id="email"
-                                        className="email bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Enter your email"
                                         value={formData.email}
                                         onChange={handleInputChange}
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                        placeholder="Enter your email"
                                         required
                                     />
                                 </div>
-                                <div className="mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
+                                <div className="mb-4">
+                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                        Your Password
+                                    </label>
                                     <input
                                         type="password"
                                         id="password"
-                                        className="password bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your password"
                                         value={formData.password}
                                         onChange={handleInputChange}
                                         required
                                     />
                                 </div>
-
-                                <button type="button" onClick={handleNextClick} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
+                                <button
+                                    type="button"
+                                    onClick={handleNextClick}
+                                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
+                                >
+                                    Next
+                                </button>
                             </>
                         )}
+
+                        {/* Step 2 */}
                         {step === 2 && (
                             <>
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Photograph</label>
-                                <div className="flex flex-col signup-page">
-                                    <label htmlFor="profile-photo" className="w-[20vw] h-[20vw] cursor-pointer">
+                                <label htmlFor="profile-photo" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Upload Photograph
+                                </label>
+                                <div className="flex items-left justify-center">
+                                    <label
+                                        htmlFor="profile-photo"
+                                        className="cursor-pointer border-2 border-gray-300 rounded-md p-4"
+                                    >
+                                        {selectedFile ? (
+                                            <img
+                                                src={URL.createObjectURL(selectedFile)}
+                                                alt="Selected Profile Photo"
+                                                className="w-[180px] h-[180px] object-cover rounded-md"
+                                            />
+                                        ) : (
+                                            <div className='w-[180px] h-[180px] rounded-md'></div>
+                                        )}
                                         <input
                                             type="file"
                                             id="profile-photo"
                                             accept="image/*"
-                                            className="hidden w-[20vw] h-[20vw]"
+                                            className="hidden"
                                             onChange={handleFileChange}
                                         />
-                                        <div className="w-[20vw] h-[20vw] bg-gray-200 border-2 rounded-md border-gray-300 flex items-center justify-center overflow-hidden">
-                                            {selectedFile ? (
-                                                <img
-                                                    src={URL.createObjectURL(selectedFile)}
-                                                    alt="Selected Profile Photo"
-                                                    className="object-cover w-[20vw] h-[20vw]"
-
-                                                />
-                                            ) : (
-                                                <span className="text-center text-gray-500">Select Photo</span>
-                                            )}
-                                        </div>
                                     </label>
-                                    <div className="flex justify-between mt-5 max-w-sm">
-                                        <button type="button" onClick={handleBackClick} className="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800">Back</button>
-                                        <button type="button" onClick={handleNextClick} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
-                                    </div>
+                                </div>
+                                <div className="flex justify-between mt-4">
+                                    <button
+                                        type="button"
+                                        onClick={handleBackClick}
+                                        className=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-gray"
+                                    >
+                                        Back
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleNextClick}
+                                        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
+                                    >
+                                        Next
+                                    </button>
                                 </div>
                             </>
+
                         )}
+
+                        {/* Step 3 */}
                         {step === 3 && (
-                            <>  <div className="mb-5 max-w-sm">
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Mobile</label>
-                                <input
-                                    type="text"
-                                    id="mobile"
-                                    className="mobile bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Enter your Phone Number"
-                                    value={formData.mobile}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-                            </div>
-                                <div className="mb-5 max-w-sm signup-page">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Company Code</label>
+                            <>
+                                <div className="mb-4">
+                                    <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
+                                        Your Mobile
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="mobile"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                        placeholder="Enter your Phone Number"
+                                        value={formData.mobile}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="companyCode" className="block text-sm font-medium text-gray-700">
+                                        Your Company Code
+                                    </label>
                                     <input
                                         type="text"
                                         id="companyCode"
-                                        className="companyCode bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your Company Code"
                                         value={formData.companyCode}
                                         onChange={handleInputChange}
                                         required
                                     />
                                 </div>
-                                <div className="mb-5 max-w-sm">
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Department</label>
-                                <input
-                                    type="text"
-                                    id="department"
-                                    className="department bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Enter your Department"
-                                    value={formData.department}
-                                    onChange={handleInputChange}
-                                    required
-                                />
+                                <div className="mb-4">
+                                    <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+                                        Your Department
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="department"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                        placeholder="Enter your Department"
+                                        value={formData.department}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
                                 </div>
-                                <div className="flex justify-between mt-5 max-w-sm">
-                                    <button type="button" onClick={handleBackClick} className="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800">Back</button>
-                                    <button type="button" onClick={handleSignupClick} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm max-w-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Signup</button>
-
-                                </div><br></br>
-                                <div className='w-full'>
+                                <div className="flex justify-between mt-4">
+                                    <button
+                                        type="button"
+                                        onClick={handleBackClick}
+                                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-gray"
+                                    >
+                                        Back
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleSignupClick}
+                                        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
+                                    >
+                                        Signup
+                                    </button>
                                 </div>
-
+                                <br />
+                                <div className="w-full"></div>
                             </>
                         )}
-
-                    </form><br></br>
-                    <h1 className="text-[white]">Back To <Link href='/login' className='font-bold underline'> Login </Link></h1>
-
+                    </form>
+                    {/* Navigation links */}
+                    <div className="mt-4">
+                        <Link href="/login" passHref>
+                            <p className="text-blue-500 hover:underline">Back to Login</p>
+                        </Link>
+                    </div>
                 </div>
-
             </div>
         </>
     );
-}
+};
 
 export default Signup;

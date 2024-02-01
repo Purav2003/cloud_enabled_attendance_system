@@ -124,7 +124,7 @@ export default function Navbar() {
           </Disclosure.Panel>
         </>
       )}
-    </Disclosure><br></br><br></br><br></br>
+    </Disclosure><br></br>
   </div>
 
   

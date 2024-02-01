@@ -108,34 +108,34 @@ const Profile = () => {
           <div className="flex-1">
             <div>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Name:
                 </label>
-                <p>{formData?.name}</p>
+                <p className="text-md">{formData?.name}</p>
                 
               </div>
 
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Email:
                 </label>
-                <p>
+                <p className="text-md">
                  {formData?.email}
                 </p>
               </div>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Mobile:
                 </label>
-                <p>
+                <p className="text-md">
                  {formData?.mobile}
                 </p>
               </div>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Department:
                 </label>
-                <p>
+                <p className="text-md">
                  {formData?.department}
                 </p>
               </div>
@@ -150,7 +150,7 @@ const Profile = () => {
           <div className="bg-white p-8 rounded-lg">
             <img
               src={`http://localhost:8000${data?.profilePhoto}`}
-              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300 mb-4"
+              className="rounded-full w-64 h-64 object-cover border-2 border-gray-300 mb-4"
               alt="User Profile"
             />
             <button
