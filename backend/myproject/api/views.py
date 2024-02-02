@@ -12,100 +12,93 @@ import random
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
-# import base64
-# from io import BytesIO
-# # import requests
-# # import base64
-# # from io import BytesIO
-# # from PIL import Image
-# # from django.contrib.auth.models import User
-# # from cv2 import cv2
-# # import numpy as np
-# from django.http import JsonResponse
-# from facenet_pytorch import InceptionResnetV1, MTCNN
-# from PIL import Image
-# import os
-# import torch
-# import numpy as np
-# from django.shortcuts import render
+from io import BytesIO
+from django.core.files.base import ContentFile
+from facenet_pytorch import InceptionResnetV1, MTCNN
+from PIL import Image
+import io
+import base64
+from django.views.decorators.csrf import csrf_exempt
+import os
+import torch
+import numpy as np
+from django.http import JsonResponse
 
-# @api_view(['POST'])
-# def match_face(request):
-#     model = InceptionResnetV1(pretrained='vggface2').eval()
-#     mtcnn = MTCNN()
-#     images_folder = '/media/user_images/'
 
-#     # List to store results
-#     results = []
+# Load pre-trained InceptionResnetV1 model
+model = InceptionResnetV1(pretrained='vggface2').eval()
 
-#     # Get base64-encoded image from the request
-#     base64_image = request.data.get('image')  # Assuming you send the base64 image in the 'base64_image' field
+def compare_faces(img_1, img_2):
+    try:
+        # Convert images to RGB format to handle the alpha channel
+        img_1 = img_1.convert('RGB')
+        img_2 = img_2.convert('RGB')
 
-#     # Decode base64 string into binary data
-#     try:
-#         # Decode base64 string into binary data
-#         binary_data = base64.b64decode(base64_image)    
-#         # Convert binary data to PIL Image
-#         api_image = Image.open(BytesIO(binary_data))
-#         api_image = api_image.convert('RGB')
-#         api_image_tensor = mtcnn(api_image).unsqueeze(0)
-#         print(api_image_tensor)
-#         # If using GPU, move the tensor to GPU
-#         if torch.cuda.is_available():
-#             api_image_tensor = api_image_tensor.cuda()
+        # Convert images to PyTorch tensors
+        img_tensor_1 = MTCNN()(img_1)
+        img_tensor_2 = MTCNN()(img_2)
 
-#         # Get face embeddings for the API image
-#         api_embeddings = model(api_image_tensor)
+        # If using GPU, move the tensors to GPU
+        if torch.cuda.is_available():
+            img_tensor_1 = img_tensor_1.cuda()
+            img_tensor_2 = img_tensor_2.cuda()
 
-#         # Convert embeddings to numpy array for comparison
-#         api_embeddings_np = api_embeddings.cpu().detach().numpy()
+        # Expand dimensions to create batches with a single image each
+        img_tensor_1 = img_tensor_1.unsqueeze(0)
+        img_tensor_2 = img_tensor_2.unsqueeze(0)
 
-#         # Loop through images in the user_images folder
-#         for filename in os.listdir(images_folder):
-#             if filename.endswith(".png") or filename.endswith(".jpg"):
-#                 # Load the image from the folder
-#                 image_path = os.path.join(images_folder, filename)
-#                 folder_image = Image.open(image_path)
-#                 folder_image = folder_image.convert('RGB')
-#                 folder_image_tensor = mtcnn(folder_image).unsqueeze(0)
+        # Get face embeddings
+        embeddings_1 = model(img_tensor_1)
+        embeddings_2 = model(img_tensor_2)
 
-#                 # If using GPU, move the tensor to GPU
-#                 if torch.cuda.is_available():
-#                     folder_image_tensor = folder_image_tensor.cuda()
+        # Convert embeddings to numpy arrays for comparison
+        embeddings_1_np = embeddings_1.cpu().detach().numpy()
+        embeddings_2_np = embeddings_2.cpu().detach().numpy()
 
-#                 # Get face embeddings for the folder image
-#                 folder_embeddings = model(folder_image_tensor)
+        # Calculate the Euclidean distance between the embeddings
+        distance = np.linalg.norm(embeddings_1_np - embeddings_2_np)
 
-#                 # Convert embeddings to numpy array for comparison
-#                 folder_embeddings_np = folder_embeddings.cpu().detach().numpy()
+        # Set a threshold for recognition
+        threshold = 0.7
 
-#                 # Calculate the Euclidean distance between the embeddings
-#                 distance = np.linalg.norm(api_embeddings_np - folder_embeddings_np)
+        # Compare distances for recognition
+        if distance < threshold:
+            return "The faces are recognized as the same person."
+        else:
+            return "The faces are recognized as different persons."
 
-#                 # Set a threshold for recognition
-#                 threshold = 0.7
+    except Exception as e:
+        return str(e)
 
-#                 # Compare distances for recognition
-#                 if distance < threshold:
-#                     result = {
-#                         'filename': filename,
-#                         'status': 'recognized',
-#                     }
-#                     print("Ho gaya")
-#                 else:
-#                     result = {
-#                         'filename': filename,
-#                         'status': 'not recognized',
-#                     }
-#                     print("Nahi hua")
+@api_view(['POST'])
+@csrf_exempt
+def match_face(request):
+    try:
+        # Get base64-encoded image from the request
+        base64_image_1 = request.data.get('image')
 
-#                 results.append(result)
+        # Decode base64 and create a BytesIO object
+        img_data = base64.b64decode(base64_image_1)
+        img_io = io.BytesIO(img_data)
 
-#         return JsonResponse({'results': results})
+        # Open the image using PIL
+        img_1 = Image.open(img_io)
 
-#     except Exception as e:
-#         print(e)
-#         return JsonResponse({'error': f'Error processing image: {str(e)}'})
+        # Specify the path to the image folder
+        image_folder_path = "C:/Users/shahp/Desktop/SEM-8/IBM Project/cloud_enabled_attendance_system/backend/myproject/media/user_images"
+
+        # Iterate over images in the folder and compare with img_1
+        for filename in os.listdir(image_folder_path):
+            img_path_2 = os.path.join(image_folder_path, filename)
+            img_2 = Image.open(img_path_2)
+            result = compare_faces(img_1, img_2)
+                
+            print(result)
+
+        return JsonResponse({'result': 'Comparison completed successfully'})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
 
 @api_view(['POST'])
 def login(request):

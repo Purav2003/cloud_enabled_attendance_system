@@ -1,7 +1,8 @@
 "use client";
 import Adminnavbar from "@/app/AdminNavbar";
 import React, { useState, useEffect } from "react";
-
+import Loading from "@/loading";
+import Link from "next/link";
 interface UserData {
     id: string;
     email: string;
@@ -48,7 +49,7 @@ const Users = () => {
         }
     };
 
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSearchChange =  (e: React.ChangeEvent<HTMLInputElement>) => {
         const search = e.target.value;
         console.log(search)
         if (search === "") {
@@ -85,7 +86,7 @@ const Users = () => {
     return (
         <>
             <Adminnavbar />
-            <br />
+            <br /><br /><br /><br />
             <div className="w-full items-center justify-center flex">
             <input
                             type="text"
@@ -96,7 +97,7 @@ const Users = () => {
                             required
                         />
             </div><br></br><br></br>
-           <div className="grid grid-cols-4">
+          { loading?<Loading />:<div className="grid grid-cols-4">
 
                 {
                 data?.map((item) => {
@@ -107,7 +108,7 @@ const Users = () => {
                                     <h5 className="mb-1 text-xl font-medium text-gray-900">{item.name}</h5>
                                     <span className="text-sm text-gray-700 ">{item.department}</span>
                                     <div className="mt-4">
-                                        <a href="#" className="items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View Full Profile</a>
+                                        <Link href={`/admin/users/${item.id}`} className="items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View Full Profile</Link>
                                     </div>
                                 </div>
                             </div>
@@ -115,7 +116,7 @@ const Users = () => {
                     })
                 }
 
-            </div>
+            </div>}
         </>
     )
 }

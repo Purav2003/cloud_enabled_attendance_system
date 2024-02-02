@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     return (
         <div>
             <Adminnavbar />
-            <br></br>
+            <br></br><br></br><br></br><br></br>
             <ApproveData />
             <br></br><br></br>
             <AllUsers />

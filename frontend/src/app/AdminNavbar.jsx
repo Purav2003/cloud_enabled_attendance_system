@@ -124,7 +124,7 @@ export default function Adminnavbar() {
           </Disclosure.Panel>
         </>
       )}
-    </Disclosure><br></br><br></br><br></br>
+    </Disclosure>
   </div>
 
   

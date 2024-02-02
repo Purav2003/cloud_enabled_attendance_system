@@ -158,7 +158,7 @@ const Edit = ({ id }) => {
         rel="stylesheet"
       />
 
-      <div className="bg-white w-full max-w-xl p-8 rounded-md shadow-md">
+      <div className="bg-white w-full overflow-hidden max-w-xl p-8 rounded-md shadow-md">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">User Profile</h1>
 
         <div className="flex items-center space-x-4">
@@ -176,7 +176,7 @@ const Edit = ({ id }) => {
           <div className="flex-1">
             <form>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Name:
                 </label>
                 <input
@@ -190,7 +190,7 @@ const Edit = ({ id }) => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Email:
                 </label>
                 <input
@@ -204,7 +204,7 @@ const Edit = ({ id }) => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Mobile:
                 </label>
                 <input
@@ -218,7 +218,7 @@ const Edit = ({ id }) => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+                <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Department:
                 </label>
                 <input
@@ -232,17 +232,10 @@ const Edit = ({ id }) => {
                 />
               </div>
               {/* Repeat the above structure for other form fields */}
-<Link href='/admin/dashboard'>
-              <button
-                type="button"                
-                className="w-[1/2] px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-              >
-                Go Back
-              </button>
-              </Link>
+
               <button
                 type="button"
-                className="w-[1/2] ml-2 px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
+                className="w-[1/2] px-4 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
                 onClick={handleUpdate}
               >
                 Update Profile
