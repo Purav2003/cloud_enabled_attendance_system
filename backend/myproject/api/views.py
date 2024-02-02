@@ -71,7 +71,6 @@ def compare_faces(img_1, img_2):
         return str(e)
 
 @api_view(['POST'])
-@csrf_exempt
 def match_face(request):
     try:
         # Get base64-encoded image from the request
@@ -94,7 +93,7 @@ def match_face(request):
             result = compare_faces(img_1, img_2)
             if result  == "The faces are recognized as the same person.":
                 user = User.objects.filter(profilePhoto='user_images'+filename)
-                return JsonResponse({'result': 'The faces are recognized as the same person.','user':'user_images/'+filename})
+                return JsonResponse({'result': 'The faces are recognized as the same person.','user':'/media/user_images/'+filename})
 
             print(result)
 

@@ -10,6 +10,8 @@ const FaceDetector = () => {
 
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const [ responseData,setResponseData] = useState({response: ''})
+  const [name, setName] = useState('');
+  const [data,setData] = useState([]);
   const loadModel = async () => {
     try {
       const model = await blazeface.load();
@@ -19,6 +21,33 @@ const FaceDetector = () => {
       console.error("Error loading BlazeFace model:", error);
     }
   };
+
+  const fetchData = async () => {
+        
+    let idAsInt = 123456;
+    const API_URL = `http://localhost:8000/api/all/${idAsInt}`;
+    console.log(API_URL);
+    const token = localStorage.getItem("token")
+    // alert(token)
+    try {
+        const response = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `${token}`,
+            },
+        });
+        const data_new = await response.json();
+        console.log(data_new)
+        setData(data_new)
+
+        
+        
+        setLoading(false)
+    } catch (error) {
+        console.error(error);
+    }
+};
 
   const drawFaceDetections = (ctx, predictions) => {
     if (predictions.length > 0) {
@@ -60,10 +89,26 @@ const FaceDetector = () => {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ image: capturedPhoto }),
+          body: JSON.stringify({ image: base64Data }),
         });
         response = await response.json();
         setResponseData({response: response.user})
+          // Filter users with profilePhoto equal to "hello.jpg"
+          console.log(responseData.response)
+          const usersWithHelloPhoto = data.filter(user => user.profilePhoto === response.user);
+          console.log(usersWithHelloPhoto)
+
+          // Extract names of users with "hello.jpg" profilePhoto
+          const namesWithHelloPhoto = usersWithHelloPhoto.map(user => user.name);
+
+          if (namesWithHelloPhoto.length > 0) {
+              console.log("Users with profilePhoto 'hello.jpg':", namesWithHelloPhoto);
+              setName(namesWithHelloPhoto)
+          } else {
+              console.log("No users with profilePhoto 'hello.jpg' found.");
+          }
+        
+      
       } catch (error) {
         console.error('Error sending photo to backend:', error);
       }
@@ -112,6 +157,7 @@ const FaceDetector = () => {
   };
 
   useEffect(() => {
+    fetchData();
     loadModel().then((model) => {
       detectFaces(model);
     });
@@ -124,6 +170,7 @@ const FaceDetector = () => {
 
       <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
       <button id="myCheck" onClick={capturePhoto}>Capture Photo</button>
+      {name && <p>{name}</p>}
       {responseData.response}
     </div>
   );
