@@ -93,19 +93,14 @@ const FaceDetector = () => {
         });
         response = await response.json();
         setResponseData({response: response.user})
-          // Filter users with profilePhoto equal to "hello.jpg"
-          console.log(responseData.response)
           const usersWithHelloPhoto = data.filter(user => user.profilePhoto === response.user);
-          console.log(usersWithHelloPhoto)
 
-          // Extract names of users with "hello.jpg" profilePhoto
           const namesWithHelloPhoto = usersWithHelloPhoto.map(user => user.name);
 
           if (namesWithHelloPhoto.length > 0) {
-              console.log("Users with profilePhoto 'hello.jpg':", namesWithHelloPhoto);
               setName(namesWithHelloPhoto)
           } else {
-              console.log("No users with profilePhoto 'hello.jpg' found.");
+              console.log("No users found.");
           }
         
       
@@ -171,7 +166,9 @@ const FaceDetector = () => {
       <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
       <button id="myCheck" onClick={capturePhoto}>Capture Photo</button>
       {name && <p>{name}</p>}
-      {responseData.response}
+      <div style={{ position: 'absolute', top: '10px', left: '10px', color: 'white',background:'red' }}>
+        <p>{name}</p>
+      </div>
     </div>
   );
 };
