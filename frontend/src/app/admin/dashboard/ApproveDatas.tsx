@@ -34,11 +34,9 @@ const ApproveData = () => {
 
             if (Array.isArray(data_new) && data_new.length > 0) {
                 setData(data_new);
-
                 const newApproveData = data_new.filter(
                     (item) => item.isAuthorized === "sendRequest"
                 );
-
                 setApproveData(newApproveData);
             }
         } catch (error) {

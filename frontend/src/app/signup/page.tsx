@@ -50,6 +50,21 @@ const Signup = () => {
     // Function to handle signup submission
     const handleSignupClick = async (e: React.FormEvent) => {
         e.preventDefault();
+        if((formData.name === '' || formData.email === '' || formData.password === '')) {
+            toast.error('All fields are required');
+            setStep(1);
+            return;
+        }
+        if(!selectedFile) {
+            toast.error('Profile photo is required');
+            setStep(2);
+            return;
+        }
+        if((formData.mobile === '' || formData.companyCode === '' || formData.department === '')) {
+            toast.error('All fields are required');
+            setStep(3);
+            return;
+        }
 
         // Create FormData object to send data
         const formDataToSend = new FormData();
@@ -97,7 +112,7 @@ const Signup = () => {
             {/* Main content of the Signup component */}
             <div className="flex justify-center items-center w-full min-h-screen bg-gray-100">
                 <div className="w-1/2 p-16 bg-white rounded-md shadow-lg">
-                    <h1 className="text-[60px] font-extrabold text-gray-800">Sign up</h1>
+                    <h1 className="text-3xl font-extrabold text-gray-800">Sign up</h1>
                     <form className="mt-4">
                         {/* Form fields */}
                         {/* Step 1 */}
@@ -144,11 +159,11 @@ const Signup = () => {
                                         onChange={handleInputChange}
                                         required
                                     />
-                                </div>
+                                </div><br></br>
                                 <button
                                     type="button"
                                     onClick={handleNextClick}
-                                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
+                                    className="float-right bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
                                 >
                                     Next
                                 </button>
@@ -161,7 +176,7 @@ const Signup = () => {
                                 <label htmlFor="profile-photo" className="block text-sm font-medium text-gray-700 mb-2">
                                     Upload Photograph
                                 </label>
-                                <div className="flex items-left justify-center">
+                                <div className="flex items-left">
                                     <label
                                         htmlFor="profile-photo"
                                         className="cursor-pointer border-2 border-gray-300 rounded-md p-4"
@@ -173,7 +188,7 @@ const Signup = () => {
                                                 className="w-[180px] h-[180px] object-cover rounded-md"
                                             />
                                         ) : (
-                                            <div className='w-[180px] h-[180px] rounded-md'></div>
+                                            <div className='w-[160px] h-[160px] rounded-md'></div>
                                         )}
                                         <input
                                             type="file"
@@ -273,7 +288,7 @@ const Signup = () => {
                     {/* Navigation links */}
                     <div className="mt-4">
                         <Link href="/login" passHref>
-                            <p className="text-blue-500 hover:underline">Back to Login</p>
+                            <p className="text-blue-500 hover:underline inline-block">Back to Login</p>
                         </Link>
                     </div>
                 </div>

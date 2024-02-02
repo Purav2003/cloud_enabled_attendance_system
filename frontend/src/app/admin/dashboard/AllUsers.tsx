@@ -30,7 +30,7 @@ const AllUsers = () => {
     };
 
 
-    const apiUrlData = selectedValue === 'All Users' ? 'all' : selectedValue === 'Request Approved' ? 'approved' : selectedValue === 'Request Pending' ? 'pending' : selectedValue === 'Request Denied' ? 'rejected' : 'all'
+    const apiUrlData = selectedValue === 'All Users' ? 'all' : selectedValue === 'Request Approved' ? 'approved' : selectedValue === 'Request Denied' ? 'rejected' : 'all'
     const fetchData = async () => {
         
         let companyCode = localStorage.getItem("companyCode");
@@ -164,15 +164,7 @@ const AllUsers = () => {
                                 >
                                     Request Approved
                                 </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
-                                    onClick={() => handleItemClick('Request Pending')}
-                                >
-                                    Request Pending
-                                </a>
-                            </li>
+                            </li>                            
                             <li>
                                 <a
                                     className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"

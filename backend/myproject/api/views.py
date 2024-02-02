@@ -476,7 +476,6 @@ def updateUser(request, pk):
     # Check if the new mobile number already exists
     if User.objects.exclude(id=pk).filter(mobile=new_mobile).exists():
         return Response({'status': 'error', 'message': 'Mobile number already exists'}, status=status.HTTP_400_BAD_REQUEST)
-
     serializer = UserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()

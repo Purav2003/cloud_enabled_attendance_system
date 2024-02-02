@@ -17,7 +17,7 @@ const AdminSignup = () => {
         rePassword: '',
         mobile: '',
         companyCode: '',
-        companyName:'',
+        companyName: '',
     });
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,19 +45,19 @@ const AdminSignup = () => {
 
     const handleSignupClick = async (e: React.FormEvent) => {
         e.preventDefault();
-        if(formData.mobile.length !== 10){
+        if (formData.mobile.length !== 10) {
             toast.error('Mobile number should be 10 digits');
             setStep(1)
             return;
-        }        
-        if(formData.password !== formData.rePassword){
+        }
+        if (formData.password !== formData.rePassword) {
             toast.error('Passwords do not match');
             setStep(2)
             return;
         }
-        if(formData.companyCode.length !== 6){
+        if (formData.companyCode.length !== 6) {
             toast.error('Company Code should be 6 digits');
-            setStep(3)
+            setStep(2)
             return;
         }
 
@@ -66,8 +66,8 @@ const AdminSignup = () => {
         formDataToSend.append('email', formData.email);
         formDataToSend.append('password', formData.password);
         formDataToSend.append('mobile', formData.mobile);
-        formDataToSend.append('companyCode', formData.companyCode);    
-        formDataToSend.append('companyName', formData.companyName);    
+        formDataToSend.append('companyCode', formData.companyCode);
+        formDataToSend.append('companyName', formData.companyName);
 
         try {
             const response = await fetch('http://localhost:8000/api/admin/signup', {
@@ -94,7 +94,7 @@ const AdminSignup = () => {
                     setStep(1)
                 }
                 else if (data.message === 'Company Code already exists') {
-                    setStep(3)
+                    setStep(2)
                 }
             }
         } catch (err) {
@@ -105,22 +105,21 @@ const AdminSignup = () => {
         <>
             <Toaster />
 
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
             <link rel="icon" href={logo.src} type="image/icon type" />
             <title>Attendace System</title>
-            <div className={`overflow-hidden lg:grid lg:grid-cols-2 md:grid md:grid-cols-2 gap-4 bg-[#000010] h-[100vh] ${step === 2 ? 'next' : step === 1 ? 'prev' : ''}`}>
-                <div><img src={hello.src} className="w-0 h-0 invisible sm:visible md:visible lg:visible lg:w-[50vw] object-cover md:w-[45vw] md:h-[100%] lg:h-[100vh]" /></div>
-                <div className="p-8 px-16 mt-[5%] bg-[#000010]">
-                    <h1 className="lg:text-[65px] text-[35px] font-bold text-[white]">Admin Signup</h1><br />
-                    <form className="max-w-full ">
+            <div className="flex justify-center items-center w-full min-h-screen bg-gray-100">
+                <div className="w-1/2 p-16 bg-white rounded-md shadow-lg">
+                    <h1 className="text-3xl font-extrabold text-gray-800">Admin Sign up</h1>
+                    <form className="mt-4">
                         {step === 1 && (
                             <>
-                                <div className="signup-page mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                                <div className="mb-4">
+                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                        Your Name</label>
                                     <input
                                         type="text"
                                         id="name"
-                                        className="name bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your name"
                                         value={formData.name}
                                         onChange={handleInputChange}
@@ -128,37 +127,42 @@ const AdminSignup = () => {
                                     />
                                 </div>
 
-                                <div className="signup-page mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
+                                <div className="mb-4">
+                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                        Your Email
+                                    </label>
                                     <input
                                         type="email"
                                         id="email"
-                                        className="email bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        placeholder="Enter your email"
                                         value={formData.email}
                                         onChange={handleInputChange}
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                        placeholder="Enter your email"
                                         required
                                     />
                                 </div>
 
-                                <div className="signup-page mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Company's Name</label>
+                                <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">
+                                        Your Company's Name</label>
                                     <input
                                         type="text"
                                         id="companyName"
-                                        className="email bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your company's name"
                                         value={formData.companyName}
                                         onChange={handleInputChange}
                                         required
                                     />
                                 </div>
-                                <div className="mb-5 max-w-sm">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Mobile</label>
+                                <div className="mb-4">
+                                    <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
+                                        Your Mobile
+                                    </label>
                                     <input
                                         type="text"
                                         id="mobile"
-                                        className="mobile bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your Phone Number"
                                         value={formData.mobile}
                                         onChange={handleInputChange}
@@ -167,70 +171,83 @@ const AdminSignup = () => {
                                 </div>
 
 
-                                <button type="button" onClick={handleNextClick} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
-                            </>
+                                <button
+                                    type="button"
+                                    onClick={handleNextClick}
+                                    className="float-right bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
+                                >
+                                    Next
+                                </button>                            </>
                         )}
                         {step === 2 && (
                             <>
-                                <div className="flex flex-col signup-page">
-                                    <div className="mb-5 max-w-sm">
-                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Password</label>
-                                        <input
-                                            type="password"
-                                            id="password"
-                                            className="password bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Enter your password"
-                                            value={formData.password}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-5 max-w-sm">
-                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Retype Your Password</label>
+                                <div>
+                                  <div className="mb-4">
+                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                        Your Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                        placeholder="Enter your password"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </div>
+                                    <div className="mb-4">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                            Retype Your Password</label>
                                         <input
                                             type="password"
                                             id="rePassword"
-                                            className="rePassword bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            className="repassword w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                             value={formData.rePassword}
                                             onChange={handleInputChange}
-                                            placeholder="Enter your password"                                                                                        
+                                            placeholder="Retype your password"
                                         />
                                     </div>
-                                    <div className="flex justify-between mt-5 max-w-sm">
-                                        <button type="button" onClick={handleBackClick} className="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800">Back</button>
-                                        <button type="button" onClick={handleNextClick} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                        {step === 3 && (
-                            <>
-                                <div className="mb-5 max-w-sm signup-page">
-                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Create Your Company Code</label>
+                                    <div className="mb-4">
+                                    <label htmlFor="companyCode" className="block text-sm font-medium text-gray-700">
+                                        Your Company Code
+                                    </label>
                                     <input
                                         type="text"
                                         id="companyCode"
-                                        className="companyCode bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                                         placeholder="Enter your Company Code"
                                         value={formData.companyCode}
                                         onChange={handleInputChange}
                                         required
                                     />
-                                    <a className="text-[12px] font-thin text-white">It should contain 6 numbers only</a>
-                                </div>
-                                <div className="flex justify-between mt-5 max-w-sm">
-                                    <button type="button" onClick={handleBackClick} className="text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-blue-800">Back</button>
-                                    <button type="button" onClick={handleSignupClick} className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm max-w-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Signup</button>
 
-                                </div><br></br>
-                                <div className='w-full'>
+                                    <a className="text-[12px] text-black">It should contain 6 numbers only</a>
                                 </div>
-
+                              
+                                <div className="flex justify-between mt-4">
+                                    <button
+                                        type="button"
+                                        onClick={handleBackClick}
+                                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-gray"
+                                    >
+                                        Back
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleSignupClick}
+                                        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue"
+                                    >
+                                        Signup
+                                    </button>
+                                </div>
+                                </div>
                             </>
                         )}
+                       
 
                     </form><br></br>
-                    <h1 className="text-[white]">Back To <Link href='/admin/login' className='font-bold underline'> Login </Link></h1>
+                    <h1 className="text-[black]">Back To <Link href='/admin/login' className='font-bold underline'> Login </Link></h1>
 
                 </div>
 

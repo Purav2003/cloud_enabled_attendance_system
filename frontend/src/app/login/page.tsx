@@ -83,7 +83,7 @@ const Login = () => {
             {/* <div className="hidden lg:block w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${helloImage.src})` }}></div> */}
 <div className='w-full min-h-screen items-center flex justify-center'>
             <div className="w-1/2 p-12 items-center p-16 mx-auto bg-white rounded-lg shadow-lg">
-                <h1 className="text-[60px] font-extrabold text-gray-800">Login</h1>
+                <h1 className="text-3xl font-extrabold text-gray-800">Login</h1>
                 <form className="mt-8">
                     {/* Email Input */}
                     <div className="mb-4">
@@ -123,11 +123,11 @@ const Login = () => {
                     </button>
 
                     {/* OR Divider */}
-                    <div className='flex items-center mt-4'>
+                    {/* <div className='flex items-center mt-4'>
                         <hr className='flex-1 h-px bg-gray-300' />
                         <span className='mx-4 text-sm font-medium text-gray-600'>OR</span>
                         <hr className='flex-1 h-px bg-gray-300' />
-                    </div>
+                    </div> */}
 
                     {/* Google Login (commented out for now) */}
                     {/* <div className='flex items-center mt-4'>

@@ -39,7 +39,7 @@ export default function Navbar() {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
     <link rel="icon" href={data.src} type="image/icon type" />
     <title>Attendace System</title>
-    <Disclosure as="nav" className="fixed w-full bg-gray-800">
+    <Disclosure as="nav" className="fixed w-full bg-gray-200">
       
       {({ open }) => (
         <>
@@ -60,10 +60,10 @@ export default function Navbar() {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center justify-center ">
                   <img
-                    className="h-8 w-auto"
+                    className="h-6 w-auto"
                     src={data.src}
                     alt="Your Company"
-                  /> <Link href="/dashboard" className="text-white px-2"> Attendance System</Link>
+                  /> <Link href="/dashboard" className="text-[#4a4a4a] hover:text-[#4a4a4a] text-md px-2"> Attendance System</Link>
                 </div>
 
               </div>
@@ -77,8 +77,8 @@ export default function Navbar() {
                         href={item.href}
                         onClick={() => setActive(item.name)}
                         className={`${active === item.name
-                          ? " text-white font-bold "
-                          : "text-white"} rounded-md px-3 py-2 text-sm hover:no-underline hover:text-white`}
+                          ? " text-[#4a4a4a] font-bold "
+                          : "text-[#4a4a4a]"} rounded-md px-3 py-2 text-sm hover:no-underline hover:text-black`}
 
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -88,7 +88,7 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'ehe text-white' : 'border hover:bg-[tomato] hover:border-[tomato] text-gray-300 hover:text-white hover:no-underline',
+                          item.current ? 'text-[#4a4a4a]' : 'text-[#4a4a4a] border border-[#4a4a4a] hover:bg-[tomato] hover:border-[tomato] hover:text-white hover:no-underline',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
