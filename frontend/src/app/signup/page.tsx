@@ -111,7 +111,7 @@ const Signup = () => {
 
             {/* Main content of the Signup component */}
             <div className="flex justify-center items-center w-full min-h-screen bg-gray-100">
-                <div className="w-1/2 p-16 bg-white rounded-md shadow-lg">
+                <div className="lg:w-1/2 p-16 bg-white rounded-md shadow-lg">
                     <h1 className="text-3xl font-extrabold text-gray-800">Sign up</h1>
                     <form className="mt-4">
                         {/* Form fields */}

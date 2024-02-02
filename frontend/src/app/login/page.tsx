@@ -82,7 +82,7 @@ const Login = () => {
 
             {/* <div className="hidden lg:block w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${helloImage.src})` }}></div> */}
 <div className='w-full min-h-screen items-center flex justify-center'>
-            <div className="w-1/2 p-12 items-center p-16 mx-auto bg-white rounded-lg shadow-lg">
+            <div className="lg:w-1/2 p-12 items-center p-16 mx-auto bg-white rounded-lg shadow-lg">
                 <h1 className="text-3xl font-extrabold text-gray-800">Login</h1>
                 <form className="mt-8">
                     {/* Email Input */}

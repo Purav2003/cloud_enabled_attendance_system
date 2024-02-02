@@ -83,19 +83,19 @@ const id = localStorage.getItem("id");
 
   return (
     <><Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
+      <div className="min-h-screen lg:flex items-center justify-center bg-gray-100 font-sans">
         <Toaster />
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
 
-        <div className="bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
+        <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">User Profile</h1>
 
-          <div className="flex items-center space-x-4">
+          <div className="lg:flex sm:flex items-center space-x-4">
             <div
-              className="flex items-center justify-center cursor-pointer"
+              className="lg:flex items-center justify-center cursor-pointer"
               onClick={() => setShowModal(true)}
             >
               <img
@@ -104,8 +104,8 @@ const id = localStorage.getItem("id");
                 alt="User Profile"
               />
             </div>
-            <div className="flex-1">
-              <div className="flex-1 grid ml-4 grid-cols-2 w-full">
+            <div className="lg:flex-1">
+              <div className="lg:flex-1 sm:flex-1 grid ml-4 lg:grid-cols-2 sm:grid-cols-2 w-full">
                 <div>
                   <div className="mb-4">
                     <label htmlFor="name" className="block text-md font-medium text-gray-600">

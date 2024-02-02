@@ -108,7 +108,7 @@ const AdminSignup = () => {
             <link rel="icon" href={logo.src} type="image/icon type" />
             <title>Attendace System</title>
             <div className="flex justify-center items-center w-full min-h-screen bg-gray-100">
-                <div className="w-1/2 p-16 bg-white rounded-md shadow-lg">
+                <div className="lg:w-1/2 p-16 bg-white rounded-md shadow-lg">
                     <h1 className="text-3xl font-extrabold text-gray-800">Admin Sign up</h1>
                     <form className="mt-4">
                         {step === 1 && (
