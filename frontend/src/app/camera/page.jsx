@@ -9,7 +9,7 @@ const FaceDetector = () => {
   const canvasRef = useRef(null);
 
   const [capturedPhoto, setCapturedPhoto] = useState(null);
-
+  const [ responseData,setResponseData] = useState({response: ''})
   const loadModel = async () => {
     try {
       const model = await blazeface.load();
@@ -54,7 +54,7 @@ const FaceDetector = () => {
         // Extract base64-encoded image data
         const base64Data = capturedPhoto.split(',')[1];
         console.log(base64Data)
-        const response = await fetch('http://localhost:8000/api/faceMatch/', {
+        let response = await fetch('http://127.0.0.1:8000/api/faceMatch/', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -62,12 +62,8 @@ const FaceDetector = () => {
           },
           body: JSON.stringify({ image: capturedPhoto }),
         });
-  
-        if (response.ok) {
-          console.log('Photo successfully sent to backend');
-        } else {
-          console.error('Failed to send photo to backend');
-        }
+        response = await response.json();
+        setResponseData({response: response.user})
       } catch (error) {
         console.error('Error sending photo to backend:', error);
       }
@@ -128,6 +124,7 @@ const FaceDetector = () => {
 
       <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
       <button id="myCheck" onClick={capturePhoto}>Capture Photo</button>
+      {responseData.response}
     </div>
   );
 };

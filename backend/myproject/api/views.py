@@ -92,7 +92,10 @@ def match_face(request):
             img_path_2 = os.path.join(image_folder_path, filename)
             img_2 = Image.open(img_path_2)
             result = compare_faces(img_1, img_2)
-                
+            if result  == "The faces are recognized as the same person.":
+                user = User.objects.filter(profilePhoto='user_images'+filename)
+                return JsonResponse({'result': 'The faces are recognized as the same person.','user':'user_images/'+filename})
+
             print(result)
 
         return JsonResponse({'result': 'Comparison completed successfully'})
