@@ -108,8 +108,8 @@ const EditProfile = ({ id }) => {
     if (formData.email === '' || formData.mobile === '' || formData.department === '') {
       toast.error("All fields are required")
       return
-    }
-    if (formData.email === formDataone.email && formData.mobile === formDataone.mobile && formData.department === formDataone.department && !selectedFile) {
+    } 
+    if (formData.name === formDataone.name && formData.email === formDataone.email && formData.mobile === formDataone.mobile && formData.department === formDataone.department && !selectedFile) {
       toast.error("No changes made")
       return
     }
@@ -292,7 +292,7 @@ const EditProfile = ({ id }) => {
                     className="w-[1/2] ml-2 px-4 bg-green-500 text-white py-2 rounded-md hover:bg-green-600"
                     onClick={handleUpdate}
                   >
-                    Update Profile
+                    Save Changes
                   </button>
                 </div>
               </div>
@@ -301,24 +301,7 @@ const EditProfile = ({ id }) => {
         </div>
       </div>
 
-      {showModal && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
-          <div className="bg-white p-8 rounded-lg">
-            <img
-              src={`http://localhost:8000${data?.profilePhoto}`}
-              className="rounded-full w-32 h-32 object-cover border-2 border-gray-300 mb-4"
-              alt="User Profile"
-            />
-            <button
-              className="w-full bg-gray-500 text-white py-2 rounded-md hover:bg-gray-600"
-              onClick={() => setShowModal(false)}
-            >
-              Go Back
-            </button>
-            
-          </div>
-        </div>
-      )}
+  
     </div><Footer /></>
   );
 }

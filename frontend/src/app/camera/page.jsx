@@ -160,13 +160,16 @@ const FaceDetector = () => {
 
   return (
     <div>
-      <Webcam ref={webcamRef} />
-      <canvas ref={canvasRef} />
-
-      <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
+    <div style={{ textAlign: 'center' }}>
+      <div style={{ position: 'relative', display: 'inline-block', width:"400px",height:"400px",borderRadius: '50%', overflow: 'hidden', margin: '20px' }} className="object-cover">
+        <Webcam ref={webcamRef} style={{ borderRadius: '50%',width:"400px",height:"400px"}} className="object-cover" mirrored="false"/>
+        <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, borderRadius: '50%',width:"400px",height:"400px",transform: 'scaleX(-1)' }} className="object-cover" />
+      </div>      
+    </div>
+    <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
       <button id="myCheck" onClick={capturePhoto}>Capture Photo</button>
       {name && <p>{name}</p>}
-      <div style={{ position: 'absolute', top: '10px', left: '10px', color: 'white',background:'red' }}>
+      <div style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', background: 'red' }}>
         <p>{name}</p>
       </div>
     </div>
