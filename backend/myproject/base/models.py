@@ -32,4 +32,4 @@ class Attendance(models.Model):
     time = models.TimeField( auto_now_add=True)
     attendance = models.BooleanField(default=False)
     def __str__(self):
-        return(f"{self.email}")
+        return(f"{self.attendance} {self.user_id} {self.date} {self.time}")

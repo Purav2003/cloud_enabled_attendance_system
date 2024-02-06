@@ -21,7 +21,7 @@ class AdminSerializer(UserSerializer):
         fields = '__all__'
 
 
-class AttendanceSerialzer(serializers.ModelSerializer):
+class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
         fields = '__all__'

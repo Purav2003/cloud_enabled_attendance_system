@@ -1,7 +1,7 @@
 from rest_framework.response import Response    
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from base.models import User,Admin,Attendance
-from .serializers import UserSerializer,AdminSerializer,AttendanceSerialzer
+from .serializers import UserSerializer,AdminSerializer,AttendanceSerializer
 from rest_framework import status
 from django.contrib.auth.hashers import check_password
 import jwt,datetime
@@ -71,17 +71,6 @@ def compare_faces(img_1, img_2):
     except Exception as e:
         return str(e)
 
-def mark_attendance(pk):
-    try:
-        user = User.objects.get(id=pk)
-        print(user)
-    except User.DoesNotExist:
-        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-    
-    return Response({'status': 'success', 'message': 'Attendance marked'}, status=status.HTTP_200_OK)
-
-
-
 @api_view(['POST'])
 def match_face(request):
     try:
@@ -108,13 +97,23 @@ def match_face(request):
                 user = User.objects.filter(profilePhoto='user_images/'+filename)
                 global user_present_id
                 user_present_id = user[0].id
-                today = date.today()
-                if not Attendance.objects.filter(user_id=user[0].id, date=today).exists():
-                    serializer = AttendanceSerialzer(data={'user_id':user[0].id,'user': user[0].name,  'attendance': True})        
-                    if serializer.is_valid():    
-                        serializer.save()
-                        
-                return JsonResponse({'result': 'The faces are recognized as the same person.','user':user[0].name})
+                today = date.today()              
+                # Create a new attendance record for the user
+                attendance_record = Attendance.objects.filter(user_id=user_present_id, date=today).first()
+                if attendance_record:
+    # Update the attendance to True
+                    attendance_record.attendance = True
+                    attendance_record.save()
+    
+    # Now, if needed, you can serialize the updated attendance record
+                    serializer = AttendanceSerializer(attendance_record)
+
+                    return JsonResponse({'result': 'The faces are recognized as the same person.', 'user': user[0].name, 'attendance': serializer.data})
+                else:
+                    return JsonResponse({'error': 'Attendance record not found'})
+                    
+            return JsonResponse({'result': 'The faces are recognized as the same person.', 'user': user[0].name})
+                
                 
 
         return JsonResponse({'result': 'Comparison completed successfully'})
@@ -596,7 +595,7 @@ def deny(request, pk):
 @api_view(['GET'])
 def get_attendance(request,pk):
     items = Attendance.objects.filter(user_id=pk)
-    serializer = AttendanceSerialzer(items,many=True)
+    serializer = AttendanceSerializer(items,many=True)
     return Response(serializer.data)
 
 ### ADMIN ###

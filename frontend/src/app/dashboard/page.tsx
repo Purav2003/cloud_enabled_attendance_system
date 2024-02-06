@@ -69,24 +69,41 @@ export default function Dashboard() {
         const { email } = datas;
         return <div key={email}>{email}</div>;
       })} */}
-            <div>
+            <div><br></br><br></br>
                 <div className="lg:flex">
-                    <table>
-                        <tbody>
-                    {
-                        data?.map((datas) => {
-                            return (
-                                <tr>
-                                    <td>{datas.id}</td>
-                                    <td>{datas.date}</td>
-                                    <td>{datas.attendance?"Present":""}</td>
-                                </tr>
-                            )
-                        }
-                        )
-                    }
-                    </tbody>
-                    </table>
+                <table className="w-lg divide-y divide-gray-200">
+  <thead>
+    <tr>
+      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        ID
+      </th>
+      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        Date
+      </th>
+      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        Attendance
+      </th>
+    </tr>
+  </thead>
+  <tbody className="bg-white divide-y divide-gray-200">
+    {data?.map((datas) => {
+      return (
+        <tr key={datas.id} className="{datas.attendance ? 'bg-green-50' : 'bg-red-50'}">
+          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            {datas.id}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {datas.date}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {datas.attendance ? "Present" : "Absent"}
+          </td>
+        </tr>
+      )
+    })}
+  </tbody>
+</table>
+
                 </div>
                 <div>
                     {/* <img src={url_img?url_img:""} ></img> */}
