@@ -65,7 +65,7 @@ const FaceDetector = () => {
         ctx.strokeRect(startX, startY, width, height);
 
         const landmarks = prediction.landmarks;
-
+        capturePhoto(ctx);
         // Draw the landmarks
         ctx.fillStyle = "blue";
         landmarks.forEach((landmark) => {
@@ -119,6 +119,7 @@ const FaceDetector = () => {
     const photoCtx = photo.getContext("2d");
     photoCtx.drawImage(video, 0, 0, video.width, video.height);
     setCapturedPhoto(photo.toDataURL("image/jpeg")); // Save the photo in the state
+    sendPhotoToBackend()
   };
 
   const detectFaces = async (model) => {
@@ -159,16 +160,14 @@ const FaceDetector = () => {
   }, []);
 
   return (
-    <div>
+    <div className="items-center min-h-screen grid justify-center">
     <div style={{ textAlign: 'center' }}>
       <div style={{ position: 'relative', display: 'inline-block', width:"400px",height:"400px",borderRadius: '50%', overflow: 'hidden', margin: '20px' }} className="object-cover">
         <Webcam ref={webcamRef} style={{ borderRadius: '50%',width:"400px",height:"400px"}} className="object-cover" mirrored="false"/>
         <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, borderRadius: '50%',width:"400px",height:"400px",transform: 'scaleX(-1)' }} className="object-cover" />
       </div>      
     </div>
-    <button id="myCheck" onClick={sendPhotoToBackend}>Send Photo to Backend</button>
-      <button id="myCheck" onClick={capturePhoto}>Capture Photo</button>
-      {name && <p>{name}</p>}
+    <button id="myCheck" onClick={sendPhotoToBackend} className="bg-green-500 rounded-md text-white px-4 py-2 inline-block">Send</button>
       <div style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', background: 'red' }}>
         <p>{name}</p>
       </div>

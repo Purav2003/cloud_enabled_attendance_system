@@ -23,6 +23,7 @@ import os
 import torch
 import numpy as np
 from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
 
 
 # Load pre-trained InceptionResnetV1 model
@@ -463,7 +464,18 @@ def updateUser(request, pk):
 
     new_email = request.data.get('email')
     new_mobile = request.data.get('mobile')
+    new_photo = request.data.get('profilePhoto')
+    old_photo = str(user.profilePhoto)
+    # old_photo_path = os.path.join('media', old_photo)
 
+    print(new_photo)
+    print(user.profilePhoto)
+    
+    if User.objects.exclude(id=pk).filter(profilePhoto=new_photo).exists():
+       pass
+    else:        
+        os.remove("C:/Users/shahp/Desktop/SEM-8/IBM Project/cloud_enabled_attendance_system/backend/myproject/media/"+old_photo)
+            
     # Check if the new email already exists
     if User.objects.exclude(id=pk).filter(email=new_email).exists():
         return Response({'status': 'error', 'message': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
@@ -541,7 +553,7 @@ def access(request, pk):
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     user.isAuthorized = "AccessGranted"
     user.save()
-    # send_verification_mail(user.email, admin.companyName,user.name,admin.email)
+    send_verification_mail(user.email, admin.companyName,user.name,admin.email)
 
     
     return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
@@ -556,7 +568,7 @@ def deny(request, pk):
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     user.isAuthorized = "AccessDenied"
     user.save()
-    # send_rejection_mail(user.email, admin.companyName,user.name,admin.email)
+    send_rejection_mail(user.email, admin.companyName,user.name,admin.email)
 
     
     return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
