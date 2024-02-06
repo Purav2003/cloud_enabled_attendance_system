@@ -598,6 +598,12 @@ def get_attendance(request,pk):
     serializer = AttendanceSerializer(items,many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def all_attendance(request,pk):
+    items = Attendance.objects.filter(companyCode=pk)
+    serializer = AttendanceSerializer(items,many=True)
+    return Response(serializer.data)
+
 ### ADMIN ###
 
 @api_view(['POST'])

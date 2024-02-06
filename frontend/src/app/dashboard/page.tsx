@@ -78,7 +78,13 @@ export default function Dashboard() {
         ID
       </th>
       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        Day
+      </th>
+      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
         Date
+      </th>
+      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+        Time
       </th>
       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
         Attendance
@@ -86,22 +92,37 @@ export default function Dashboard() {
     </tr>
   </thead>
   <tbody className="bg-white divide-y divide-gray-200">
-    {data?.map((datas) => {
+  {data
+    ?.sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5)
+    .map((datas, index) => {
+      const date = new Date(datas.date);
+      const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
+
       return (
-        <tr key={datas.id} className="{datas.attendance ? 'bg-green-50' : 'bg-red-50'}">
+        <tr key={datas.id} className={datas.attendance ? "bg-green-50" : "bg-red-50"}>
           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            {datas.id}
+            {index + 1}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {dayOfWeek}
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {datas.date}
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {datas.time?.split(".")[0]}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {datas.attendance ? "Present" : "Absent"}
           </td>
         </tr>
-      )
+      );
     })}
-  </tbody>
+</tbody>
+
+
+
 </table>
 
                 </div>

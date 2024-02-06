@@ -31,5 +31,6 @@ class Attendance(models.Model):
     date = models.DateField(auto_now_add=True)
     time = models.TimeField( auto_now_add=True)
     attendance = models.BooleanField(default=False)
+    companyCode = models.CharField(max_length=20)
     def __str__(self):
         return(f"{self.attendance} {self.user_id} {self.date} {self.time}")
