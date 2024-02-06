@@ -5,8 +5,8 @@ import { PieChart } from '@mui/x-charts';
 import { Card, Typography, Table, TableHead, TableBody, TableRow, TableCell, Button } from '@mui/material'; // Material UI components
 import { HiArrowDown } from "react-icons/hi2";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import Loading from "../../../loading"
-import Last from './Last';
+import Loading from "../../../../loading"
+import Link from 'next/link';
 
 const Attendance = () => {
     const [data, setData] = useState([]);
@@ -15,12 +15,15 @@ const Attendance = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Number of items per page
     const [loading, setLoading] = useState(true); // Initially set loading to true
+    const date = window.location.pathname.split('/').pop();
 
     // Memoize fetchData function
     const fetchData = useCallback(async () => {
         const token = localStorage.getItem("token");
         const companyCode = localStorage.getItem("companyCode");
-        const response = await fetch(`http://localhost:8000/api/allAttendance/${companyCode}`, {
+        const date = window.location.pathname.split('/').pop();
+
+        const response = await fetch(`http://localhost:8000/api/dayAttendance/${companyCode}/${date}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -39,7 +42,7 @@ const Attendance = () => {
         let presentCount = 0;
         let absentCount = 0;
 
-        data?.filter((datas) => new Date(datas.date).toLocaleDateString() === new Date().toLocaleDateString()).forEach((datas) => {
+        data?.forEach((datas) => {
             datas?.attendance ? presentCount++ : absentCount++;
         });
 
@@ -56,23 +59,22 @@ const Attendance = () => {
     const generateCSV = () => {
         const csvContent = "data:text/csv;charset=utf-8," +
             "ID,Name,Time,Attendance\n" +
-            data.filter((datas) => new Date(datas.date).toLocaleDateString() === new Date().toLocaleDateString()).map((datas, index) =>
+            data.map((datas, index) =>
                 `${index + 1},${datas.user},${datas.time?.split(".")[0]},${datas.attendance ? "Present" : "Absent"}`
             ).join("\n");
         const encodedURI = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedURI);
-        link.setAttribute("download", `attendance_${new Date().toLocaleDateString()}.csv`);
+        link.setAttribute("download", `attendance_${date}.csv`);
         document.body.appendChild(link);
         link.click();
     };
 
 
     const renderItems = () => {
-        const todayData = data.filter(datas => new Date(datas.date).toLocaleDateString() === new Date().toLocaleDateString());
         const items = [];
-        for (let i = 0; i < todayData.length; i++) {
-            const datas = todayData[i];
+        for (let i = 0; i < data.length; i++) {
+            const datas = data[i];
             const date = new Date(datas.date);
 
             items.push(
@@ -115,7 +117,7 @@ const Attendance = () => {
                 <div className="p-4 lg:p-8">
                     <div className='lg:flex justify-between'>
                         <div className='lg:w-[60%]'>
-                            <h1 className='pb-4 font-semibold text-xl'>Today's Attendance</h1>
+                            <h1 className='pb-4 font-semibold text-xl'> Attendance of {date}</h1>
                             <div className="overflow-x-auto">
                                 <div>
                                     <Table>
@@ -170,7 +172,7 @@ const Attendance = () => {
                     </div>
                 </div>
             )}
-            <Last />
+            <Link href="/admin/attendance"><button className='ml-6 px-8 py-2 bg-green-500 rounded-lg text-white'>Go Back </button></Link>
         </>
     );
 };

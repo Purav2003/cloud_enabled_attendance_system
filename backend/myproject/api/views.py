@@ -24,7 +24,9 @@ import torch
 import numpy as np
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
-from datetime import date
+from datetime import datetime, timedelta,date
+from django.db.models import Count, Q  # Import Q object
+
 
 # Load pre-trained InceptionResnetV1 model
 model = InceptionResnetV1(pretrained='vggface2').eval()
@@ -603,6 +605,29 @@ def all_attendance(request,pk):
     items = Attendance.objects.filter(companyCode=pk)
     serializer = AttendanceSerializer(items,many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def date_attendance(request,pk,dk):
+    items = Attendance.objects.filter(companyCode=pk,date=dk)
+    serializer = AttendanceSerializer(items,many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def last_five_days_attendance(request, pk):
+    five_days_ago = datetime.now() - timedelta(days=5)
+    today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    items = Attendance.objects.filter(companyCode=pk, date__gte=five_days_ago, date__lt=today_start)
+    attendance_data = items.values('date').annotate(
+        total_users=Count('user'),
+        present_users=Count('user', filter=Q(attendance=True))
+    )
+    for data in attendance_data:
+        data['percentage_present'] = (data['present_users'] / data['total_users']) * 100 if data['total_users'] > 0 else 0
+
+    return Response(attendance_data)
+
+
 
 ### ADMIN ###
 
