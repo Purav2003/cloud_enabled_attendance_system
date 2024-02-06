@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
             # If attendance entry doesn't exist, create a new one and mark as absent
             if not attendance_entry:
-                Attendance.objects.create(user=user.name, attendance=False, date=today,user_id=user.id)
+                Attendance.objects.create(user=user.name, attendance=False, date=today,user_id=user.id,companyCode=user.companyCode)
                 self.stdout.write(self.style.SUCCESS(f"Attendance marked as absent for {user} for {today}"))
             else:
                 self.stdout.write(self.style.WARNING(f"Attendance entry already exists for {user} for {today}"))
