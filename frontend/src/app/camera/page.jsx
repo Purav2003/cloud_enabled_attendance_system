@@ -10,8 +10,6 @@ const FaceDetector = () => {
 
   const [capturedPhoto, setCapturedPhoto] = useState(null);
   const [ responseData,setResponseData] = useState({response: ''})
-  const [name, setName] = useState('');
-  const [data,setData] = useState([]);
   const loadModel = async () => {
     try {
       const model = await blazeface.load();
@@ -21,33 +19,6 @@ const FaceDetector = () => {
       console.error("Error loading BlazeFace model:", error);
     }
   };
-
-  const fetchData = async () => {
-        
-    let idAsInt = 123456;
-    const API_URL = `http://localhost:8000/api/all/${idAsInt}`;
-    console.log(API_URL);
-    const token = localStorage.getItem("token")
-    // alert(token)
-    try {
-        const response = await fetch(API_URL, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                'Authorization': `${token}`,
-            },
-        });
-        const data_new = await response.json();
-        console.log(data_new)
-        setData(data_new)
-
-        
-        
-        setLoading(false)
-    } catch (error) {
-        console.error(error);
-    }
-};
 
   const drawFaceDetections = (ctx, predictions) => {
     if (predictions.length > 0) {
@@ -92,16 +63,8 @@ const FaceDetector = () => {
           body: JSON.stringify({ image: base64Data }),
         });
         response = await response.json();
-        setResponseData({response: response.user})
-          const usersWithHelloPhoto = data.filter(user => user.profilePhoto === response.user);
-
-          const namesWithHelloPhoto = usersWithHelloPhoto.map(user => user.name);
-
-          if (namesWithHelloPhoto.length > 0) {
-              setName(namesWithHelloPhoto)
-          } else {
-              console.log("No users found.");
-          }
+        console.log(response)
+        setResponseData({response: response.user})          
         
       
       } catch (error) {
@@ -153,7 +116,6 @@ const FaceDetector = () => {
   };
 
   useEffect(() => {
-    fetchData();
     loadModel().then((model) => {
       detectFaces(model);
     });
@@ -169,7 +131,7 @@ const FaceDetector = () => {
     </div>
     <button id="myCheck" onClick={sendPhotoToBackend} className="bg-green-500 rounded-md text-white px-4 py-2 inline-block">Send</button>
       <div style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', background: 'red' }}>
-        <p>{name}</p>
+        <p>{responseData.response}</p>
       </div>
     </div>
   );

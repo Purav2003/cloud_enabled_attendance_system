@@ -1,7 +1,7 @@
 from rest_framework.response import Response    
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from base.models import User,Admin
-from .serializers import UserSerializer,AdminSerializer
+from base.models import User,Admin,Attendance
+from .serializers import UserSerializer,AdminSerializer,AttendanceSerialzer
 from rest_framework import status
 from django.contrib.auth.hashers import check_password
 import jwt,datetime
@@ -24,7 +24,7 @@ import torch
 import numpy as np
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
-
+from datetime import date
 
 # Load pre-trained InceptionResnetV1 model
 model = InceptionResnetV1(pretrained='vggface2').eval()
@@ -71,6 +71,17 @@ def compare_faces(img_1, img_2):
     except Exception as e:
         return str(e)
 
+def mark_attendance(pk):
+    try:
+        user = User.objects.get(id=pk)
+        print(user)
+    except User.DoesNotExist:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response({'status': 'success', 'message': 'Attendance marked'}, status=status.HTTP_200_OK)
+
+
+
 @api_view(['POST'])
 def match_face(request):
     try:
@@ -93,15 +104,24 @@ def match_face(request):
             img_2 = Image.open(img_path_2)
             result = compare_faces(img_1, img_2)
             if result  == "The faces are recognized as the same person.":
-                user = User.objects.filter(profilePhoto='user_images'+filename)
-                return JsonResponse({'result': 'The faces are recognized as the same person.','user':'/media/user_images/'+filename})
-
-            print(result)
+                print('user_images/'+filename)
+                user = User.objects.filter(profilePhoto='user_images/'+filename)
+                global user_present_id
+                user_present_id = user[0].id
+                today = date.today()
+                if not Attendance.objects.filter(user_id=user[0].id, date=today).exists():
+                    serializer = AttendanceSerialzer(data={'user_id':user[0].id,'user': user[0].name,  'attendance': True})        
+                    if serializer.is_valid():    
+                        serializer.save()
+                        
+                return JsonResponse({'result': 'The faces are recognized as the same person.','user':user[0].name})
+                
 
         return JsonResponse({'result': 'Comparison completed successfully'})
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
 
 @api_view(['POST'])
 def login(request):
@@ -572,7 +592,13 @@ def deny(request, pk):
 
     
     return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
-   
+ 
+@api_view(['GET'])
+def get_attendance(request,pk):
+    items = Attendance.objects.filter(user_id=pk)
+    serializer = AttendanceSerialzer(items,many=True)
+    return Response(serializer.data)
+
 ### ADMIN ###
 
 @api_view(['POST'])
