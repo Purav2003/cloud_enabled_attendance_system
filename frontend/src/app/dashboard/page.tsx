@@ -23,6 +23,19 @@ export default function Dashboard() {
     marginRight: 10,
   };
 
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
+    const response = await fetch(`http://localhost:8000/api/attendance/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const result = await response.json();
+    setData(result);
+    console.log(result);
+  }
 
 
   const url_img = localStorage.getItem("IMG")
@@ -43,6 +56,8 @@ export default function Dashboard() {
     if(companyName){
         window.location.replace('/admin/dashboard')
     }
+    fetchData();
+    
   }, []);
 
   return (
@@ -56,33 +71,22 @@ export default function Dashboard() {
       })} */}
             <div>
                 <div className="lg:flex">
-                    <div className="cards flex items-center bg-[#eee] rounded-lg mx-12 p-4 lg:w-[25%] lg:ml-20">
-                        <div>
-                            <img src={logo.src} className="w-24 rounded-lg" />
-                        </div>
-                        <div className="pl-8 ">
-                            <h1 className="text-2xl font-bold text-black">Jhon Doe</h1>
-                            <h2 className="text-sm ">Web Developer</h2>
-                        </div>
-
-                    </div>
-
-                    <div className="cards flex items-center bg-[#eee] rounded-lg z-[-1000] mx-12 p-4 lg:w-[25%] mt-3 lg:mt-0 lg:ml-20">
-                        <div style={style} >
-                            <Progress.Circle percent={10} strokeColor="green" />
-                        </div>
-                        <div className="pl-4">
-                            <h1 className="text-2xl font-bold text-black">February's Attendance</h1>
-                        </div>
-                    </div>
-                    <div className="cards flex items-center bg-[#eee] rounded-lg z-[-1000] mt-3 lg:mt-0 mx-12 p-4 lg:w-[25%] lg:ml-20">
-                        <div style={style}>
-                            <Progress.Circle percent={76} strokeColor="green" />
-                        </div>
-                        <div className="pl-4">
-                            <h1 className="text-2xl font-bold text-black">January's Attendance</h1>
-                        </div>
-                    </div>
+                    <table>
+                        <tbody>
+                    {
+                        data?.map((datas) => {
+                            return (
+                                <tr>
+                                    <td>{datas.id}</td>
+                                    <td>{datas.date}</td>
+                                    <td>{datas.attendance?"Present":""}</td>
+                                </tr>
+                            )
+                        }
+                        )
+                    }
+                    </tbody>
+                    </table>
                 </div>
                 <div>
                     {/* <img src={url_img?url_img:""} ></img> */}
