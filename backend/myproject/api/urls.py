@@ -18,9 +18,7 @@ urlpatterns = [
     path('api/pending/<int:pk>',views.customer_record_pending),
     path('api/update/<int:pk>',views.updateUser),
     path('api/attendance/<int:pk>',views.get_attendance),
-    path('api/allAttendance/<int:pk>',views.all_attendance),
-    path('api/lastFiveDaysAttendance/<int:pk>',views.all_attendance),
-    path('api/dayAttendance/<int:pk>/<str:dk>',views.date_attendance),
+    path('api/allAttendance/<int:pk>',views.all_attendance),   
 ]
 
 

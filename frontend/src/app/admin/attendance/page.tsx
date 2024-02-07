@@ -6,7 +6,6 @@ import { Card, Typography, Table, TableHead, TableBody, TableRow, TableCell, But
 import { HiArrowDown } from "react-icons/hi2";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Loading from "../../../loading"
-import Last from './Last';
 
 const Attendance = () => {
     const [data, setData] = useState([]);
@@ -144,33 +143,10 @@ const Attendance = () => {
                                 </div>
                                 <button onClick={generateCSV} className='px-4 mt-4 lg:mt-0 py-2 bg-blue-600 rounded-md flex items-center text-white'><HiArrowDown className="mr-2" />Download CSV</button>
                             </div>
-                        </div>
-                        <div className='lg:w-[40%] lg:grid items-center justify-center'>
-                            <div className="p-4 ">
-                                <h1 className='pb-4 font-semibold text-xl'>Attendance Summary</h1>
-                                <div  className='overflow-x-auto'>
-                                {data && data.length > 0 ? (
-                                    <PieChart
-                                        series={[
-                                            {
-                                                arcLabel: (item) => `${(item.value * 100 / (presentCount + absentCount)).toFixed(2)}%`,
-                                                data: pieChartData
-                                            },
-                                        ]}
-                                        width={400}
-                                        height={200}
-                                        className='z-[-100]'
-                                    />
-                                ) : (
-                                    <Typography variant="body1">No data available</Typography>
-                                    )}
-                                    </div>
-                            </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             )}
-            <Last />
         </>
     );
 };
