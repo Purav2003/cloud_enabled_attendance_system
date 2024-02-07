@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/update/<int:pk>',views.updateUser),
     path('api/attendance/<int:pk>',views.get_attendance),
     path('api/allAttendance/<int:pk>',views.all_attendance),
-    path('api/lastFiveDaysAttendance/<int:pk>',views.all_attendance),
+    path('api/lastFiveDaysAttendance/<int:pk>',views.last_5_days_attendance),
     path('api/dayAttendance/<int:pk>/<str:dk>',views.date_attendance),
 ]
 

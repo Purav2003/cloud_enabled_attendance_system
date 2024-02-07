@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 
 const Last = () => {
-    const [data, setData] = useState([]);
+    let [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const fetchData = async () => {
         const token = localStorage.getItem("token");
@@ -19,23 +19,26 @@ const Last = () => {
             },
         });
         const result = await response.json();
-        setData(result);
+        setData(result.data);
         console.log(result);
         setLoading(false); // Set loading to false when data is fetched
     }
     useEffect(() => {
         fetchData();
     }, []);
+
     const renderItems = () => {
         const items = [];
-        for (let i = 0; i < data.length; i++) {
-            const datas = data[i];
+        const reversedData = data.slice().reverse(); // Create a copy of data array and reverse it
+        
+        for (let i = 0; i < reversedData.length; i++) {
+            const datas = reversedData[i];
             const date = new Date(datas.date);
             
             items.push(
-                <TableRow key={datas.id} className='bg-[#eee]'>
+                <TableRow key={i + 1} className='bg-[#eee]'>
                     <TableCell>{i + 1}</TableCell>
-                    <TableCell><Link href={`/admin/attendance/${datas.date}`}>{datas.date}</Link></TableCell>
+                    <TableCell><Link href={`/admin/attendance/${datas.date}`}>{datas.date.split("-").reverse().join("-")}</Link></TableCell>
                     <TableCell>{datas.total_users}</TableCell>
                     <TableCell>{datas.present_users}</TableCell>
                     <TableCell>{datas.percentage_present}%</TableCell>
@@ -45,6 +48,7 @@ const Last = () => {
         
         return items;
     };
+    
 
     return (
         <>

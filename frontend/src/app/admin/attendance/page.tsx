@@ -62,7 +62,8 @@ const Attendance = () => {
         const encodedURI = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedURI);
-        link.setAttribute("download", `attendance_${new Date().toLocaleDateString()}.csv`);
+        let date = new Date().toLocaleDateString()
+        link.setAttribute("download", `attendance_${date}.csv`);
         document.body.appendChild(link);
         link.click();
     };
@@ -79,7 +80,7 @@ const Attendance = () => {
                 <TableRow key={datas.id} className={datas.attendance ? "bg-green-100" : "bg-red-100"}>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{datas.user}</TableCell>
-                    <TableCell>{datas.date}</TableCell>
+                    <TableCell>{datas.date.split("-").reverse().join("-")}</TableCell>
                     <TableCell>{datas.time?.split(".")[0]}</TableCell>
                     <TableCell>{datas.attendance ? "Present" : "Absent"}</TableCell>
                 </TableRow>
