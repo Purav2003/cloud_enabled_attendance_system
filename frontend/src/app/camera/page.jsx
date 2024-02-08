@@ -132,6 +132,7 @@ const FaceDetector = () => {
     <button id="myCheck" onClick={sendPhotoToBackend} className="bg-green-500 rounded-md text-white px-4 py-2 inline-block">Send</button>
       <div style={{ position: 'absolute', top: '10px', left: '10px', color: 'white', background: 'red' }}>
         <p>{responseData.response}</p>
+        <img src={capturePhoto} />
       </div>
     </div>
   );
