@@ -108,7 +108,7 @@ export default function Dashboard() {
             {dayOfWeek}
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {datas.date}
+            {datas.date.split('-').reverse().join('-')}
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
             {datas.time?.split(".")[0]}

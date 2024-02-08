@@ -117,7 +117,7 @@ const Attendance = () => {
                 <div className="p-4 lg:p-8">
                     <div className='lg:flex justify-between'>
                         <div className='lg:w-[60%]'>
-                            <h1 className='pb-4 font-semibold text-xl'> Attendance of {date}</h1>
+                            <h1 className='pb-4 font-semibold text-xl'> Attendance of {date.split('-').reverse().join('-')}</h1>
                             <div className="overflow-x-auto">
                                 <div>
                                     <Table>

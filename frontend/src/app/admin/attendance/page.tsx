@@ -109,7 +109,7 @@ const Attendance = () => {
 
     return (
         <>
-            <AdminNavbar /><br /><br /><br />
+            <AdminNavbar  /><br /><br /><br />
             {loading ? (
                 <Loading />
             ) : (
@@ -147,10 +147,11 @@ const Attendance = () => {
                             </div>
                         </div>
                         <div className='lg:w-[40%] lg:grid items-center justify-center'>
-                            <div className="p-4 ">
-                                <h1 className='pb-4 font-semibold text-xl'>Attendance Summary</h1>
-                                <div  className='overflow-x-auto'>
+                            <div className="p-4 lg:fixed">
+                                <h1 className='pb-4 ml-12 font-semibold text-xl'>Today's Attendance Summary</h1>
+                                <div  className='overflow-x-auto '>
                                 {data && data.length > 0 ? (
+                                    <div>
                                     <PieChart
                                         series={[
                                             {
@@ -159,9 +160,8 @@ const Attendance = () => {
                                             },
                                         ]}
                                         width={400}
-                                        height={200}
-                                        className='z-[-100]'
-                                    />
+                                        height={200} 
+                                    /></div>
                                 ) : (
                                     <Typography variant="body1">No data available</Typography>
                                     )}
