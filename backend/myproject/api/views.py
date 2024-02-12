@@ -25,6 +25,7 @@ import numpy as np
 from django.http import JsonResponse
 from datetime import date
 
+
 # Load pre-trained InceptionResnetV1 model
 model = InceptionResnetV1(pretrained='vggface2').eval()
 
@@ -100,7 +101,7 @@ def match_face(request):
                 # Create a new attendance record for the user
                 attendance_record = Attendance.objects.filter(user_id=user_present_id, date=today).first()
                 if attendance_record:
-                    attendance_record.attendance = True
+                    attendance_record.attendance = True                 
                     attendance_record.save()
                     user = User.objects.filter(profilePhoto='user_images/'+filename)
 

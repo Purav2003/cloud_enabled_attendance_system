@@ -102,7 +102,7 @@ const Users = () => {
                 {
                 data?.map((item) => {
                         return (
-                            <div className="ml-12 pt-4 w-64 mb-4 border border-gray-200 rounded-lg shadow bg-gray-300">
+                            <Link href={`/admin/users/${item.id}`}><div className="ml-12 pt-4 w-64 mb-4 border border-gray-200 rounded-lg shadow bg-gray-100">
                                 <div className="flex flex-col items-center pb-10">
                                     <img className="w-[130px] h-[130px] mb-3 object-cover rounded-full shadow-lg" src={`http://localhost:8000${item.profilePhoto}`} alt="User image" />
                                     <h5 className="mb-1 text-xl font-medium text-gray-900">{item.name}</h5>
@@ -112,7 +112,7 @@ const Users = () => {
                                         <Link href={`/admin/users/${item.id}`} className="items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View Full Profile</Link>
                                     </div>
                                 </div>
-                            </div>
+                            </div></Link>
                         )
                     })
                 }
