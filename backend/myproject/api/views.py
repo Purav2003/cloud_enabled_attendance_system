@@ -474,20 +474,21 @@ def updateUser(request, pk):
         user = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
     new_email = request.data.get('email')
     new_mobile = request.data.get('mobile')
     new_photo = request.data.get('profilePhoto')
+    new_name = request.data.get('name')
     old_photo = str(user.profilePhoto)
     # old_photo_path = os.path.join('media', old_photo)
 
     print(new_photo)
     print(user.profilePhoto)
-    
-    if User.objects.exclude(id=pk).filter(profilePhoto=new_photo).exists():
-       pass
-    else:        
-        os.remove("C:/Users/shahp/Desktop/SEM-8/IBM Project/cloud_enabled_attendance_system/backend/myproject/media/"+old_photo)
+        
+    if new_photo:
+        if User.objects.filter(profilePhoto=new_photo).exists():
+            pass
+        else:        
+            os.remove("C:/Users/shahp/Desktop/SEM-8/IBM Project/cloud_enabled_attendance_system/backend/myproject/media/"+old_photo)
             
     # Check if the new email already exists
     if User.objects.exclude(id=pk).filter(email=new_email).exists():
@@ -499,6 +500,7 @@ def updateUser(request, pk):
     serializer = UserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
+        Attendance.objects.filter(user_id=pk).update(user=new_name)        
         return Response({'status': 'success', 'message': 'User Updated'}, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'error', 'message': 'Validation Error', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)  

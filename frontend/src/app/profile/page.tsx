@@ -65,6 +65,11 @@ const id = localStorage.getItem("id");
     if (!token) {
       window.location.replace('/login');
     }
+    const userData = localStorage.getItem("isAuthorized")
+
+    if(userData === "sendRequest"){
+      window.location.replace('/landing')
+  }
 
     fetchData();
   }, []);
