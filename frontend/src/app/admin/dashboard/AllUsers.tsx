@@ -18,7 +18,7 @@ const AllUsers = () => {
     const [data, setData] = useState<UserData[] | undefined>(undefined);
     const [loading, setLoading] = useState(false)
     const [authData, setAuthData] = useState()
-    const [selectedValue, setSelectedValue] = useState('All Users');
+    const [selectedValue, setSelectedValue] = useState('Request Approved');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleButtonClick = () => {
         setIsDropdownOpen(!isDropdownOpen);

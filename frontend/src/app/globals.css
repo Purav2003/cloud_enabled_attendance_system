@@ -7,10 +7,12 @@ input{
   outline: none !important;
 }
 
-.MuiPieArcLabel-root{
-  color: #fff !important;
-}
 
+
+g{
+  color: #fff !important;
+
+}
 body{
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
 }

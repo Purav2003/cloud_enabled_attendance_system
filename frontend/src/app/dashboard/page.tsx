@@ -1,145 +1,129 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
-import Navbar from "../navbar";
+import React, { useState, useEffect } from "react";
+import Sidebar from "../Sidebar"
 import Footer from "../footer";
-import logo from "../../assets/images/login.jpg";
-import { Calendar, Badge } from "rsuite";
+import Calendars from './Calendar'
 import "rsuite/dist/rsuite.min.css";
-import { Progress } from "rsuite";
-
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import Cards from "./Cards";
 interface UserData {
-  email: string;
-  mobile: string;
-  password: string;
-  companyCode: string;
+  id: number;
+  date: string;
+  time: string;
+  attendance: boolean;
 }
 
 export default function Dashboard() {
-  const [data, setData] = useState<UserData[] | undefined>(undefined);
-
-  const style = {
-    width: 120,
-    display: "inline-block",
-    marginRight: 10,
-  };
+  const [data, setData] = useState<UserData[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);  
+  const itemsPerPage = 5;
 
   const fetchData = async () => {
-    const token = localStorage.getItem("token");
-    const id = localStorage.getItem("id");
-    const response = await fetch(`http://localhost:8000/api/attendance/${id}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const result = await response.json();
-    setData(result);
-    console.log(result);
-  }
-
-
-  const url_img = localStorage.getItem("IMG")
-
+    try {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
+      const response = await fetch(`http://localhost:8000/api/attendance/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      setData(result.reverse());
+      console.log(result) // Reverse the data array
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    const companyName = localStorage.getItem("companyName")
-    const userData = localStorage.getItem("isAuthorized")
-    // alert(data)
-    // const isApproved = data?.isAuthorized
-    if(userData === "sendRequest"){
-        window.location.replace('/landing')
+    const token = localStorage.getItem("token");
+    if (!token) {
+      window.location.replace("/login");
+    } else {
+      fetchData();
+      // Fetch user's name  
     }
-    if(!token){
-        window.location.replace('/login')
-    }
-    if(companyName){
-        window.location.replace('/admin/dashboard')
-    }
-    fetchData();
-    
   }, []);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+
   return (
-    <div className="flex flex-col h-screen justify-between">
-      <Navbar />
-      <br></br>
-{/* 
-      {data?.map((datas) => {
-        const { email } = datas;
-        return <div key={email}>{email}</div>;
-      })} */}
-            <div><br></br><br></br>
-                <div className="lg:flex">
-                <table className="w-lg divide-y divide-gray-200">
-  <thead>
-    <tr>
-      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-        ID
-      </th>
-      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-        Day
-      </th>
-      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-        Date
-      </th>
-      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-        Time
-      </th>
-      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-        Attendance
-      </th>
-    </tr>
-  </thead>
-  <tbody className="bg-white divide-y divide-gray-200">
-  {data
-    ?.sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 5)
-    .map((datas, index) => {
-      const date = new Date(datas.date);
-      const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "long" });
+    <div className="flex w-full">
+      <Sidebar/>
+      <div className="ml-16 mt-8 w-full">
+              <h1 className="text-3xl ml-12 font-bold text-gray-800 mb-6">	🏠 Dashboard</h1>
+        <Cards />
+        <div className="flex-grow py-10 px-12">
+          <div className="mx-auto flex justify-between">
+            <div className="w-3/4 mr-6">
 
-      return (
-        <tr key={datas.id} className={datas.attendance ? "bg-green-50" : "bg-red-50"}>
-          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            {index + 1}
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {dayOfWeek}
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {datas.date}
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {datas.time?.split(".")[0]}
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {datas.attendance ? "Present" : "Absent"}
-          </td>
-        </tr>
-      );
-    })}
-</tbody>
-
-
-
-</table>
-
+              <div className="overflow-hidden rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr>
+                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
+                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Attendance</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {currentItems.map((data,index) => (
+                      <tr key={data.id}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance?data.time?.split(".")[0]:""}</td>
+                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center`}><span className={`${data.attendance ? "bg-green-600" : "bg-red-400"} px-3 py-2 rounded-md`}>{data.attendance ? "Present" : "Absent"}</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200 sm:px-6">
+                  <div className="text-sm text-gray-700">
+                    Page {currentPage} of {totalPages}
+                  </div>
+                  <div className="flex space-x-2">
+                    <button onClick={prevPage} disabled={currentPage === 1} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                      <SlArrowLeft className="w-4 h-4 mr-1" />
+                      Prev
+                    </button>
+                    <button onClick={nextPage} disabled={currentPage === totalPages} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                      Next
+                      <SlArrowRight className="w-4 h-4 ml-1" />
+                    </button>
+                  </div>
                 </div>
-                <div>
-                    {/* <img src={url_img?url_img:""} ></img> */}
-
-                    <br></br>
-                    <div className="lg:px-20 w-[100%] lg:flex">
-                        <div className="w-full">                        
-                        </div>
-
-                    </div>
-
-                </div>
-            </div><br></br><br></br>
-            <Footer />
+              </div>
+            </div>
+            <div>
+              <div className="bg-white rounded-md mt-[-30px]">
+               <Calendars />
+              </div>
+            </div>
+          </div>
         </div>
 
-    )
+        <Footer />
+      </div>
+    </div>
+  );
 }

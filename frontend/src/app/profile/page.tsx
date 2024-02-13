@@ -1,8 +1,9 @@
-// import Navbar from "../navbar";
+// import Sidebar from "../Sidebar"
 "use client";
-import Navbar from "../navbar";
+// import Sidebar from "../Sidebar"
+import Sidebar from "../Sidebar"
 import Footer from '../footer';
-// import Navbar from "../navbar";
+// import Sidebar from "../Sidebar"
 import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
@@ -65,6 +66,11 @@ const id = localStorage.getItem("id");
     if (!token) {
       window.location.replace('/login');
     }
+    const userData = localStorage.getItem("isAuthorized")
+
+    if(userData === "sendRequest"){
+      window.location.replace('/landing')
+  }
 
     fetchData();
   }, []);
@@ -82,16 +88,19 @@ const id = localStorage.getItem("id");
   }, [showModal]);
 
   return (
-    <><Navbar />
-      <div className="min-h-screen lg:flex items-center justify-center bg-gray-100 font-sans">
+    <div className="w-full flex">
+      <Sidebar/>
+    <div className="w-full ml-12">
+      <div className="min-h-screen w-full items-center justify-center bg-white font-sans">
+
         <Toaster />
         <link
           href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
-
+<div className="flex min-h-screen items-center justify-center">
         <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">User Profile</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">👨🏻‍💻 User Profile</h1>
 
           <div className="lg:flex sm:flex items-center space-x-4">
             <div
@@ -152,6 +161,7 @@ const id = localStorage.getItem("id");
             </div>
           </div>
         </div>
+        </div>
 
         {showModal && (
           <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
@@ -170,10 +180,11 @@ const id = localStorage.getItem("id");
 
             </div>
           </div>
-        )}
+        )}<br></br>
       </div>
       <Footer />
-    </>
+    </div>
+    </div>
   );
 }
 

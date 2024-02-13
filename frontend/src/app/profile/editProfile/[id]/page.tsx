@@ -1,11 +1,11 @@
-// import Navbar from "../navbar";
+// import Sidebar from "../Sidebar"
 "use client";
 
 import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
-import Navbar from "@/app/navbar";
 import Footer from "@/app/footer";
+import Sidebar from "@/app/Sidebar";
 interface UserData {
   name: string;
   email: string;
@@ -158,6 +158,11 @@ const EditProfile = ({ id }) => {
     if (!token) {
       window.location.replace('/login');
     }
+    const userData = localStorage.getItem("isAuthorized")
+
+    if(userData === "sendRequest"){
+      window.location.replace('/landing')
+    }
 
     fetchData();
   }, []);
@@ -175,8 +180,8 @@ const EditProfile = ({ id }) => {
   }, [showModal]);
 
   return (<>
-    <Navbar />
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 font-sans">
+    <Sidebar/>
+    <div className="min-h-screen flex items-center justify-center bg-white font-sans">
       <Toaster />
       <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
