@@ -1,5 +1,3 @@
-from django.core.files.storage import FileSystemStorage
-from datetime import date
 from collections import defaultdict
 from datetime import datetime, timedelta
 from base.models import Attendance
