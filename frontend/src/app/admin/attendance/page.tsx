@@ -6,6 +6,7 @@ import { Card, Typography, Table, TableHead, TableBody, TableRow, TableCell, But
 import { HiArrowDown } from "react-icons/hi2";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Loading from "../../../loading"
+import Last from './Last';
 
 const Attendance = () => {
     const [data, setData] = useState([]);
@@ -61,7 +62,8 @@ const Attendance = () => {
         const encodedURI = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedURI);
-        link.setAttribute("download", `attendance_${new Date().toLocaleDateString()}.csv`);
+        let date = new Date().toLocaleDateString()
+        link.setAttribute("download", `attendance_${date}.csv`);
         document.body.appendChild(link);
         link.click();
     };
@@ -78,7 +80,7 @@ const Attendance = () => {
                 <TableRow key={datas.id} className={datas.attendance ? "bg-green-100" : "bg-red-100"}>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{datas.user}</TableCell>
-                    <TableCell>{datas.date}</TableCell>
+                    <TableCell>{datas.date.split("-").reverse().join("-")}</TableCell>
                     <TableCell>{datas.time?.split(".")[0]}</TableCell>
                     <TableCell>{datas.attendance ? "Present" : "Absent"}</TableCell>
                 </TableRow>
@@ -107,7 +109,7 @@ const Attendance = () => {
 
     return (
         <>
-            <AdminNavbar /><br /><br /><br />
+            <AdminNavbar  /><br /><br /><br />
             {loading ? (
                 <Loading />
             ) : (
@@ -143,10 +145,33 @@ const Attendance = () => {
                                 </div>
                                 <button onClick={generateCSV} className='px-4 mt-4 lg:mt-0 py-2 bg-blue-600 rounded-md flex items-center text-white'><HiArrowDown className="mr-2" />Download CSV</button>
                             </div>
-                        </div>                        
+                        </div>
+                        <div className='lg:w-[40%] lg:grid items-center justify-center'>
+                            <div className="p-4 lg:fixed">
+                                <h1 className='pb-4 ml-12 font-semibold text-xl'>Today's Attendance Summary</h1>
+                                <div  className='overflow-x-auto '>
+                                {data && data.length > 0 ? (
+                                    <div>
+                                    <PieChart
+                                        series={[
+                                            {
+                                                arcLabel: (item) => `${(item.value * 100 / (presentCount + absentCount)).toFixed(2)}%`,
+                                                data: pieChartData
+                                            },
+                                        ]}
+                                        width={400}
+                                        height={200} 
+                                    /></div>
+                                ) : (
+                                    <Typography variant="body1">No data available</Typography>
+                                    )}
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
+            <Last />
         </>
     );
 };
