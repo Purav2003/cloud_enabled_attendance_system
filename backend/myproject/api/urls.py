@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import view
 
 urlpatterns = [
     path('api/all/<int:pk>',views.getData),
@@ -19,6 +20,8 @@ urlpatterns = [
     path('api/update/<int:pk>',views.updateUser),
     path('api/attendance/<int:pk>',views.get_attendance),
     path('api/allAttendance/<int:pk>',views.all_attendance),   
+    path('api/absent/<int:pk>',view.date_absent),
+    
 ]
 
 
