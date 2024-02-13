@@ -31,7 +31,7 @@ const Calendars = () => {
 
         return (
             <div style={{ height: '100%', width: '100%' }}>
-                {hasBadge && <Badge  style={{ backgroundColor: 'red', color: 'white', marginTop: 2 }} />}
+                {hasBadge && <Badge content='A'  style={{ backgroundColor: 'red', color: 'white', marginTop: 2 }} />}
             </div>
         );
     };

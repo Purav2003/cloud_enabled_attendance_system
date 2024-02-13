@@ -74,7 +74,7 @@ export default function Dashboard() {
           <div className="mx-auto flex justify-between">
             <div className="w-3/4 mr-6">
 
-              <div className="overflow-hidden rounded-lg shadow shadow-lg">
+              <div className="overflow-hidden rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead>
                     <tr>
@@ -92,7 +92,7 @@ export default function Dashboard() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance?data.time?.split(".")[0]:""}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center`}><span className={`${data.attendance ? "bg-[rgba(119,213,173,0.2)] text-[#77D5AD] border border-[#77D5AD]" : "bg-[rgba(206,82,91,0.2)] border border-[#CE525B] text-[#CE525B]"} px-2 py-1 rounded-md`}>{data.attendance ? "Present" : "Absent"}</span></td>
+                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center`}><span className={`${data.attendance ? "bg-green-600" : "bg-red-400"} px-3 py-2 rounded-md`}>{data.attendance ? "Present" : "Absent"}</span></td>
                       </tr>
                     ))}
                   </tbody>
