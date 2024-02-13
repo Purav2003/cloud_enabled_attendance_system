@@ -101,7 +101,10 @@ def match_face(request):
                 # Create a new attendance record for the user
                 attendance_record = Attendance.objects.filter(user_id=user_present_id, date=today).first()
                 if attendance_record:
-                    attendance_record.attendance = True                 
+                    # if attendance_record.attendance == False:                        
+                    #     attendance_record.time = datetime.now().time()                                                                         
+                        
+                    attendance_record.attendance = True     
                     attendance_record.save()
                     user = User.objects.filter(profilePhoto='user_images/'+filename)
 
@@ -199,9 +202,6 @@ def signup(request):
             return Response({'status': 'error', 'message': 'Invalid Company Code'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'status': 'error', 'message': 'Mobile already exists'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 
@@ -518,14 +518,22 @@ def delUser(request,pk):
 
 @api_view(['GET'])
 @jwt_authorization
-def customer_record(request,pk):   
-    items = User.objects.get(id=pk)
-    if items is not None:
-        serializer = UserSerializer(items)
-        return Response(serializer.data)
-    else:
-        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+def customer_record(request, pk):   
+    try:
+        user = User.objects.get(id=pk)
+        admin = Admin.objects.get(companyCode=user.companyCode)
+        company = admin.companyName
 
+        serializer = UserSerializer(user)
+        data = serializer.data
+        data['company'] = company  # Include company in the response data
+
+        return Response(data)
+    except User.DoesNotExist:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+    except Admin.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Admin not found'}, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['GET'])
 @jwt_authorization
 def customer_record_pending(request,pk):   

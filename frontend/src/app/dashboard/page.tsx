@@ -1,12 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Navbar from "../navbar";
+import Sidebar from "../Sidebar"
 import Footer from "../footer";
-import { Progress } from "rsuite";
+import Calendars from './Calendar'
 import "rsuite/dist/rsuite.min.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { PieChart } from "@mui/x-charts";
-
+import Cards from "./Cards";
 interface UserData {
   id: number;
   date: string;
@@ -16,11 +15,7 @@ interface UserData {
 
 export default function Dashboard() {
   const [data, setData] = useState<UserData[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [presentCount, setPresentCount] = useState(0);
-  const [absentCount, setAbsentCount] = useState(0);
-  const [pieChartData, setPieChartData] = useState([]);
-  const [thisMonthsAttendance, setThisMonthsAttendance] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);  
   const itemsPerPage = 5;
 
   const fetchData = async () => {
@@ -68,70 +63,20 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    const present = currentItems.filter(item => item.attendance).length;
-    const absent = currentItems.length - present;
-    setPresentCount(present);
-    setAbsentCount(absent);
-
-    const pieChart = [
-      { category: "Present", value: present },
-      { category: "Absent", value: absent }
-    ];
-
-    setPieChartData(pieChart);
-
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    
-    const presentC = data.filter(item => {
-      const itemDate = new Date(item.date);
-      return item.attendance && itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
-    }).length;
-    
-    const absentC = data.filter(item => {
-      const itemDate = new Date(item.date);
-      return !item.attendance && itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
-    }).length;
-    
-    const total = (presentC * 100) / (presentC + absentC)
-    // Calculate the total number of days in the current month
-
-    setThisMonthsAttendance(total)
-
-  }, [currentItems, data]);
 
   return (
-    <div className="h-screen flex flex-col">
-      <Navbar />
-      <br /><br></br><br></br>
-      <>
-        <div className="flex justify-between mb-4 px-12">
-\          <div className="flex-1 bg-gray-100 shadow p-4 rounded-md mr-4">
-            <h3 className="text-lg font-semibold mb-2">User's Name</h3>
-            <p>{data[0]?.user}</p>
-          </div>
-          <div className="flex-1 bg-gray-100 p-4 rounded-md mr-4">
-            <h3 className="text-lg font-semibold mb-2">This Month's Attendance</h3>
-            <p>{thisMonthsAttendance.toFixed(2)} %</p>
-          </div>
-
-          <div className="flex-1 bg-gray-100 p-4 rounded-md mr-4">
-            <h3 className="text-lg font-semibold mb-2">Third Box</h3>
-          </div>
-          <div className="flex-1 bg-gray-100 p-4 rounded-md">
-            <h3 className="text-lg font-semibold mb-2">Fourth Box</h3>
-          </div>
-        </div>
-        <div className="flex-grow bg-gray-50 py-10 px-6">
-          <div className="max-w-4xl mx-auto flex justify-between">
+    <div className="flex w-full">
+      <Sidebar/>
+      <div className="ml-16 mt-8 w-full">
+              <h1 className="text-3xl ml-12 font-bold text-gray-800 mb-6">	🏠 Dashboard</h1>
+        <Cards />
+        <div className="flex-grow py-10 px-12">
+          <div className="mx-auto flex justify-between">
             <div className="w-3/4 mr-6">
 
-              <h1 className="text-3xl font-semibold text-gray-800 mb-6">Attendance Dashboard</h1>
-              <div className="overflow-hidden border border-gray-200 rounded-lg shadow">
+              <div className="overflow-hidden rounded-lg shadow shadow-lg">
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-100">
+                  <thead>
                     <tr>
                       <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
                       <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th>
@@ -140,14 +85,14 @@ export default function Dashboard() {
                       <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Attendance</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-gray-50 divide-y divide-gray-200">
+                  <tbody className="divide-y divide-gray-200">
                     {currentItems.map((data,index) => (
                       <tr key={data.id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance?data.time?.split(".")[0]:""}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center`}><span className={`${data.attendance ? "bg-[rgba(0,121,0,0.5)]" : "bg-[rgba(121,0,0,0.5)]"} px-2 py-1 rounded-md shadow-lg`}>{data.attendance ? "Present" : "Absent"}</span></td>
+                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center`}><span className={`${data.attendance ? "bg-[rgba(119,213,173,0.2)] text-[#77D5AD] border border-[#77D5AD]" : "bg-[rgba(206,82,91,0.2)] border border-[#CE525B] text-[#CE525B]"} px-2 py-1 rounded-md`}>{data.attendance ? "Present" : "Absent"}</span></td>
                       </tr>
                     ))}
                   </tbody>
@@ -170,25 +115,15 @@ export default function Dashboard() {
               </div>
             </div>
             <div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-7">Attendance Summary</h2>
-              <div className="bg-white rounded-md p-4 w-[80%] mt-4 border shadow">
-                <PieChart
-                  series={[
-                    {
-                      arcLabel: (item) => `${(item.value * 100 / (presentCount + absentCount)).toFixed(2)}%`,
-                      data: pieChartData,
-                    },
-                  ]}
-                  width={400}
-                  height={200}
-                  className="text-white"
-                />
+              <div className="bg-white rounded-md mt-[-30px]">
+               <Calendars />
               </div>
             </div>
           </div>
         </div>
+
         <Footer />
-      </>
+      </div>
     </div>
   );
 }

@@ -6,7 +6,8 @@ from base.models import Attendance
 from rest_framework.response import Response    
 from rest_framework.decorators import api_view
 from datetime import datetime
-
+from .serializers import UserSerializer,AdminSerializer,AttendanceSerializer
+ 
 @api_view(['GET'])
 def last_5_days_attendance(request,pk):
     today = datetime.now().date()
@@ -44,4 +45,9 @@ def last_5_days_attendance(request,pk):
 
 
 
-
+@api_view(['GET'])
+def date_absent(request,pk):
+    items = Attendance.objects.filter(user_id=pk,attendance=False)
+    serializer = AttendanceSerializer(items,many=True)
+    dates = [item['date'] for item in serializer.data]
+    return Response(dates)
