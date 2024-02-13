@@ -23,8 +23,8 @@ import os
 import torch
 import numpy as np
 from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
 from datetime import date
+
 
 # Load pre-trained InceptionResnetV1 model
 model = InceptionResnetV1(pretrained='vggface2').eval()
@@ -101,7 +101,10 @@ def match_face(request):
                 # Create a new attendance record for the user
                 attendance_record = Attendance.objects.filter(user_id=user_present_id, date=today).first()
                 if attendance_record:
-                    attendance_record.attendance = True
+                    # if attendance_record.attendance == False:                        
+                    #     attendance_record.time = datetime.now().time()                                                                         
+                        
+                    attendance_record.attendance = True     
                     attendance_record.save()
                     user = User.objects.filter(profilePhoto='user_images/'+filename)
 
@@ -199,9 +202,6 @@ def signup(request):
             return Response({'status': 'error', 'message': 'Invalid Company Code'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'status': 'error', 'message': 'Mobile already exists'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
 
 
 
@@ -475,20 +475,21 @@ def updateUser(request, pk):
         user = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-
     new_email = request.data.get('email')
     new_mobile = request.data.get('mobile')
     new_photo = request.data.get('profilePhoto')
+    new_name = request.data.get('name')
     old_photo = str(user.profilePhoto)
     # old_photo_path = os.path.join('media', old_photo)
 
     print(new_photo)
     print(user.profilePhoto)
-    
-    if User.objects.exclude(id=pk).filter(profilePhoto=new_photo).exists():
-       pass
-    else:        
-        os.remove("C:/Users/shahp/Desktop/SEM-8/IBM Project/cloud_enabled_attendance_system/backend/myproject/media/"+old_photo)
+        
+    if new_photo:
+        if User.objects.filter(profilePhoto=new_photo).exists():
+            pass
+        else:        
+            os.remove("C:/Users/shahp/Desktop/SEM-8/IBM Project/cloud_enabled_attendance_system/backend/myproject/media/"+old_photo)
             
     # Check if the new email already exists
     if User.objects.exclude(id=pk).filter(email=new_email).exists():
@@ -500,6 +501,7 @@ def updateUser(request, pk):
     serializer = UserSerializer(instance=user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
+        Attendance.objects.filter(user_id=pk).update(user=new_name)        
         return Response({'status': 'success', 'message': 'User Updated'}, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'error', 'message': 'Validation Error', 'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)  
@@ -516,14 +518,22 @@ def delUser(request,pk):
 
 @api_view(['GET'])
 @jwt_authorization
-def customer_record(request,pk):   
-    items = User.objects.get(id=pk)
-    if items is not None:
-        serializer = UserSerializer(items)
-        return Response(serializer.data)
-    else:
-        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+def customer_record(request, pk):   
+    try:
+        user = User.objects.get(id=pk)
+        admin = Admin.objects.get(companyCode=user.companyCode)
+        company = admin.companyName
 
+        serializer = UserSerializer(user)
+        data = serializer.data
+        data['company'] = company  # Include company in the response data
+
+        return Response(data)
+    except User.DoesNotExist:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+    except Admin.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Admin not found'}, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['GET'])
 @jwt_authorization
 def customer_record_pending(request,pk):   
