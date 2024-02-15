@@ -24,6 +24,7 @@ import torch
 import numpy as np
 from django.http import JsonResponse
 from datetime import date
+from django.utils import timezone
 
 
 # Load pre-trained InceptionResnetV1 model
@@ -598,9 +599,10 @@ def deny(request, pk):
     return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
  
 @api_view(['GET'])
-def get_attendance(request,pk):
-    items = Attendance.objects.filter(user_id=pk)
-    serializer = AttendanceSerializer(items,many=True)
+def get_attendance(request, pk):
+    current_date = timezone.now().date()  
+    items = Attendance.objects.filter(user_id=pk, date__lte=current_date)
+    serializer = AttendanceSerializer(items, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])

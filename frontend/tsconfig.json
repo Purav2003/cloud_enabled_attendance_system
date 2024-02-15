@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/navbar.jsx", "src/app/signup/page.jsx", "src/app/camera/page.jsx"  ],
+, "src/app/navbar.jsx", "src/app/signup/page.jsx", "src/app/camera/page.jsx", "src/app/leave/RecentLeave.jsx"  ],
   "exclude": [
     "node_modules"
   ]

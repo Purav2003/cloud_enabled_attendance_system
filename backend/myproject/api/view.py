@@ -2,11 +2,14 @@ from django.core.files.storage import FileSystemStorage
 from datetime import date
 from collections import defaultdict
 from datetime import datetime, timedelta
-from base.models import Attendance
+from base.models import Attendance,Leave,User
 from rest_framework.response import Response    
 from rest_framework.decorators import api_view
 from datetime import datetime
-from .serializers import UserSerializer,AdminSerializer,AttendanceSerializer
+from .serializers import UserSerializer,LeaveSerializer,AttendanceSerializer
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+
  
 @api_view(['GET'])
 def last_5_days_attendance(request,pk):
@@ -47,7 +50,142 @@ def last_5_days_attendance(request,pk):
 
 @api_view(['GET'])
 def date_absent(request,pk):
-    items = Attendance.objects.filter(user_id=pk,attendance=False)
+    items = Attendance.objects.filter(user_id=pk,attendance=False, onLeave=False)
     serializer = AttendanceSerializer(items,many=True)
     dates = [item['date'] for item in serializer.data]
     return Response(dates)
+
+@api_view(['GET'])
+def date_leave(request,pk):
+    items = Attendance.objects.filter(user_id=pk,attendance=False, onLeave=True)
+    serializer = AttendanceSerializer(items,many=True)    
+    dates = [item['date'] for item in serializer.data]
+    return Response(dates)
+
+
+
+@api_view(['GET'])
+def leave_remaining(request, pk):
+    leave_counts = {
+        'Sick Leave': 7,
+        'Casual Leave': 7,
+        'Privileged Leave': 3,
+        'Paternity Leave': 15
+    }
+
+    used_leave_counts = {leave_type: Leave.objects.filter(user_id=pk, status="Approved",leave_type=leave_type).count() for leave_type in leave_counts}
+
+    remaining_counts = {leave_type: leave_counts[leave_type] - used_leave_counts.get(leave_type, 0) for leave_type in leave_counts}
+
+    response_data = {
+        'Sick Leave': {
+            'total': leave_counts['Sick Leave'],
+            'remaining': remaining_counts['Sick Leave']
+        },
+        'Casual Leave': {
+            'total': leave_counts['Casual Leave'],
+            'remaining': remaining_counts['Casual Leave']
+        },
+        'Privileged Leave': {
+            'total': leave_counts['Privileged Leave'],
+            'remaining': remaining_counts['Privileged Leave']
+        },
+        'Paternity Leave': {
+            'total': leave_counts['Paternity Leave'],
+            'remaining': remaining_counts['Paternity Leave']
+        }
+    }
+
+    return Response(response_data)
+
+@api_view(['POST'])
+def leave_application(request):
+    serializer = LeaveSerializer(data=request.data)
+    if serializer.is_valid():    
+        serializer.save()
+        return Response({'status': 'success', 'message': 'Leave Applied successfully'}, status=status.HTTP_201_CREATED)      
+    return Response({'status': 'error', 'message': 'Failed to add data'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    
+
+@api_view(['GET'])
+def leave_user(request, pk):
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    items = Leave.objects.filter(user_id=pk, timestamp__month=current_month, timestamp__year=current_year)
+    serializer = LeaveSerializer(items, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def leave_user_pending(request):
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    items = Leave.objects.filter(status="Pending", timestamp__month=current_month, timestamp__year=current_year)
+    serializer = LeaveSerializer(items, many=True)  
+    for leave_data in serializer.data:
+        user_id = leave_data['user_id']
+        user = User.objects.get(id=user_id)  
+        leave_data['user_name'] = user.name  
+      
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def leave_user_approved(request):
+    current_month = datetime.now().month
+    current_year = datetime.now().year
+    items = Leave.objects.filter(status="Leave Granted", timestamp__month=current_month, timestamp__year=current_year)
+    serializer = LeaveSerializer(items, many=True)  
+    for leave_data in serializer.data:
+        user_id = leave_data['user_id']
+        user = User.objects.get(id=user_id)  
+        leave_data['user_name'] = user.name  
+      
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def leave_status_update_approve(request, pk):
+    try:
+        leave = get_object_or_404(Leave, id=pk)
+    except Leave.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Leave not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    leave.status = "Leave Granted"
+    leave.save()    
+    
+    start_date = leave.start_date
+    end_date = leave.end_date
+    user_id = leave.user_id
+    user = get_object_or_404(User, id=user_id)
+    name = user.name
+    company_code = user.companyCode 
+    print(start_date)
+    
+    for current_date in range((end_date - start_date).days + 1):
+        current_date = start_date + timedelta(days=current_date)
+        
+        attendance, created = Attendance.objects.get_or_create(
+            user_id=user_id,
+            date=current_date,
+            user=name,
+            onLeave=True, 
+            companyCode= company_code
+        )
+        if not created:
+            attendance.onLeave = True
+            attendance.companyCode = company_code
+            attendance.save()
+
+    
+    return Response({'status': 'success', 'message': 'Leave Approved'}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def leave_status_update_deny(request,pk):
+    try:
+        leave = Leave.objects.get(id=pk)
+    except User.DoesNotExist:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    leave.status = "Leave Denied"
+    leave.save()    
+    return Response({'status': 'success', 'message': 'Leave Denied'}, status=status.HTTP_200_OK)
+ 

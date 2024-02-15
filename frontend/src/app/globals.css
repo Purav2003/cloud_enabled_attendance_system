@@ -41,3 +41,71 @@ a:hover{
   width: 30px !important;
   margin-top: 6% !important;
 }
+
+
+/* NAVBAR */
+/* Sidebar Component CSS */
+
+/* Hamburger Menu */
+.hamburger-menu {
+  display: none; /* Initially hide the hamburger menu */
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hamburger-menu.open .line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-menu.open .line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-menu.open .line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.line {
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  margin: 5px auto;
+  transition: all 0.3s ease;
+}
+
+/* Menu Items */
+.menu-items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.menu-items.show {
+  display: flex; /* Show the menu items */
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 70%; /* Adjust as needed */
+  background-color: #fff;
+  padding: 2rem;
+  z-index: 9;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+}
+
+.menu-items a {
+  text-decoration: none;
+  color: #333;
+}
+
+.menu-items h3 {
+  margin: 0;
+}
+
+.menu-items h3:hover {
+  background-color: #4a90e2;
+  color: #fff;
+  border-radius: 0.25rem;
+}

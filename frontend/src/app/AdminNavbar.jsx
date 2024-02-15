@@ -10,6 +10,7 @@ const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', current: true },
   { name: 'Users', href: '/admin/users', current: false },
   { name: 'Attendance', href: '/admin/attendance', current: false },
+  { name: 'Leave', href: '/admin/leave', current: false },
   { name: 'Profile', href: '/admin/profile', current: false },
   { name: 'Logout', href: '/admin/logout', current: false },
 ]

@@ -22,5 +22,13 @@ urlpatterns = [
     path('api/lastFiveDaysAttendance/<int:pk>',view.last_5_days_attendance),
     path('api/dayAttendance/<int:pk>/<str:dk>',views.date_attendance),
     path('api/absent/<int:pk>',view.date_absent),
+    path('api/leave/<int:pk>',view.date_leave),
+    path('api/leaveRemaining/<int:pk>',view.leave_remaining),
+    path('api/leaveApplication',view.leave_application),
+    path('api/leaveHistory/<int:pk>',view.leave_user),
+    path('api/leaveStatus/pending',view.leave_user_pending),
+    path('api/leaveStatus/approved',view.leave_user_approved),
+    path('api/leaveUpdateStatus/approved/<int:pk>',view.leave_status_update_approve),
+    path('api/leaveUpdateStatus/denied/<int:pk>',view.leave_status_update_deny),
 ]
 

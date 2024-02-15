@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from base.models import User, Admin,Attendance
+from base.models import User, Admin,Attendance,Leave
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
@@ -24,4 +24,9 @@ class AdminSerializer(UserSerializer):
 class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendance
+        fields = '__all__'
+
+class LeaveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Leave
         fields = '__all__'

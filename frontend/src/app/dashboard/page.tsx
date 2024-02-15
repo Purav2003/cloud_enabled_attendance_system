@@ -15,7 +15,7 @@ interface UserData {
 
 export default function Dashboard() {
   const [data, setData] = useState<UserData[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);  
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
   const fetchData = async () => {
@@ -66,9 +66,9 @@ export default function Dashboard() {
 
   return (
     <div className="flex w-full">
-      <Sidebar/>
-      <div className="ml-16 mt-8 w-full">
-              <h1 className="text-3xl ml-12 font-bold text-gray-800 mb-6">	🏠 Dashboard</h1>
+      <Sidebar />
+      <div className="lg:ml-16 mt-8 w-full">
+        <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 mb-6">	🏠 Dashboard</h1>
         <Cards />
         <div className="flex-grow py-10 px-12">
           <div className="mx-auto flex justify-between">
@@ -86,13 +86,20 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {currentItems.map((data,index) => (
+                    {currentItems.map((data, index) => (
                       <tr key={data.id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance?data.time?.split(".")[0]:""}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center`}><span className={`${data.attendance ? "bg-green-600" : "bg-red-400"} px-3 py-2 rounded-md`}>{data.attendance ? "Present" : "Absent"}</span></td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.time?.split(".")[0] : "-------"}</td>
+                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center `}>
+                          <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} px-3 py-2 rounded-md inline-block w-24`}>
+                            {
+                              data?.onLeave ? "On Leave" : data?.attendance ? "Present" : "Absent"
+                            }
+                          </span>
+                        </td>
+
                       </tr>
                     ))}
                   </tbody>
@@ -116,7 +123,7 @@ export default function Dashboard() {
             </div>
             <div>
               <div className="bg-white rounded-md mt-[-30px]">
-               <Calendars />
+                <Calendars />
               </div>
             </div>
           </div>

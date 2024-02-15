@@ -88,8 +88,8 @@ const id = localStorage.getItem("id");
   }, [showModal]);
 
   return (
-    <div className="w-full flex">
-      <Sidebar/>
+    <div className="w-full flex relative ">
+      <Sidebar />
     <div className="w-full ml-12">
       <div className="min-h-screen w-full items-center justify-center bg-white font-sans">
 

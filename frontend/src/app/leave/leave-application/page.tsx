@@ -1,0 +1,200 @@
+"use client";
+import React, { useState, useEffect } from 'react';
+import Sidebar from "../../Sidebar";
+import { toast, Toaster } from 'react-hot-toast';
+import Link from "next/link";
+
+const LeaveApply = () => {
+    const [formData, setFormData] = useState({
+        leaveType: '',
+        startDate: '',
+        endDate: '',
+        reason: ''
+    });
+    const [remainingLeaves, setRemainingLeaves] = useState({});
+
+    useEffect(() => {
+        const fetchRemainingLeaves = async () => {
+            try {
+                const id = localStorage.getItem("id");
+                const response = await fetch(`http://localhost:8000/api/leaveRemaining/${id}`);
+                const data = await response.json();
+                setRemainingLeaves(data);
+            } catch (error) {
+                console.error("Error fetching remaining leaves:", error);
+            }
+        };
+
+        fetchRemainingLeaves();
+    }, []);
+
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Check if the user has sufficient leave balance
+        const remainingLeaveCount = remainingLeaves[formData.leaveType].remaining;
+        console.log(remainingLeaveCount);
+        // Parse start and end dates
+        const startDate = new Date(formData.startDate);
+        const endDate = new Date(formData.endDate);
+
+        // Check if start date is before end date
+       // Calculate the difference in days between start and end dates
+    let differenceInDays = 0;
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+        const dayOfWeek = currentDate.getDay();
+        // Exclude Saturdays (6) and Sundays (0)
+        if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+            differenceInDays++;
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    // Check if the user has sufficient leave balance for selected number of days
+    if (remainingLeaveCount < differenceInDays) {
+        return toast.error("You don't have enough leave balance for selected number of days");
+    }
+
+    // Check if start date is before end date
+    if (startDate >= endDate) {
+        return toast.error("End date should be after start date");
+    }
+
+    // Check if start and end dates are in the past
+    const today = new Date().setHours(0, 0, 0, 0);
+    if (startDate < today || endDate < today) {
+        return toast.error("Start and end dates should be in the future");
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append('user_id', localStorage.getItem("id"));
+    formDataToSend.append('start_date', formData.startDate);
+    formDataToSend.append('end_date', formData.endDate);
+    formDataToSend.append('reason', formData.reason);
+    formDataToSend.append('leave_type', formData.leaveType);
+
+        try {
+            const response = await fetch('http://localhost:8000/api/leaveApplication', {
+                method: "POST",
+                body: formDataToSend,
+            });
+            const data = await response.json();
+            if (data.status === "success") {
+                setFormData({
+                    leaveType: '',
+                    startDate: '',
+                    endDate: '',
+                    reason: ''
+                });
+                toast.success(data.message);
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            console.error("Error submitting leave application:", error);
+            toast.error("Something went wrong");
+        }
+    };
+
+    return (
+        <div className='flex'>
+            <Sidebar />
+            <div className="container mx-auto p-8 ml-16">
+                <Toaster />
+                <h1 className="text-3xl font-bold text-gray-800 mb-6">Apply For Leave</h1>
+                <div>
+                    <form onSubmit={handleSubmit} className='mt-12 max-w-xl'>
+                        <div className="mb-4">
+                            <label htmlFor="leaveType" className="block text-sm font-medium text-gray-700">
+                                Leave Type
+                            </label>
+                            <select
+                                id="leaveType"
+                                name="leaveType"
+                                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                value={formData.leaveType}
+                                onChange={handleInputChange}
+                                required
+                            >
+                                <option value="">Select Leave Type</option>
+                                <option value="Sick Leave">Sick Leave</option>
+                                <option value="Casual Leave">Casual Leave</option>
+                                <option value="Privileged Leave">Privileged Leave</option>
+                                <option value="Paternity Leave">Paternity Leave</option>
+                            </select>
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+                                Start Date
+                            </label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                name="startDate"
+                                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                value={formData.startDate}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+                                End Date
+                            </label>
+                            <input
+                                type="date"
+                                id="endDate"
+                                name="endDate"
+                                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                value={formData.endDate}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="reason" className="block text-sm font-medium text-gray-700">
+                                Reason
+                            </label>
+                            <input
+                                type="text"
+                                id="reason"
+                                name="reason"
+                                className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                placeholder="Enter your reason"
+                                value={formData.reason}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className='flex'>
+                            <Link href="/leave" className='w-full'><button
+                                type="button"
+                                className="w-full py-2 px-4 border rounded-md text-white bg-green-500 hover:bg-green-600"
+                            >
+                                Go Back
+                            </button>
+                            </Link>
+                            <button
+                                type="submit"
+                                className="w-full py-2 px-4 border rounded-md text-white bg-blue-500 hover:bg-blue-600"
+                            >
+                                Apply
+                            </button>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default LeaveApply;
