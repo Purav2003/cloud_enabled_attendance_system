@@ -108,9 +108,11 @@ const ApproveData = () => {
     }, [authData]);
 
     return (
+        <>
+        {approveData?.length > 0 ? (
         <div className="py-4 px-12">
             <h1 className="font-bold text-2xl pb-4">Pending Requests</h1>
-            {approveData?.length > 0 ? (
+        
                 <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 text-white">
                         <tr>
@@ -159,12 +161,12 @@ const ApproveData = () => {
                         ))}
                     </tbody>
                 </table>
-            ) : (
-                <div>
-                    <h1 className="text-center m-12">There are no Pending Requests </h1>
-                </div>
-            )}
-        </div>
+             
+        </div>): (
+            <div>
+                {/* <h1 className="text-center m-12">There are no Pending Requests </h1> */}
+            </div>
+        )}</>
     );
 };
 

@@ -44,7 +44,9 @@ const Attendance = () => {
         });
 
         setPresentCount(presentCount);
+        localStorage.setItem("presentCount", presentCount.toString());
         setAbsentCount(absentCount);
+        localStorage.setItem("absentCount", absentCount.toString());
     }, [data]);
 
     const pieChartData = [

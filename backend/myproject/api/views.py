@@ -607,7 +607,7 @@ def get_attendance(request, pk):
 
 @api_view(['GET'])
 def all_attendance(request,pk):
-    items = Attendance.objects.filter(companyCode=pk)
+    items = Attendance.objects.filter(companyCode=pk,date=timezone.now().date())
     serializer = AttendanceSerializer(items,many=True)
     return Response(serializer.data)
 

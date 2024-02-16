@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import ApproveData from './ApproveDatas'
 import Adminnavbar from '@/app/AdminNavbar';
+import DashCards from "./Cards";
 import AllUsers from './AllUsers';
 const AdminDashboard = () => {
 
@@ -21,6 +22,7 @@ const AdminDashboard = () => {
         <div>
             <Adminnavbar />
             <br></br><br></br><br></br><br></br>
+            <DashCards /><br></br><br></br>
             <ApproveData />
             <br></br><br></br>
             <AllUsers />
