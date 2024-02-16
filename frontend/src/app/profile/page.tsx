@@ -7,6 +7,7 @@ import Footer from '../footer';
 import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
+import Loading from "../../loading"
 interface UserData {
   name: string;
   email: string;
@@ -17,6 +18,7 @@ interface UserData {
 const Profile = () => {
   const [data, setData] = useState<UserData | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -52,6 +54,7 @@ const id = localStorage.getItem("id");
         mobile: data_new.mobile,
         department: data_new.department,
       });
+      setLoading(false);
       console.log(data_new);
     } catch (error) {
       console.error(error);
@@ -102,7 +105,7 @@ const id = localStorage.getItem("id");
         <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">👨🏻‍💻 User Profile</h1>
 
-          <div className="lg:flex sm:flex items-center space-x-4">
+       {loading?<Loading />:<div className="lg:flex sm:flex items-center space-x-4">
             <div
               className="lg:flex items-center justify-center cursor-pointer"
               onClick={() => setShowModal(true)}
@@ -159,7 +162,7 @@ const id = localStorage.getItem("id");
                 <Link href={`/profile/editProfile/${id}`}><button className="px-4 py-2 border border-green-500 bg-green-500 text-white rounded-md">Edit Profile</button></Link>
               </div>
             </div>
-          </div>
+          </div>}
         </div>
         </div>
 

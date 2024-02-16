@@ -26,7 +26,6 @@ from django.http import JsonResponse
 from datetime import date
 from django.utils import timezone
 
-
 # Load pre-trained InceptionResnetV1 model
 model = InceptionResnetV1(pretrained='vggface2').eval()
 
@@ -470,7 +469,7 @@ def checkOtp(request,pk):
         return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'error', 'message': 'Wrong OTP'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 @api_view(['PUT'])
 def updateUser(request, pk):
     try:

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from . import view
+
 urlpatterns = [
     path('api/all/<int:pk>',views.getData),
     path('api/access/<int:pk>',views.access),

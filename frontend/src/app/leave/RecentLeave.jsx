@@ -41,12 +41,12 @@ const RecentLeave = () => {
       };
     
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto p-8">
             <h1 className="text-lg font-semibold text-gray-800 mb-6">This Month's Leave Applications</h1>
             {loading ? (
                 <Loading />
-            ) : (
-                <div className='max-w-3xl'>
+            ) : currentItems.length===0?<div className="text-center p-16 text-gray-500">No Leave Application this month</div>: (
+                <div className='w-full'>
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>

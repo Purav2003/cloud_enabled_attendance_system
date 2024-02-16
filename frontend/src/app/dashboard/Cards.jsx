@@ -7,11 +7,12 @@ import { useState, useEffect } from "react";
 import { IoHandLeftOutline } from "react-icons/io5";
 import { ImTree } from "react-icons/im";
 import { LiaUsersSolid } from "react-icons/lia";
+import Loading from "../../loading"
 
 
 const Cards = () => {
     const [data, setData] = useState(null);
-
+    const [loading, setLoading] = useState(true);
 
     const id = localStorage.getItem("id");
 
@@ -32,7 +33,7 @@ const Cards = () => {
             });
             const data_new = await response.json();
             setData(data_new);
-
+            setLoading(false);
 
             console.log(data_new);
         } catch (error) {
@@ -61,7 +62,7 @@ const Cards = () => {
 
     return (
         <div>
-            <div className="w-full justify-between lg:flex px-12">
+           {loading?<Loading />: <div className="w-full justify-between lg:flex px-12">
                 <div className="w-1/4 shadow shadow-lg rounded-lg flex p-4 bg-[#FEF4E4] items-center">
                     <div>
                         <img src={`http://localhost:8000${data?.profilePhoto}`} className="h-16 object-cover w-16 rounded-full" />
@@ -89,7 +90,7 @@ const Cards = () => {
                     </div>
                     <div><h1 className="text-xl font-bold pl-4">Department<br></br><span className="text-sm font-thin">{data?.department}</span></h1></div>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }

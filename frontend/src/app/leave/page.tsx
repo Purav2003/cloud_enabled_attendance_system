@@ -17,7 +17,7 @@ const Leave = () => {
                     <div>
                         <LeaveRemaining />
                     </div>                   
-                    <div className="pl-8">
+                    <div>
                         <RecentLeave />
                     </div>
                 </div>

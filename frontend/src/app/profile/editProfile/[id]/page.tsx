@@ -6,6 +6,7 @@ import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
 import Footer from "@/app/footer";
 import Sidebar from "@/app/Sidebar";
+import Loading from "../../../../loading"
 interface UserData {
   name: string;
   email: string;
@@ -17,6 +18,7 @@ const EditProfile = ({ id }) => {
   const [data, setData] = useState<UserData | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -98,6 +100,7 @@ const EditProfile = ({ id }) => {
         department: data_new.department,
       });
       console.log(data_new);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -191,7 +194,7 @@ const EditProfile = ({ id }) => {
       <div className="bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Edit Your Profile</h1>
 
-        <div className="flex items-center">
+{loading?<Loading />:        <div className="flex items-center">
           <div className="flex-1">
             <label htmlFor="profile-photo" className="cursor-pointer">
               {selectedFile ? (
@@ -312,7 +315,7 @@ const EditProfile = ({ id }) => {
             </div>
           </form>
         </div>
-      </div>
+      </div>}
     </div>
 
 

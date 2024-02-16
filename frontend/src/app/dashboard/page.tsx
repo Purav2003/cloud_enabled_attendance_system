@@ -6,6 +6,7 @@ import Calendars from './Calendar'
 import "rsuite/dist/rsuite.min.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Cards from "./Cards";
+import Loading from '../../loading'
 interface UserData {
   id: number;
   date: string;
@@ -16,6 +17,7 @@ interface UserData {
 export default function Dashboard() {
   const [data, setData] = useState<UserData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 5;
 
   const fetchData = async () => {
@@ -30,7 +32,7 @@ export default function Dashboard() {
       });
       const result = await response.json();
       setData(result.reverse());
-      console.log(result) // Reverse the data array
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -41,6 +43,7 @@ export default function Dashboard() {
     if (!token) {
       window.location.replace("/login");
     } else {
+      setLoading(true);
       fetchData();
       // Fetch user's name  
     }
@@ -73,9 +76,11 @@ export default function Dashboard() {
         <div className="flex-grow py-10 px-12">
           <div className="mx-auto flex justify-between">
             <div className="w-3/4 mr-6">
-
+              { loading ? <Loading /> :
+                data?.length === 0 ? <div className="text-center p-32 text-gray-500">No attendance data available</div> :
               <div className="overflow-hidden rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+              
+              <table className="min-w-full divide-y divide-gray-200">
                   <thead>
                     <tr>
                       <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
@@ -104,6 +109,7 @@ export default function Dashboard() {
                     ))}
                   </tbody>
                 </table>
+                
                 <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200 sm:px-6">
                   <div className="text-sm text-gray-700">
                     Page {currentPage} of {totalPages}
@@ -120,7 +126,9 @@ export default function Dashboard() {
                   </div>
                 </div>
               </div>
+              }
             </div>
+
             <div>
               <div className="bg-white rounded-md mt-[-30px]">
                 <Calendars />
