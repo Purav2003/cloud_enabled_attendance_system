@@ -1,17 +1,21 @@
 "use client"
 import Footer from '../footer'
 import Sidebar from "../Sidebar"
-export default function Report(){
-    return(
-<div className="flex"> 
-        <Sidebar />
-        <div className='w-full min-h-screen'>
-            <div>
-                <h1 className="flex justify-center items-center text-[40px] font-bold">📊 Report</h1>
+import { PiChartLineThin } from "react-icons/pi";
+
+
+export default function Report() {
+    return (
+        <div className="flex w-full">
+            <Sidebar />
+            <div className='lg:ml-16 w-full'>
+                <div className="mt-8 w-full">
+                    <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 flex items-center mb-6"><PiChartLineThin />&nbsp; Report</h1>
+                </div>
+                <Footer />
             </div>
-        <Footer />
         </div>
-</div>
+
 
     )
 }

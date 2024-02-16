@@ -7,6 +7,8 @@ import "rsuite/dist/rsuite.min.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Cards from "./Cards";
 import Loading from '../../loading'
+import { LuLayoutDashboard } from "react-icons/lu";
+
 interface UserData {
   id: number;
   date: string;
@@ -74,7 +76,7 @@ export default function Dashboard() {
     <div className="flex w-full">
       <Sidebar />
       <div className="lg:ml-16 mt-8 w-full">
-        <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 mb-6">	🏠 Dashboard</h1>
+        <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 flex items-center mb-6"><LuLayoutDashboard />&nbsp; Dashboard</h1>
         <Cards />
         <div className="flex-grow py-10 px-12">
           <div className="mx-auto flex justify-between">
