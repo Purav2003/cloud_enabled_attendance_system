@@ -47,7 +47,7 @@ const ApprovedLeave = () => {
       <h1 className="font-bold text-2xl pb-4">Approved Leave Requests</h1>
             {loading ? (
                 <Loading />
-            ) : (
+            ) : currentItems.length===0?            <h1 className="text-center m-12 pt-8">There are no Approved Leave Requests </h1>:(
                 <div className='max-w-3xl'>
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead>

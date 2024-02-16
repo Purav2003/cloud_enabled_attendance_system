@@ -97,7 +97,10 @@ const Users = () => {
                             required
                         />
             </div><br></br><br></br>
-          { loading?<Loading />:<div className="grid grid-cols-4">
+          { loading?<Loading />:data?.length===0?
+                      <h1 className="text-center m-12 pt-8">There are no Users </h1>
+
+          :<div className="grid grid-cols-4">
 
                 {
                 data?.map((item) => {

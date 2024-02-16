@@ -121,6 +121,7 @@ const Attendance = () => {
                     <div className='lg:flex justify-between'>
                         <div className='lg:w-[60%]'>
                             <h1 className='pb-4 font-semibold text-xl'>Today's Attendance</h1>
+                            {data?.length===0?            <h1 className="text-center m-12 pt-8">There is No Attendance Data For Today </h1>:
                             <div className="overflow-x-auto">
                                 <div>
                                     <Table>
@@ -138,9 +139,7 @@ const Attendance = () => {
                                         </TableBody>
                                     </Table>
                                 </div>
-                            </div>
-
-                            <div className='w-full lg:flex justify-between mt-4'>
+                                <div className='w-full lg:flex justify-between mt-4'>
                                 {/* Pagination */}
                                 <div className="flex items-center space-x-2">
                                     <span>Page No: {currentPage} | {totalPages}</span>
@@ -149,6 +148,9 @@ const Attendance = () => {
                                 </div>
                                 <button onClick={generateCSV} className='px-4 mt-4 lg:mt-0 py-2 bg-blue-600 rounded-md flex items-center text-white'><HiArrowDown className="mr-2" />Download CSV</button>
                             </div>
+                            </div>}
+
+                           
                         </div>
                         <div className='lg:w-[40%] lg:grid items-center justify-center'>
                             <div className="p-4 lg:fixed">
@@ -167,7 +169,7 @@ const Attendance = () => {
                                         height={200} 
                                     /></div>
                                 ) : (
-                                    <Typography variant="body1">No data available</Typography>
+                                    <Typography variant="body1" className='text-center m-12 pt-8'>No data available</Typography>
                                     )}
                                     </div>
                             </div>

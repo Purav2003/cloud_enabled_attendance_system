@@ -86,7 +86,12 @@ const EditProfile = ({ id }) => {
         },
       });
       const data_new: UserData = await response.json();
+      if(data_new.status === "error"){
+        toast.error(data_new.message)
+      }
+
       setData(data_new);
+
       setFormDataone({
         name: data_new.name,
         email: data_new.email,
@@ -171,6 +176,10 @@ const EditProfile = ({ id }) => {
   }, []);
 
   useEffect(() => {
+    const companyName = localStorage.getItem("companyName");
+    if (companyName) {
+      window.location.replace('/admin/dashboard');
+    }
     if (showModal) {
       document.body.classList.add('overflow-hidden');
     } else {

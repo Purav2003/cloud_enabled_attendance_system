@@ -78,9 +78,14 @@ const Verification = () => {
 
   useEffect(() => {
     const otpVerified = localStorage.getItem('otpVerified');
+    const companyName = localStorage.getItem('companyName');
     if (otpVerified === 'true') {
       window.location.replace('/login');
     }
+    if(companyName){
+      window.location.replace("/admin/dashboard");
+    }
+
   }, []);
 
   return (

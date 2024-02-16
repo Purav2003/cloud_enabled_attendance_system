@@ -9,11 +9,9 @@ def jwt_authorization(view_func):
         jwt_token = request.headers.get('Authorization')
         if jwt_token:
            
-            print("hiiiiiiiiii", settings.SECRET_KEY)            
             try:
                 # Decode and verify the token
                 decoded_token = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms=['HS256'])
-                print("hiiiiiiiiii", decoded_token)
                 # You can do additional checks on the decoded token here
 
             except jwt.ExpiredSignatureError:

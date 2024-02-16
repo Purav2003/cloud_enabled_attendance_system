@@ -57,7 +57,10 @@ const Last = () => {
             </div>
             {
                 loading ? <div className='flex justify-center items-center h-64'><Loading /></div> :
-                    <div className='flex flex-col lg:w-[60%] pl-6'>
+                    data?.length===0?
+                    <h1 className="text-center w-[60%] m-12 pt-8">No Data Available </h1>
+
+                    :<div className='flex flex-col lg:w-[60%] pl-6'>
                         <div className='overflow-x-auto'>
                             <Table>
                                 <TableHead>

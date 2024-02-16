@@ -40,12 +40,15 @@ export default function Dashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const companyName = localStorage.getItem("companyName");
+    if(companyName){
+      window.location.replace("/admin/dashboard");
+    }
     if (!token) {
       window.location.replace("/login");
     } else {
       setLoading(true);
       fetchData();
-      // Fetch user's name  
     }
   }, []);
 

@@ -13,6 +13,22 @@ const LeaveApply = () => {
     });
     const [remainingLeaves, setRemainingLeaves] = useState({});
 
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        const companyName = localStorage.getItem("companyName")
+        if (!token) {
+            window.location.replace('/login')
+        }
+        if (companyName) {
+            window.location.replace('/admin/dashboard')
+        }
+        const userData = localStorage.getItem("isAuthorized")
+    
+        if(userData === "sendRequest"){
+          window.location.replace('/landing')
+      }
+    },[])
+
     useEffect(() => {
         const fetchRemainingLeaves = async () => {
             try {
@@ -38,15 +54,12 @@ const LeaveApply = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check if the user has sufficient leave balance
         const remainingLeaveCount = remainingLeaves[formData.leaveType].remaining;
         console.log(remainingLeaveCount);
-        // Parse start and end dates
+
         const startDate = new Date(formData.startDate);
         const endDate = new Date(formData.endDate);
 
-        // Check if start date is before end date
-       // Calculate the difference in days between start and end dates
     let differenceInDays = 0;
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {

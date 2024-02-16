@@ -25,6 +25,7 @@ import numpy as np
 from django.http import JsonResponse
 from datetime import date
 from django.utils import timezone
+from django.conf import settings
 
 # Load pre-trained InceptionResnetV1 model
 model = InceptionResnetV1(pretrained='vggface2').eval()
@@ -471,6 +472,7 @@ def checkOtp(request,pk):
         return Response({'status': 'error', 'message': 'Wrong OTP'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
+@jwt_authorization
 def updateUser(request, pk):
     try:
         user = User.objects.get(id=pk)
@@ -520,7 +522,19 @@ def delUser(request,pk):
 @api_view(['GET'])
 @jwt_authorization
 def customer_record(request, pk):   
+    token = request.headers.get('Authorization')
     try:
+        decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+        user_id = decoded_token['id']
+        print(user_id)
+    
+    except jwt.InvalidTokenError:
+        pass        
+
+    if(pk!=user_id):
+        return Response({'status': 'error', 'message': 'Not Allowed'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:        
         user = User.objects.get(id=pk)
         admin = Admin.objects.get(companyCode=user.companyCode)
         company = admin.companyName

@@ -24,7 +24,7 @@ const AdminDashboard = () => {
             <br></br><br></br><br></br><br></br>
             <DashCards /><br></br><br></br>
             <ApproveData />
-            <br></br><br></br>
+            {/* <br></br><br></br> */}
             <AllUsers />
         </div>
     );

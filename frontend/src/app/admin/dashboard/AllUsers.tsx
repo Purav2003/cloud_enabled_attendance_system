@@ -5,6 +5,7 @@ import Loading from "../../../loading"
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast, Toaster } from "react-hot-toast";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 
 interface UserData {
@@ -20,6 +21,8 @@ const AllUsers = () => {
     const [authData, setAuthData] = useState()
     const [selectedValue, setSelectedValue] = useState('Request Approved');
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5);
     const handleButtonClick = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
@@ -32,7 +35,7 @@ const AllUsers = () => {
 
     const apiUrlData = selectedValue === 'All Users' ? 'all' : selectedValue === 'Request Approved' ? 'approved' : selectedValue === 'Request Denied' ? 'rejected' : 'all'
     const fetchData = async () => {
-        
+
         let companyCode = localStorage.getItem("companyCode");
         let idAsInt = parseInt(companyCode, 10);
         const API_URL = `http://localhost:8000/api/${apiUrlData}/${idAsInt}`;
@@ -60,6 +63,22 @@ const AllUsers = () => {
             setLoading(false)
         } catch (error) {
             console.error(error);
+        }
+    };
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(data?.length / itemsPerPage);
+    // Change page
+    const nextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
         }
     };
 
@@ -94,7 +113,7 @@ const AllUsers = () => {
 
     const editProfile = async (id) => {
         window.location.replace(`/admin/dashboard/edit/${id}`)
-    
+
     }
     useEffect(() => {
         setLoading(true)
@@ -108,7 +127,7 @@ const AllUsers = () => {
 
         }
         fetchData();
-    }, [authData,apiUrlData]);
+    }, [authData, apiUrlData]);
     return (
         <div className="py-4 px-12">
             <Toaster />
@@ -116,73 +135,73 @@ const AllUsers = () => {
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 
                 <div>
-                <button
-                    id="dropdownDefaultButton"
-                    data-dropdown-toggle="dropdown"
-                    className="text-black pr-5 py-2.5 text-center inline-flex items-center"
-                    type="button"
-                    onClick={handleButtonClick}
-                >
-                    <span className="ms-3">{selectedValue}</span>
-                    <svg
-                        className="w-2.5 h-2.5 ms-3"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 10 6"
+                    <button
+                        id="dropdownDefaultButton"
+                        data-dropdown-toggle="dropdown"
+                        className="text-black pr-5 py-2.5 text-center inline-flex items-center"
+                        type="button"
+                        onClick={handleButtonClick}
                     >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="m1 1 4 4 4-4"
-                        />
-                    </svg>
-                </button>
-                {isDropdownOpen && (
-                    <div
-                        id="dropdown"
-                        className="z-10 bg-gray-300 absolute divide-y divide-gray-100 rounded-lg shadow w-44  mt-2"
+                        <span className="ms-3">{selectedValue}</span>
+                        <svg
+                            className="w-2.5 h-2.5 ms-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 10 6"
                         >
-                        <ul
-                            className="py-2 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownDefaultButton"
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="m1 1 4 4 4-4"
+                            />
+                        </svg>
+                    </button>
+                    {isDropdownOpen && (
+                        <div
+                            id="dropdown"
+                            className="z-10 bg-gray-300 absolute divide-y divide-gray-100 rounded-lg shadow w-44  mt-2"
                         >
-                            <li>
-                                <a
-                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
-                                    onClick={() => handleItemClick('All Users')}
-                                >
-                                    All Users
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
-                                    onClick={() => handleItemClick('Request Approved')}
-                                >
-                                    Request Approved
-                                </a>
-                            </li>                            
-                            <li>
-                                <a
-                                    className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
-                                    onClick={() => handleItemClick('Request Denied')}
-                                >
-                                    Request Denied
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                )}
+                            <ul
+                                className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                aria-labelledby="dropdownDefaultButton"
+                            >
+                                <li>
+                                    <a
+                                        className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
+                                        onClick={() => handleItemClick('All Users')}
+                                    >
+                                        All Users
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
+                                        onClick={() => handleItemClick('Request Approved')}
+                                    >
+                                        Request Approved
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        className="block hover:cursor-pointer px-4 py-2 hover:bg-gray-100 text-black"
+                                        onClick={() => handleItemClick('Request Denied')}
+                                    >
+                                        Request Denied
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
                 </div>
                 <button onClick={fetchData} className="bg-gray-200 w-12 h-12 rounded-lg mb-2 flex justify-center items-center"><IoMdRefresh className="text-2xl" /></button>
             </div>
-            {loading ?       <Loading />
+            {loading ? <Loading />
 
- :
-                <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
+                :currentItems?.length===0?<div className="text-center p-16 text-gray-500">NO DATA</div>:
+                <> <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 text-white">
                         <tr>
                             <th scope="col" className="text-center px-6 py-3">
@@ -207,7 +226,7 @@ const AllUsers = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-[#eee]  overflow-scroll">
-                        {data?.map((item: UserData) => (
+                        {currentItems?.map((item: UserData) => (
                             <tr key={item.id} className="p-4  text-[#4a4a4a] items-center">
 
                                 <td className="p-4 text-center">{item.id}</td>
@@ -217,13 +236,35 @@ const AllUsers = () => {
                                 <td className="p-4 text-center">{item.mobile}</td>
                                 <td className="p-4 text-center">{item.department}</td>
                                 <td>
-                                    <button><FaRegEdit className="text-lg" onClick={()=>{editProfile(item.id)}}/></button>
+                                    <button><FaRegEdit className="text-lg" onClick={() => { editProfile(item.id) }} /></button>
                                     <button className="pl-4" onClick={deleteUser(item.id)}><RiDeleteBin6Line className="text-lg" /></button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
-                </table>}
+                   
+                     
+                </table>
+                    <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200 sm:px-6">
+                        <div className="text-sm text-gray-700">
+                            Page {currentPage} of {totalPages}
+                        </div>
+                        <div className="flex space-x-2">
+                            <button onClick={prevPage} disabled={currentPage === 1} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                                <SlArrowLeft className="w-4 h-4 mr-1" />
+                                Prev
+                            </button>
+                            <button onClick={nextPage} disabled={currentPage === totalPages} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                                Next
+                                <SlArrowRight className="w-4 h-4 ml-1" />
+                            </button>
+                        </div>
+                    </div>
+                </>
+
+
+            }
+
         </div>
     );
 }

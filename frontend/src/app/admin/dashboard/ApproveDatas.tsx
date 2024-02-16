@@ -160,7 +160,7 @@ const ApproveData = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </table><br></br><br></br>
              
         </div>): (
             <div>

@@ -66,11 +66,15 @@ const id = localStorage.getItem("id");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const companyName = localStorage.getItem("companyName");
     if (!token) {
       window.location.replace('/login');
     }
+    if(companyName){
+      window.location.replace("/admin/dashboard");
+    }
     const userData = localStorage.getItem("isAuthorized")
-
+    
     if(userData === "sendRequest"){
       window.location.replace('/landing')
   }
