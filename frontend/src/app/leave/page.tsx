@@ -28,7 +28,7 @@ const Leave = () => {
             <Sidebar />
             <div className="lg:ml-16 mt-8 w-full">
                 <div className="justify-between flex">
-                    <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 flex items-center mb-6"><GiMountains /> &nbsp;Leave Portal</h1>
+                    <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 flex items-center mb-6"><GiMountains /> &nbsp;     Leave Portal</h1>
                     <Link href="/leave/leave-application"><button className="mx-10 bg-red-400 text-white px-4 py-2 rounded-md">Apply For Leave</button></Link>
                 </div>
                 <div className="pl-4">
