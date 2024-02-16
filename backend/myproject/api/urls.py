@@ -26,8 +26,8 @@ urlpatterns = [
     path('api/leaveRemaining/<int:pk>',view.leave_remaining),
     path('api/leaveApplication',view.leave_application),
     path('api/leaveHistory/<int:pk>',view.leave_user),
-    path('api/leaveStatus/pending',view.leave_user_pending),
-    path('api/leaveStatus/approved',view.leave_user_approved),
+    path('api/leaveStatus/pending/<int:pk>',view.leave_user_pending),
+    path('api/leaveStatus/approved/<int:pk>',view.leave_user_approved),
     path('api/leaveUpdateStatus/approved/<int:pk>',view.leave_status_update_approve),
     path('api/leaveUpdateStatus/denied/<int:pk>',view.leave_status_update_deny),
 ]

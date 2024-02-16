@@ -57,7 +57,7 @@ const Attendance = () => {
         const csvContent = "data:text/csv;charset=utf-8," +
             "ID,Name,Time,Attendance\n" +
             data.filter((datas) => new Date(datas.date).toLocaleDateString() === new Date().toLocaleDateString()).map((datas, index) =>
-                `${index + 1},${datas.user},${datas.time?.split(".")[0]},${datas.attendance ? "Present" : "Absent"}`
+                `${index + 1},${datas.user},${datas.attendance ? data.time?.split(".")[0] : "-------"},${datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"}`
             ).join("\n");
         const encodedURI = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -77,12 +77,14 @@ const Attendance = () => {
             const date = new Date(datas.date);
 
             items.push(
-                <TableRow key={datas.id} className={datas.attendance ? "bg-green-100" : "bg-red-100"}>
+                <TableRow key={datas.id} className={datas?.onLeave ? "bg-blue-100" : datas?.attendance ? "bg-green-100" : "bg-red-100"}>
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{datas.user}</TableCell>
                     <TableCell>{datas.date.split("-").reverse().join("-")}</TableCell>
-                    <TableCell>{datas.time?.split(".")[0]}</TableCell>
-                    <TableCell>{datas.attendance ? "Present" : "Absent"}</TableCell>
+                    <TableCell>{datas.attendance ? data.time?.split(".")[0] : "-------"}</TableCell>
+                    <TableCell> {
+                              datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"
+                            }</TableCell>
                 </TableRow>
             );
         }

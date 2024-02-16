@@ -43,6 +43,7 @@ class Leave(models.Model):
     leave_type = models.CharField(max_length=100)
     reason = models.CharField(max_length=100)
     status = models.CharField(default="Pending",max_length=100)
+    companyCode = models.CharField(default="123456",max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return(f"{self.user_id} {self.start_date} {self.end_date} {self.reason}")

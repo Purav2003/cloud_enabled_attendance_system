@@ -46,7 +46,7 @@ const RecentLeave = () => {
             {loading ? (
                 <Loading />
             ) : (
-                <div className='max-w-2xl'>
+                <div className='max-w-3xl'>
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
@@ -54,6 +54,7 @@ const RecentLeave = () => {
                                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Leave Type</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Start Date</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">End Date</th>
+                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Reason </th>
                                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                             </tr>
                         </thead>
@@ -64,6 +65,7 @@ const RecentLeave = () => {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.leave_type}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.start_date.split('-').reverse().join('-')}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.end_date.split('-').reverse().join('-')}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.reason}</td>
                                     <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center`}>{data.status}</td>
                                 </tr>
                             ))}

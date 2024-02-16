@@ -42,6 +42,7 @@ const Login = () => {
                 localStorage.setItem("token", data.jwt);
                 localStorage.setItem("id", data.id);
                 localStorage.setItem("isAuthorized", data.isAuthorized);
+                localStorage.setItem("cc",data.companyCode)
                 console.log('Successfully logged in');
                 if (data.isAuthorized === "sendRequest") {
                     window.location.replace('/landing');

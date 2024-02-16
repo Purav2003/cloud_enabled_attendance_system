@@ -64,7 +64,7 @@ const LeaveApply = () => {
     }
 
     // Check if start date is before end date
-    if (startDate >= endDate) {
+    if (startDate > endDate) {
         return toast.error("End date should be after start date");
     }
 
@@ -80,6 +80,7 @@ const LeaveApply = () => {
     formDataToSend.append('end_date', formData.endDate);
     formDataToSend.append('reason', formData.reason);
     formDataToSend.append('leave_type', formData.leaveType);
+    formDataToSend.append('companyCode', localStorage.getItem("cc"));
 
         try {
             const response = await fetch('http://localhost:8000/api/leaveApplication', {
@@ -174,19 +175,19 @@ const LeaveApply = () => {
                                 required
                             />
                         </div>
-                        <div className='flex'>
+                        <div className='flex mt-8'>
                             <Link href="/leave" className='w-full'><button
                                 type="button"
-                                className="w-full py-2 px-4 border rounded-md text-white bg-green-500 hover:bg-green-600"
+                                className="py-2 px-4 w-32 border rounded-md text-white bg-green-500 hover:bg-green-600"
                             >
                                 Go Back
                             </button>
                             </Link>
                             <button
                                 type="submit"
-                                className="w-full py-2 px-4 border rounded-md text-white bg-blue-500 hover:bg-blue-600"
+                                className="py-2 px-4 w-32 border rounded-md text-white bg-blue-500 hover:bg-blue-600"
                             >
-                                Apply
+                                Submit
                             </button>
 
                         </div>

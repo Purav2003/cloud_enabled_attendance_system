@@ -14,9 +14,8 @@ class Command(BaseCommand):
         # Iterate over all users and mark their attendance as absent for today
         for user in User.objects.all():
             # Check if attendance entry for the user for today exists
-            attendance_entry = Attendance.objects.filter(user=user, date=today).first()
-
-            # If attendance entry doesn't exist, create a new one and mark as absent
+            attendance_entry = Attendance.objects.filter(user=user.name,companyCode = user.companyCode, date=today).first()
+            
             if not attendance_entry:
                 Attendance.objects.create(user=user.name, attendance=False, date=today,user_id=user.id,companyCode=user.companyCode)
                 self.stdout.write(self.style.SUCCESS(f"Attendance marked as absent for {user} for {today}"))

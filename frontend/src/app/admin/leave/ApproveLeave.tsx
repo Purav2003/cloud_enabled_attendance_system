@@ -7,7 +7,8 @@ import { toast, Toaster } from 'react-hot-toast';
 const ApproveLeave = () => {
   const [leave, setLeave] = useState([]);
   const fetchLeave = async () => {
-    const response = await fetch('http://localhost:8000/api/leaveStatus/pending');
+    const companyCode = localStorage.getItem("companyCode");
+    const response = await fetch(`http://localhost:8000/api/leaveStatus/pending/${companyCode}`);
     const data = await response.json();
     setLeave(data);
     console.log(data);

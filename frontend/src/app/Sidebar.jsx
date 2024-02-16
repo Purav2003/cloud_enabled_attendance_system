@@ -7,7 +7,7 @@ import { IoCalendarClearOutline } from "react-icons/io5";
 import { useState,useEffect } from "react";
 
 const Sidebar = () => {
-    const [route,setRoute] = useState('dashboard');
+    const [route,setRoute] = useState(' ');
     useEffect(()=>{
         const nav= window.location.href
         console.log(nav)

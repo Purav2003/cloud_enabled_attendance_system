@@ -9,7 +9,7 @@ from datetime import datetime
 from .serializers import UserSerializer,LeaveSerializer,AttendanceSerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-
+from django.utils import timezone
  
 @api_view(['GET'])
 def last_5_days_attendance(request,pk):
@@ -57,10 +57,11 @@ def date_absent(request,pk):
 
 @api_view(['GET'])
 def date_leave(request,pk):
-    items = Attendance.objects.filter(user_id=pk,attendance=False, onLeave=True)
+    items = Attendance.objects.filter(user_id=pk, onLeave=True)
     serializer = AttendanceSerializer(items,many=True)    
     dates = [item['date'] for item in serializer.data]
     return Response(dates)
+
 
 
 
@@ -73,8 +74,26 @@ def leave_remaining(request, pk):
         'Paternity Leave': 15
     }
 
-    used_leave_counts = {leave_type: Leave.objects.filter(user_id=pk, status="Approved",leave_type=leave_type).count() for leave_type in leave_counts}
+    # Initialize dictionary to store used leave counts
+    used_leave_counts = {leave_type: 0 for leave_type in leave_counts}
 
+    # Get today's date
+    today = timezone.now().date()
+
+    # Iterate over leave entries for the user
+    user_leave_entries = Leave.objects.filter(user_id=pk, status="Leave Granted")
+    for leave_entry in user_leave_entries:
+        leave_type = leave_entry.leave_type
+        start_date = leave_entry.start_date
+        end_date = leave_entry.end_date
+
+        # Calculate the total number of days for this leave entry
+        total_days = (end_date - start_date).days + 1  # Adding 1 to include both start and end dates
+
+        # Update the used leave counts for this leave type
+        used_leave_counts[leave_type] += total_days
+
+    # Calculate remaining leave counts
     remaining_counts = {leave_type: leave_counts[leave_type] - used_leave_counts.get(leave_type, 0) for leave_type in leave_counts}
 
     response_data = {
@@ -98,6 +117,7 @@ def leave_remaining(request, pk):
 
     return Response(response_data)
 
+
 @api_view(['POST'])
 def leave_application(request):
     serializer = LeaveSerializer(data=request.data)
@@ -117,10 +137,10 @@ def leave_user(request, pk):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def leave_user_pending(request):
+def leave_user_pending(request,pk):
     current_month = datetime.now().month
     current_year = datetime.now().year
-    items = Leave.objects.filter(status="Pending", timestamp__month=current_month, timestamp__year=current_year)
+    items = Leave.objects.filter(status="Pending",companyCode = pk ,timestamp__month=current_month, timestamp__year=current_year)
     serializer = LeaveSerializer(items, many=True)  
     for leave_data in serializer.data:
         user_id = leave_data['user_id']
@@ -130,10 +150,10 @@ def leave_user_pending(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def leave_user_approved(request):
+def leave_user_approved(request,pk):
     current_month = datetime.now().month
     current_year = datetime.now().year
-    items = Leave.objects.filter(status="Leave Granted", timestamp__month=current_month, timestamp__year=current_year)
+    items = Leave.objects.filter(status="Leave Granted", companyCode = pk, timestamp__month=current_month, timestamp__year=current_year)
     serializer = LeaveSerializer(items, many=True)  
     for leave_data in serializer.data:
         user_id = leave_data['user_id']

@@ -10,7 +10,8 @@ const ApprovedLeave = () => {
 
     const fetchLeave = async () => {
         const id = localStorage.getItem('id');
-        const response = await fetch(`http://localhost:8000/api/leaveStatus/approved`);
+        const companyCode = localStorage.getItem("companyCode");
+        const response = await fetch(`http://localhost:8000/api/leaveStatus/approved/${companyCode}`);
         const data = await response.json();
         setLeave(data);
         setLoading(false);

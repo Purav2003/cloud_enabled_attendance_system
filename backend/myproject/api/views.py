@@ -146,6 +146,7 @@ def login(request):
                 'status':'success',
                 'id':user.id,
                 'isAuthorized':user.isAuthorized,
+                'companyCode':user.companyCode,
             }
             return response
         else:
