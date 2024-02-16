@@ -1,12 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Sidebar from "../Sidebar"
+import Sidebar from "../Sidebar";
 import Footer from "../footer";
-import Calendars from './Calendar'
+import Calendars from "./Calendar";
 import "rsuite/dist/rsuite.min.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Cards from "./Cards";
-import Loading from '../../loading'
+import Loading from "../../loading";
 import { LuLayoutDashboard } from "react-icons/lu";
 
 interface UserData {
@@ -43,7 +43,7 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const companyName = localStorage.getItem("companyName");
-    if(companyName){
+    if (companyName) {
       window.location.replace("/admin/dashboard");
     }
     if (!token) {
@@ -71,77 +71,73 @@ export default function Dashboard() {
     }
   };
 
-
   return (
-    <div className="flex w-full">
+    <div className="flex flex-col lg:flex-row w-full">
       <Sidebar />
       <div className="lg:ml-16 mt-8 w-full">
         <h1 className="text-3xl lg:ml-12 font-bold text-gray-800 flex items-center mb-6"><LuLayoutDashboard />&nbsp; Dashboard</h1>
         <Cards />
-        <div className="flex-grow py-10 px-12">
-          <div className="mx-auto flex justify-between">
-            <div className="w-3/4 mr-6">
-              { loading ? <Loading /> :
+        <div className="flex-grow py-10 px-4 sm:px-8 md:px-12 lg:px-16">
+          <div className="mx-auto flex flex-col lg:flex-row justify-between">
+            <div className="w-full lg:w-3/4 mr-0 lg:mr-6 mb-8 lg:mb-0">
+              {loading ? <Loading /> :
                 data?.length === 0 ? <div className="text-center p-32 text-gray-500">No attendance data available</div> :
-              <div className="overflow-hidden rounded-lg">
-              
-              <table className="min-w-full divide-y divide-gray-200">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
-                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th>
-                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
-                      <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Attendance</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {currentItems.map((data, index) => (
-                      <tr key={data.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.time?.split(".")[0] : "-------"}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center `}>
-                          <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} px-3 py-2 rounded-md inline-block w-24`}>
-                            {
-                              data?.onLeave ? "On Leave" : data?.attendance ? "Present" : "Absent"
-                            }
-                          </span>
-                        </td>
+                  <div className="rounded-lg">
+                    <table className="w-full divide-y divide-gray-200 ">
+                      <thead>
+                        <tr>
+                          <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
+                          <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th>
+                          <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                          <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
+                          <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Attendance</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200">
+                        {currentItems.map((data, index) => (
+                          <tr key={data.id}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.time?.split(".")[0] : "-------"}</td>
+                            <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center `}>
+                              <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} px-3 py-2 rounded-md inline-block w-24`}>
+                                {
+                                  data?.onLeave ? "On Leave" : data?.attendance ? "Present" : "Absent"
+                                }
+                              </span>
+                            </td>
 
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                
-                <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200 sm:px-6">
-                  <div className="text-sm text-gray-700">
-                    Page {currentPage} of {totalPages}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div className="flex items-center justify-between px-6 py-4 bg-white border-t border-gray-200 sm:px-6">
+                      <div className="text-sm text-gray-700">
+                        Page {currentPage} of {totalPages}
+                      </div>
+                      <div className="flex space-x-2">
+                        <button onClick={prevPage} disabled={currentPage === 1} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                          <SlArrowLeft className="w-4 h-4 mr-1" />
+                          Prev
+                        </button>
+                        <button onClick={nextPage} disabled={currentPage === totalPages} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                          Next
+                          <SlArrowRight className="w-4 h-4 ml-1" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex space-x-2">
-                    <button onClick={prevPage} disabled={currentPage === 1} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
-                      <SlArrowLeft className="w-4 h-4 mr-1" />
-                      Prev
-                    </button>
-                    <button onClick={nextPage} disabled={currentPage === totalPages} className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-gray-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
-                      Next
-                      <SlArrowRight className="w-4 h-4 ml-1" />
-                    </button>
-                  </div>
-                </div>
-              </div>
               }
             </div>
 
-            <div>
-              <div className="bg-white rounded-md mt-[-30px]">
+            <div className="w-full lg:w-auto">
+              <div className="bg-white rounded-md">
                 <Calendars />
               </div>
             </div>
           </div>
         </div>
-
         <Footer />
       </div>
     </div>
