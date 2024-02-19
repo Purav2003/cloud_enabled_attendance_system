@@ -5,13 +5,30 @@ import { toast, Toaster } from 'react-hot-toast';
 import Link from 'next/link';
 import helloImage from '../../assets/images/login.jpg';
 import logo from '../../assets/images/logo.png';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+    const router = useRouter();
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
 
+    const handleSignIn = async () => {
+        const result = await signIn('google'); // Redirect after sign-in
+        alert(result);
+        if (result?.error) {
+          console.error('Sign-in error:', result.error);
+        } else {
+          // Extract and store user information
+          const { email } = result?.user || {};
+          localStorage.setItem("name",  email);
+        }
+      };
+    // If user is authenticated, display their email
+   
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
@@ -135,6 +152,7 @@ const Login = () => {
                         <FcGoogle className="text-2xl" />
                         <span className='ml-2 font-medium'>Login with Google</span>
                     </div> */}
+            <button onClick={handleSignIn}>Sign in with Google</button>
 
                     {/* Admin Link */}
                     <div className="mt-4 text-sm text-gray-600">
@@ -153,5 +171,6 @@ const Login = () => {
         </div>
     );
 };
+
 
 export default Login;

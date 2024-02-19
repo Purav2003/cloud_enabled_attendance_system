@@ -45,6 +45,7 @@ REST_FRAMEWORK = {
 SECRET_KEY = 'secret'
 ALGORITHM = 'HS256'
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,6 +60,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'social_django',
+
 
 ]
 
@@ -75,13 +78,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
-
-
+    'allauth.account.middleware.AccountMiddleware',  
+    'social_core.backends.google.GoogleOAuth2',
+  
 ]
 
 ROOT_URLCONF = 'myproject.urls'
-
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '692017750358-0r18n04ks9liqo08n3k5c8m9vnp9j50l.apps.googleusercontent.com692017750358-0r18n04ks9liqo08n3k5c8m9vnp9j50l.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
