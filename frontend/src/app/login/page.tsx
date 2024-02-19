@@ -18,7 +18,6 @@ const Login = () => {
 
     const handleSignIn = async () => {
         const result = await signIn('google'); // Redirect after sign-in
-        alert(result);
         if (result?.error) {
           console.error('Sign-in error:', result.error);
         } else {
