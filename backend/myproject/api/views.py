@@ -521,7 +521,7 @@ def delUser(request,pk):
 
 @api_view(['GET'])
 @jwt_authorization
-def customer_record(request, pk):      
+def user_record(request, pk):      
     try:        
         user = User.objects.get(id=pk)
         admin = Admin.objects.get(companyCode=user.companyCode)
@@ -531,6 +531,20 @@ def customer_record(request, pk):
         data = serializer.data
         data['company'] = company  # Include company in the response data
 
+        return Response(data)
+    except User.DoesNotExist:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
+    except Admin.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Admin not found'}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@jwt_authorization
+def admin_record(request, pk):      
+    try:        
+        user = Admin.objects.get(id=pk)
+
+        serializer =AdminSerializer(user)
+        data = serializer.data
         return Response(data)
     except User.DoesNotExist:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_400_BAD_REQUEST)
