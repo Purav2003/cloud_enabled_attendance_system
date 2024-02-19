@@ -521,19 +521,7 @@ def delUser(request,pk):
 
 @api_view(['GET'])
 @jwt_authorization
-def customer_record(request, pk):   
-    token = request.headers.get('Authorization')
-    try:
-        decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-        user_id = decoded_token['id']
-        print(user_id)
-    
-    except jwt.InvalidTokenError:
-        pass        
-
-    if(pk!=user_id):
-        return Response({'status': 'error', 'message': 'Not Allowed'}, status=status.HTTP_400_BAD_REQUEST)
-
+def customer_record(request, pk):      
     try:        
         user = User.objects.get(id=pk)
         admin = Admin.objects.get(companyCode=user.companyCode)
@@ -612,12 +600,7 @@ def deny(request, pk):
     
     return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
  
-@api_view(['GET'])
-def get_attendance(request, pk):
-    current_date = timezone.now().date()  
-    items = Attendance.objects.filter(user_id=pk, date__lte=current_date)
-    serializer = AttendanceSerializer(items, many=True)
-    return Response(serializer.data)
+
 
 @api_view(['GET'])
 def all_attendance(request,pk):

@@ -143,6 +143,7 @@ const ProfileUser = () => {
               </div>
               <div className="flex mt-4">
                 <Link href={`/admin/dashboard/edit/${id}`}><button className="px-4 py-2 border border-green-500 bg-green-500 text-white rounded-md">Edit Profile</button></Link>
+                <Link href={`/admin/users/attendance/${id}`}><button className="px-4 py-2 border ml-3 border-blue-500 bg-blue-500 text-white rounded-md">View Attendance</button></Link>
               </div>
             </div>
           </div>

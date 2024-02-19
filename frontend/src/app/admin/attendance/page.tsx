@@ -83,7 +83,7 @@ const Attendance = () => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{datas.user}</TableCell>
                     <TableCell>{datas.date.split("-").reverse().join("-")}</TableCell>
-                    <TableCell>{datas.attendance ? data.time?.split(".")[0] : "-------"}</TableCell>
+                    <TableCell>{datas.attendance ? datas.time?.split(".")[0] : "-------"}</TableCell>
                     <TableCell> {
                               datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"
                             }</TableCell>

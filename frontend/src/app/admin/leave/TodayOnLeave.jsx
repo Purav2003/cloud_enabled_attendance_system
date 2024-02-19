@@ -1,17 +1,17 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Loading from "../../../loading"
-const ApprovedLeave = () => {
+
+const TodayOnLeave = () => {
     const [leave, setLeave] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Number of items per page
 
     const fetchLeave = async () => {
-        const id = localStorage.getItem('id');
         const companyCode = localStorage.getItem("companyCode");
-        const response = await fetch(`http://localhost:8000/api/leaveStatus/approved/${companyCode}`);
+        const response = await fetch(`http://localhost:8000/api/todayOnLeave/${companyCode}`);
         const data = await response.json();
         setLeave(data);
         setLoading(false);
@@ -42,34 +42,26 @@ const ApprovedLeave = () => {
         }
       };
     
-    return (
-        <div className="container w-[60%] ml-12">
-      <h1 className="font-bold text-2xl pb-4">Approved Leave Requests</h1>
-            {loading ? (
+  return (
+    <div className='py-4 px-12 w-[40%]'>
+      <h1 className='font-bold text-2xl pb-4'>Today on Leave</h1>
+      {loading ? (
                 <Loading />
-            ) : currentItems.length===0?            <h1 className="text-center text-sm m-12 pt-8">There are no Approved Leave Requests </h1>:(
-                <div className='max-w-3xl'>
+            ) : currentItems.length===0?            <h1 className="text-center text-sm m-12 pt-8">No one is one Leave Today 🎉 </h1>:(
+                <div className='w-full'>
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
-                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Leave ID</th>
+                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
                                 <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
-                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Leave Type</th>
-                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Start Date</th>
-                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">End Date</th>
-                                <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Reason</th>
-                            </tr>
+                                </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                             {currentItems.map((data, index) => (
                                 <tr key={data.id}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data?.user_name}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.leave_type}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.start_date.split('-').reverse().join('-')}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.end_date.split('-').reverse().join('-')}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data?.reason}</td>
-                                </tr>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.user_id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data?.user}</td>
+                                   </tr>
                             ))}
                         </tbody>
                     </table>
@@ -90,8 +82,8 @@ const ApprovedLeave = () => {
                 </div>
                 </div>
             )}
-        </div>
-    );
+    </div>
+  );
 }
 
-export default ApprovedLeave;
+export default TodayOnLeave;

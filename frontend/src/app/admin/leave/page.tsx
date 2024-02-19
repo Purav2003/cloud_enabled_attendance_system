@@ -3,13 +3,17 @@ import React from 'react';
 import Adminnavbar from '@/app/AdminNavbar';
 import ApproveLeave from './ApproveLeave';
 import ApprovedLeave from './ApprovedLeave';
+import TodayOnLeave from './TodayOnLeave';
 const AdminLeave = () => {
   return (
-    <div>
-        <Adminnavbar /><br></br><br></br><br></br>
-    <ApproveLeave />
-    <ApprovedLeave />
-    </div>
+    <>
+      <Adminnavbar /><br></br><br></br><br></br>
+      
+          <ApproveLeave />
+        <div className='flex'><ApprovedLeave />
+          <TodayOnLeave /></div>
+    
+    </>
   );
 }
 

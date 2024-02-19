@@ -11,6 +11,28 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
  
+
+@api_view(['POST'])
+def get_attendance(request, pk):
+    year = int(request.data.get('year'))
+    month = int(request.data.get('month'))
+    
+    first_day_of_month = datetime(year, month, 1).date()
+    if month == 12:
+        last_day_of_month = datetime(year + 1, 1, 1).date()
+    else:
+        last_day_of_month = datetime(year, month + 1, 1).date() - timedelta(days=1)
+
+    items = Attendance.objects.filter(user_id=pk, date__range=[first_day_of_month, last_day_of_month])
+
+    # Serialize the data
+    if items:
+        serializer = AttendanceSerializer(items, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({'status': 'error', 'message': 'No attendance records found'}, status=status.HTTP_404_NOT_FOUND)
+ 
+ 
 @api_view(['GET'])
 def last_5_days_attendance(request,pk):
     today = datetime.now().date()
@@ -209,3 +231,10 @@ def leave_status_update_deny(request,pk):
     leave.save()    
     return Response({'status': 'success', 'message': 'Leave Denied'}, status=status.HTTP_200_OK)
  
+ 
+@api_view(['GET'])
+def today_on_leave(request,pk):
+    today = datetime.now().date()
+    items = Attendance.objects.filter(companyCode=pk, date=today, onLeave=True)
+    serializer = AttendanceSerializer(items, many=True)
+    return Response(serializer.data)

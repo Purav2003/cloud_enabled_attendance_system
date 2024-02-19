@@ -8,9 +8,11 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Cards from "./Cards";
 import Loading from "../../loading";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 interface UserData {
-  id: number;
   date: string;
   time: string;
   attendance: boolean;
@@ -20,21 +22,61 @@ export default function Dashboard() {
   const [data, setData] = useState<UserData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [selectedYear, setSelectedYear] = useState<string | undefined>(new Date().getFullYear().toString());
+  const [selectedMonth, setSelectedMonth] = useState<string | undefined>((new Date().getMonth() + 1).toString().padStart(2, '0'));
   const itemsPerPage = 5;
+
+  const handleYearChange = (value: string) => {
+    setSelectedYear(value);
+  };
+
+  const handleMonthChange = (value: string) => {
+    setSelectedMonth(value);
+  };
+
+  const props = {
+    selectedYear,
+    selectedMonth,
+  };
 
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
+      const formDataToSend = new FormData();
+      formDataToSend.append('year', selectedYear);
+      formDataToSend.append('month', selectedMonth);
       const response = await fetch(`http://localhost:8000/api/attendance/${id}`, {
-        method: "GET",
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        body: formDataToSend,
       });
       const result = await response.json();
-      setData(result.reverse());
-      setLoading(false);
+      console.log(result);
+      if (result?.status === "error") {
+        setData([]);
+        setLoading(false);
+        return;
+      } else {
+        // Generate IDs starting from 1
+  
+        // Filter out data until today
+        const today = new Date();
+        const filteredData = result.filter((item: UserData) => {
+          const itemDate = new Date(item.date);
+          return itemDate <= today;
+        });
+        setData(filteredData.reverse());
+        const newData = filteredData?.map((item: UserData, index: number) => ({
+          ...item,
+          id: index + 1,
+        }));
+        setData(newData);
+
+        setLoading(false);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -52,7 +94,7 @@ export default function Dashboard() {
       setLoading(true);
       fetchData();
     }
-  }, []);
+  }, [selectedYear, selectedMonth]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -80,6 +122,29 @@ export default function Dashboard() {
         <div className="flex-grow py-10 px-4 sm:px-8 md:px-12 lg:px-16">
           <div className="mx-auto flex flex-col lg:flex-row justify-between">
             <div className="w-full lg:w-3/4 mr-0 lg:mr-6 mb-8 lg:mb-0">
+              {/* Dropdown for Year */}
+              <Select placeholder="Select Year" className="z-0" value={selectedYear} onChange={handleYearChange} style={{ width: 120, marginRight: 10,zIndex:-100 }}>
+                <Option value="2023">2023</Option>
+                <Option value="2024">2024</Option>
+                {/* Add more years as needed */}
+              </Select>
+              {/* Dropdown for Month */}
+              <Select placeholder="Select Month" value={selectedMonth} onChange={handleMonthChange} style={{ width: 120 }}>
+                <Option value="01">January</Option>
+                <Option value="02">February</Option>
+                <Option value="03">March</Option>
+                <Option value="04">April</Option>
+                <Option value="05">May</Option>
+                <Option value="06">June</Option>
+                <Option value="07">July</Option>
+                <Option value="08">August</Option>
+                <Option value="09">September</Option>
+                <Option value="10">October</Option>
+                <Option value="11">November</Option>
+                <Option value="12">December</Option>
+              </Select>
+
+              <br /><br></br>
               {loading ? <Loading /> :
                 data?.length === 0 ? <div className="text-center p-32 text-gray-500">No attendance data available</div> :
                   <div className="rounded-lg">
@@ -95,8 +160,8 @@ export default function Dashboard() {
                       </thead>
                       <tbody className="divide-y divide-gray-200">
                         {currentItems.map((data, index) => (
-                          <tr key={data.id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
+                          <tr key={index + 1}>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data.id}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.time?.split(".")[0] : "-------"}</td>
@@ -133,7 +198,7 @@ export default function Dashboard() {
 
             <div className="w-full lg:w-auto">
               <div className="bg-white rounded-md">
-                <Calendars />
+                <Calendars {...props} />
               </div>
             </div>
           </div>

@@ -18,7 +18,7 @@ urlpatterns = [
     path('api/rejected/<int:pk>',views.customer_record_rejected),
     path('api/pending/<int:pk>',views.customer_record_pending),
     path('api/update/<int:pk>',views.updateUser),
-    path('api/attendance/<int:pk>',views.get_attendance),
+    path('api/attendance/<int:pk>',view.get_attendance),
     path('api/allAttendance/<int:pk>',views.all_attendance),
     path('api/lastFiveDaysAttendance/<int:pk>',view.last_5_days_attendance),
     path('api/dayAttendance/<int:pk>/<str:dk>',views.date_attendance),
@@ -31,5 +31,6 @@ urlpatterns = [
     path('api/leaveStatus/approved/<int:pk>',view.leave_user_approved),
     path('api/leaveUpdateStatus/approved/<int:pk>',view.leave_status_update_approve),
     path('api/leaveUpdateStatus/denied/<int:pk>',view.leave_status_update_deny),
+    path('api/todayOnLeave/<int:pk>',view.today_on_leave),
 ]
 
