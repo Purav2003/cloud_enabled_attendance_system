@@ -101,7 +101,7 @@ export default function Dashboard() {
     } else {
       setLoading(true);
       fetchData();
-    }
+    // }
   }, [selectedYear, selectedMonth]);
 
   const indexOfLastItem = currentPage * itemsPerPage;

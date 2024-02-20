@@ -97,7 +97,7 @@ const id = localStorage.getItem("id");
   return (
     <div className="w-full flex relative ">
       <Sidebar />
-    <div className="w-full ml-12">
+    <div className="w-full lg:ml-12">
       <div className="min-h-screen w-full items-center justify-center bg-white font-sans">
 
         <Toaster />
@@ -106,17 +106,17 @@ const id = localStorage.getItem("id");
           rel="stylesheet"
         />
 <div className="flex min-h-screen items-center justify-center">
-        <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">👨🏻‍💻 User Profile</h1>
+        <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md lg:shadow-md">
+          <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">👨🏻‍💻 User Profile</h1>
 
        {loading?<Loading />:<div className="lg:flex sm:flex items-center space-x-4">
             <div
-              className="lg:flex items-center justify-center cursor-pointer"
+              className="lg:flex flex items-center justify-center cursor-pointer"
               onClick={() => setShowModal(true)}
             >
               <img
                 src={`http://localhost:8000${data?.profilePhoto}`}
-                className="rounded-full w-[200px] h-[200px] object-cover border-2 border-gray-300"
+                className="rounded-full lg:w-[200px] w-[150px] h-[150px] lg:h-[200px] object-cover border-2 border-gray-300"
                 alt="User Profile"
               />
             </div>

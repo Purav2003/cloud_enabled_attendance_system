@@ -124,7 +124,7 @@ const ApproveLeave = () => {
             </tbody>
           </table>
           : <div>
-            <h1 className="text-center m-12 pt-8">There are no Pending Leave Requests </h1>
+            <h1 className="text-center m-12 pt-8 text-sm">There are no Pending Leave Requests </h1>
           </div>
         }
       </div>

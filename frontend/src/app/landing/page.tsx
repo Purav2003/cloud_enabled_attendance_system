@@ -45,7 +45,7 @@ const Landing = () => {
     <div className='grid items-center justify-center min-h-screen'>
     
   
-      <div>
+      <div className='p-4'>
         <h1 className="font-bold text-3xl mb-4 text-black">Request Sent to Admin</h1>
         <p className="text-lg text-black">Your request has been submitted to the admin. You will receive a confirmation shortly.</p>      
       </div>

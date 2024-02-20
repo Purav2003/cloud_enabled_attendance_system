@@ -35,6 +35,7 @@ const Attendance = () => {
     }, []);
 
     useEffect(() => {
+
         fetchData();
     }, [fetchData]); // Call fetchData only once when component mounts
 

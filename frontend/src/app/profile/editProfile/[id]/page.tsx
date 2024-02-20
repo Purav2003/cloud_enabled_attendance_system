@@ -191,8 +191,9 @@ const EditProfile = ({ id }) => {
     };
   }, [showModal]);
 
-  return (<>
+  return (<div className="w-full flex ">
     <Sidebar/>
+    <div className="w-full lg:ml-12">
     <div className="min-h-screen flex items-center justify-center bg-white font-sans">
       <Toaster />
       <link
@@ -200,31 +201,31 @@ const EditProfile = ({ id }) => {
         rel="stylesheet"
       />
 
-      <div className="bg-white w-full max-w-2xl p-8 rounded-md shadow-md">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Edit Your Profile</h1>
+      <div className="bg-white w-full max-w-2xl p-8 rounded-md lg:shadow-md">
+        <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">Edit Your Profile</h1>
 
-{loading?<Loading />:        <div className="flex items-center">
-          <div className="flex-1">
+{loading?<Loading />:        <div className="lg:flex md:flex items-center">
+          <div className="lg:flex-1 md:flex-1">
             <label htmlFor="profile-photo" className="cursor-pointer">
               {selectedFile ? (
-                                <div className='w-[200px] h-[200px] rounded-full'>
+                                <div className='lg:w-[200px] lg:h-[200px] md:w-[200px] md:h-[200px] flex items-center justify-center rounded-full'>
 
                 <img
                   src={URL.createObjectURL(selectedFile)}
                   alt="Selected Profile Photo"
-                  className="h-[200px] w-[200px] object-cover rounded-full"
+                  className="lg:w-[200px] w-[150px] h-[150px] lg:h-[200px] object-cover rounded-full"
                 />
                 </div>
               ) : (
-                <div className='w-[200px] h-[200px] rounded-full'>
+                <div className='lg:w-[200px] lg:h-[200px] md:w-[200px] md:h-[200px] flex items-center justify-center rounded-full'>
                   <img
                     src={`http://localhost:8000${data?.profilePhoto}`}
                     alt="Selected Profile Photo"
-                    className="w-[200px] h-[200px] object-cover rounded-full"
+                    className="lg:w-[200px] w-[150px] h-[150px] lg:h-[200px] object-cover rounded-full"
                   />
                 </div>
               )}
-              <p className="text-sm mt-2 text-gray-500">Click to change profile photo</p>
+              <p className="text-sm mt-2 text-gray-500 text-center">Click to change profile photo</p>
             </label>
             <input
               type="file"
@@ -236,10 +237,10 @@ const EditProfile = ({ id }) => {
         </div>
 
 
-        <div className="ml-8 w-full">
+        <div className="ml-8 w-full mt-8 ">
           <form>
             <div>
-              <div className="grid grid-cols-2 w-full">
+              <div className="grid lg:grid-cols-2 md:grid-cols-2  w-full">
                 <div>
                   <div className="mb-4">
                     <label htmlFor="name" className="block text-md font-medium text-gray-600">
@@ -328,8 +329,8 @@ const EditProfile = ({ id }) => {
     </div>
 
 
-  </div > <Footer />
-  </>
+  </div > <Footer /></div>
+  </div>
   );
 }
 

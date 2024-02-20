@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from "../../Sidebar";
 import { toast, Toaster } from 'react-hot-toast';
 import Link from "next/link";
-
+import Footer from "../../footer"
 const LeaveApply = () => {
     const [formData, setFormData] = useState({
         leaveType: '',
@@ -121,9 +121,10 @@ const LeaveApply = () => {
     return (
         <div className='flex'>
             <Sidebar />
-            <div className="container mx-auto p-8 ml-16">
+            <div className='w-full '>
+            <div className="container mx-auto p-8 lg:ml-16">
                 <Toaster />
-                <h1 className="text-3xl font-bold text-gray-800 mb-6">Apply For Leave</h1>
+                <h1 className="lg:text-3xl sm:ml-8 ml-4 lg:ml-0 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">Apply For Leave</h1>
                 <div>
                     <form onSubmit={handleSubmit} className='mt-12 max-w-xl'>
                         <div className="mb-4">
@@ -206,6 +207,8 @@ const LeaveApply = () => {
                         </div>
                     </form>
                 </div>
+            </div>
+            <Footer />
             </div>
         </div>
     );
