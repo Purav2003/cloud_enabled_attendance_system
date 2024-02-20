@@ -86,6 +86,7 @@ const Sidebar = () => {
                 <h3 className="text-lg p-2 mt-1 text-sm hover:bg-red-400 hover:text-white text-center items-center justify-center flex rounded-md">
                   <LuLogOut />
                 </h3>
+                
               </Link>
         </nav>
         <footer className="bg-gray-100 items-center bottom-0 fixed w-full p-2 flex justify-around" style={{zIndex:100}}>
