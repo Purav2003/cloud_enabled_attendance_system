@@ -66,16 +66,15 @@ const Calendars = (props) => {
         fetchLeave();
     }, [selectedYear, selectedMonth]);
 
-    // Create a unique key based on selectedYear and selectedMonth
     const calendarKey = `${selectedYear}-${selectedMonth}`;
 
     return (
-        <div style={{ width: 280 }}>
-            {/* Set the key prop to force re-render when selectedYear or selectedMonth changes */}
+        <div style={{ width: 280}}>
             <Calendar
                 key={calendarKey}
-                defaultValue={new Date(`${selectedYear}-${selectedMonth}-01`)}
+                defaultValue={new Date(`${selectedYear}-${selectedMonth}`)}
                 compact bordered renderCell={renderCell}
+                style={{zIndex:0}}
             />
         </div>
     );
