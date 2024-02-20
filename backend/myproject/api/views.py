@@ -472,6 +472,7 @@ def checkOtp(request,pk):
         return Response({'status': 'error', 'message': 'Wrong OTP'}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
+@jwt_authorization
 def updateUser(request, pk):
     try:
         user = User.objects.get(id=pk)

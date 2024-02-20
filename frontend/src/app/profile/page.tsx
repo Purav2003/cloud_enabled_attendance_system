@@ -107,7 +107,7 @@ const id = localStorage.getItem("id");
         />
 <div className="flex min-h-screen items-center justify-center">
         <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md lg:shadow-md">
-          <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">👨🏻‍💻 User Profile</h1>
+          <h1 className="lg:text-3xl lg:ml-0 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">👨🏻‍💻 User Profile</h1>
 
        {loading?<Loading />:<div className="lg:flex sm:flex items-center space-x-4">
             <div

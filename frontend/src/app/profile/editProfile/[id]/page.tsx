@@ -76,7 +76,7 @@ const EditProfile = ({ id }) => {
     const API_URL = `http://localhost:8000/api/user/${id}`;
     console.log(API_URL);
     const token = localStorage.getItem("token");
-
+    console.log(token)
     try {
       const response = await fetch(API_URL, {
         method: "GET",
@@ -133,9 +133,13 @@ const EditProfile = ({ id }) => {
     }
     console.log("Sending Data", formDataToSend)
     try {
+      const token = localStorage.getItem("token");
       const id = localStorage.getItem("id")
       const response = await fetch(`http://localhost:8000/api/update/${id}`, {
         method: 'PUT',
+        headers: {
+          'Authorization': `${token}`
+        },
         body: formDataToSend,
       });
 
@@ -202,7 +206,7 @@ const EditProfile = ({ id }) => {
       />
 
       <div className="bg-white w-full max-w-2xl p-8 rounded-md lg:shadow-md">
-        <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">Edit Your Profile</h1>
+        <h1 className="lg:text-3xl lg:ml-0 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">Edit Your Profile</h1>
 
 {loading?<Loading />:        <div className="lg:flex md:flex items-center">
           <div className="lg:flex-1 md:flex-1">
