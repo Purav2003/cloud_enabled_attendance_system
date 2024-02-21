@@ -2,11 +2,11 @@ from django.core.files.storage import FileSystemStorage
 from datetime import date
 from collections import defaultdict
 from datetime import datetime, timedelta
-from base.models import Attendance,Leave,User
+from base.models import Attendance,Leave,User,Holiday
 from rest_framework.response import Response    
 from rest_framework.decorators import api_view
 from datetime import datetime
-from .serializers import UserSerializer,LeaveSerializer,AttendanceSerializer
+from .serializers import UserSerializer,LeaveSerializer,AttendanceSerializer,HolidaySerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -377,3 +377,35 @@ def forgotPass(request):
     else:
         return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
     
+@api_view(['POST'])
+def add_holidays(request,pk):
+    dates = request.data.get('dates')
+    companyCode = pk
+    holiday = Holiday(companyCode=companyCode,dates=dates)
+    if(holiday):
+        holiday.save()
+        return Response({'status': 'success', 'message': 'Holiday added successfully'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'error', 'message': 'Failed to add holiday'}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def view_holidays(request,pk):
+    items = Holiday.objects.filter(companyCode=pk)
+    print(items)
+    serializer = HolidaySerializer(items,many=True)
+    if serializer:
+        return Response(serializer.data)
+    else:
+        return Response({'status': 'error', 'message': 'No holidays found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PUT'])
+def update_holidays(request, pk):
+    items = Holiday.objects.filter(companyCode=pk)
+    days = request.data.get('dates')
+    if items:
+        for item in items:
+            item.dates = days
+            item.save()
+        return Response({'status': 'success', 'message': 'Holidays Updated'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'error', 'message': 'No holidays found'}, status=status.HTTP_404_NOT_FOUND)

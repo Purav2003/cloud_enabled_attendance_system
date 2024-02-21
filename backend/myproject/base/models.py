@@ -48,3 +48,10 @@ class Leave(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return(f"{self.user_id} {self.start_date} {self.end_date} {self.reason}")
+    
+class Holiday(models.Model):
+    companyCode = models.CharField(max_length=20)
+    dates = models.CharField(max_length=1000)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return(f"{self.companyCode} {self.dates}")

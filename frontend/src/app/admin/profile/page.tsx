@@ -169,6 +169,9 @@ const id = localStorage.getItem("id");
               {/* <div className="flex ml-4 mt-4">
                 <Link href={`/profile/editProfile/${id}`}><button className="px-4 py-2 border border-green-500 bg-green-500 text-white rounded-md">Edit Profile</button></Link>
               </div> */}
+              <div className="flex ml-4 mt-4">
+                <Link href="/admin/holiday"><button className="px-4 py-2 border border-green-500 bg-green-500 text-white rounded-md">Add Holidays</button></Link>
+              </div>
             </div>
           </div>}
         </div>

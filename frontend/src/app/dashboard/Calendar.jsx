@@ -28,6 +28,10 @@ const Calendars = (props) => {
         }
     }
 
+    const fetchHolidays = async () => {
+        const companyCode = localStorage.getItem("cc");
+    }
+
     const fetchLeave = async () => {
         const id = localStorage.getItem("id");
         const API_URL = `http://localhost:8000/api/leave/${id}`;
@@ -64,6 +68,7 @@ const Calendars = (props) => {
     useEffect(() => {
         fetchAbsent();
         fetchLeave();
+
     }, [selectedYear, selectedMonth]);
 
     const calendarKey = `${selectedYear}-${selectedMonth}`;

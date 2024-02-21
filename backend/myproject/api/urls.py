@@ -37,5 +37,8 @@ urlpatterns = [
     path('api/forgotPassEmail/<str:email>',view.send_email_forgot_password),
     path('api/forgotPassword/checkOtp/<str:pk>',view.forgotPass_checkOtp),
     path('api/forgotPassword/',view.forgotPass),
+    path('api/addHolidays/<int:pk>',view.add_holidays),
+    path('api/getHolidays/<int:pk>',view.view_holidays),
+    path('api/updateHolidays/<int:pk>',view.update_holidays),
 ]
 
