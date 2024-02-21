@@ -131,13 +131,13 @@ export default function Dashboard() {
           <div className="mx-auto flex flex-col lg:flex-row justify-between">
             <div className="lg:w-3/4 mr-0 lg:mr-6 mb-8 lg:mb-0">
               {/* Dropdown for Year */}
-              <Select placeholder="Select Year" className="z-0" value={selectedYear} onChange={handleYearChange} style={{ width: 120, marginRight: 10,zIndex:-100 }}>
+              <Select placeholder="Select Year" className="z-0" value={selectedYear} onChange={handleYearChange} style={{ width: 120, marginRight: 10 }}>
                 <Option value="2023">2023</Option>
                 <Option value="2024">2024</Option>
                 {/* Add more years as needed */}
               </Select>
               {/* Dropdown for Month */}
-              <Select placeholder="Select Month" value={selectedMonth} onChange={handleMonthChange} style={{ width: 120,zIndex:-100 }}>
+              <Select placeholder="Select Month" value={selectedMonth} onChange={handleMonthChange} style={{ width: 120 }}>
                 <Option value="01">January</Option>
                 <Option value="02">February</Option>
                 <Option value="03">March</Option>

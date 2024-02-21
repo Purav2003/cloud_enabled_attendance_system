@@ -10,7 +10,12 @@ from .serializers import UserSerializer,LeaveSerializer,AttendanceSerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
- 
+from .decoretors import jwt_authorization
+from django.contrib.auth.hashers import make_password
+import random
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 
 @api_view(['POST'])
 def get_attendance(request, pk):
@@ -238,3 +243,137 @@ def today_on_leave(request,pk):
     items = Attendance.objects.filter(companyCode=pk, date=today, onLeave=True)
     serializer = AttendanceSerializer(items, many=True)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+@jwt_authorization
+def reset_password(request):
+    id = request.data.get('id')
+    password = request.data.get('password')
+    user = User.objects.get(id=id)    
+    if(user):
+        password = make_password(password)        
+        user.password = password
+        user.save()
+        return Response({'status': 'success', 'message': 'Password reset successfully'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+def send_otp_forgot_email(receiver_email, otp):
+    sender_email = "shahpurav308@gmail.com"
+    sender_password = "npgb ndoe saio zghl"
+    # Send the OTP to the user's email using Django's send_mail function
+    subject = f'Otp for Reset Password'
+    message_content = f'''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {{
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f6f8fa;
+      margin: 0;
+      padding: 0;
+    }}
+
+    .container {{
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      color: #333;
+    }}
+
+    h1 {{
+      color: #3498db;
+    }}
+
+    p {{
+      color: #555;
+      line-height: 1.6;
+    }}
+
+    .otp-container {{
+      background-color: #3498db;
+      color: #ffffff;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 24px;
+      display:inline-block;
+    }}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Reset Password OTP</h1>
+    <p>Dear User,</p>
+    <p>Your OTP To Reset Your Password:</p>
+    
+    <div class="otp-container">
+      <strong>{ otp }</strong>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+
+'''
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = receiver_email
+    message['Subject'] = "OTP For Reset Password"
+
+# Attach the HTML content to the email
+    message.attach(MIMEText(message_content, 'html'))
+
+# Connect to the SMTP server and send the email
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        server.login(sender_email, sender_password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
+
+
+@api_view(['POST'])
+def send_email_forgot_password(request,email):
+    generated_otp = str(random.randint(1000, 9999))
+    send_otp_forgot_email(email, generated_otp)
+    user = User.objects.get(email=email)
+    user.forgot_otp = generated_otp
+    user.save()
+    return Response({'status': 'success', 'message': 'OTP sent to the user\'s email'}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def forgotPass_checkOtp(request,pk):
+    items = User.objects.get(email=pk)
+    otp = request.data.get('otp')
+    otp = str(otp)
+    otp_1 = str(items.forgot_otp) 
+    if otp_1 == otp:
+        return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'error', 'message': 'Wrong OTP'}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def forgotPass(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    user = User.objects.get(email=email)    
+    if(user):
+        password = make_password(password)        
+        user.password = password
+        user.save()
+        return Response({'status': 'success', 'message': 'Password reset successfully'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'status': 'error', 'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    

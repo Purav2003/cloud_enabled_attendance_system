@@ -159,11 +159,10 @@ const id = localStorage.getItem("id");
                     </p>
                   </div>
                 </div>
-
-
               </div>
               <div className="flex ml-4 mt-4">
                 <Link href={`/profile/editProfile/${id}`}><button className="px-4 py-2 border border-green-500 bg-green-500 text-white rounded-md">Edit Profile</button></Link>
+                <Link href={`/reset-password`}><button className="ml-8 px-4 py-2 border border-blue-500 bg-blue-500 text-white rounded-md">Reset Password</button></Link>
               </div>
             </div>
           </div>}

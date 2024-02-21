@@ -33,5 +33,9 @@ urlpatterns = [
     path('api/leaveUpdateStatus/approved/<int:pk>',view.leave_status_update_approve),
     path('api/leaveUpdateStatus/denied/<int:pk>',view.leave_status_update_deny),
     path('api/todayOnLeave/<int:pk>',view.today_on_leave),
+    path('api/resetPassword/',view.reset_password),
+    path('api/forgotPassEmail/<str:email>',view.send_email_forgot_password),
+    path('api/forgotPassword/checkOtp/<str:pk>',view.forgotPass_checkOtp),
+    path('api/forgotPassword/',view.forgotPass),
 ]
 

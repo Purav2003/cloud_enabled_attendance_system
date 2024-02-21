@@ -21,6 +21,7 @@ class User(models.Model):
     profilePhoto = models.ImageField(upload_to='user_images/', null=True, blank=True)
     isAuthorized = models.CharField(default=False,max_length=100)
     otp = models.IntegerField( null=True, blank=True)
+    forgot_otp = models.IntegerField( null=True, blank=True,default=0)
     def __str__(self):
         return(f"{self.email}")
 

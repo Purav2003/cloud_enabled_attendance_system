@@ -42,28 +42,28 @@ const DashCards = () => {
     return (
         <div className='container mx-auto p-8'>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="border rounded-lg p-6 bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-300 ">
+                <div className="border rounded-lg p-6 bg-[#FEF4E4]">
                     <h2 className="text-xl font-semibold mb-4">Company Name</h2>
                     <div>
                         <p className="text-gray-600">{companyName} </p>
                     </div>
                 </div>
 
-                <div className="border rounded-lg p-6 bg-gradient-to-br from-green-100 via-green-200 to-green-300 ">
+                <div className="border rounded-lg p-6 bg-[rgba(0,125,0,0.3)]">
                     <h2 className="text-xl font-semibold mb-4">Present Today</h2>
                     <div>
                         <p className="text-gray-600">{presentCount} </p>
                     </div>
                 </div>
 
-                <div className="border rounded-lg p-6 bg-gradient-to-br from-red-100 via-red-200 to-red-300 ">
+                <div className="border rounded-lg p-6 bg-[rgba(63,122,244,0.3)]  ">
                     <h2 className="text-xl font-semibold mb-4">Absent Today</h2>
                     <div>
                         <p className="text-gray-600">{absentCount} </p>
                     </div>
                 </div>
 
-                <div className="border rounded-lg p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 ">
+                <div className="border rounded-lg p-6 bg-[rgba(135,17,237,0.3)] ">
                     <h2 className="text-xl font-semibold mb-4">On Leave Today</h2>
                     <div>
                         <p className="text-gray-600">{leaveCount} </p>
