@@ -11,23 +11,22 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    
     async signIn(user, account, profile) {
-      console.log('Sign-in successful:', user.email);          
-      signIn('google');       
-      return false; 
+      console.log('Sign-in successful:', user.email);
+      // Optionally, you can redirect the user to a specific page after sign-in
+      // router.push('/dashboard');
+      console.log('user', user);
+      return false; // or false based on your logic
     },
-
     async session(session, token) {
       // Log session creation
       console.log('Session created for:', session.user.email);
       return session;
     },
-
     async error(error, ctx) {
-      // Log authentication errors
       console.error('Authentication error:', error.message);
-      return Promise.reject(error);
-    }
-  }
+      // You might want to display a user-friendly error message or redirect to an error page
+      throw new Error('Authentication error. Please try again.');
+    },
+  },
 });
