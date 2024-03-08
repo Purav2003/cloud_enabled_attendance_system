@@ -6,6 +6,7 @@ import Loading from "../../../../../loading";
 import { Select } from 'antd';
 import Adminnavbar from "@/app/AdminNavbar";
 import Link from "next/link";
+import CountHours from '@/Helpers/CountHours';
 const { Option } = Select;
 interface UserData {
   id: number;
@@ -14,6 +15,7 @@ interface UserData {
   attendance: boolean;
 }
 const ViewAttendanceUser = () => {
+  const { calculateDuration } = CountHours();
   const [data, setData] = useState<UserData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -137,14 +139,16 @@ const ViewAttendanceUser = () => {
         {loading ? <Loading /> :
           data?.length === 0 ? <div className="text-center p-32 text-gray-500">No attendance data available</div> :
             <div className="rounded-lg">
-              <table className="w-full divide-y divide-gray-200 ">
+              <table className="w-full divide-y mt-8 divide-gray-200 ">
                 <thead>
                   <tr>
                     <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
                     <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                     <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th>
                     <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
+                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Entry</th>
+                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Exit</th>
+                    <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Hours</th>
                     <th className="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Attendance</th>
                   </tr>
                 </thead>
@@ -153,10 +157,12 @@ const ViewAttendanceUser = () => {
                     <tr key={data.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data?.id}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data?.user}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.time?.split(".")[0] : "-------"}</td>
-                      <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center `}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data.date.split('-').reverse().join('-')}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data.attendance ? data.entry?.split(".")[0] : "-------"}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data.attendance ? data.exit_time?.split(".")[0] : "-------"}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{calculateDuration(data.entry, data.exit_time)}</td>
+                      <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-white text-center `}>
                         <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} px-3 py-2 rounded-md inline-block w-24`}>
                           {
                             data?.onLeave ? "On Leave" : data?.attendance ? "Present" : "Absent"

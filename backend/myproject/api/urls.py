@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from . import view
+from . import cameraView
 
 urlpatterns = [
     path('api/all/<int:pk>',views.getData),
@@ -8,7 +9,7 @@ urlpatterns = [
     path('api/deny/<int:pk>',views.deny),
     path('api/checkOtp/<str:pk>',views.checkOtp),
     path('api/signup/',views.signup),
-    path('api/faceMatch/',views.match_face),
+    path('api/faceMatch/',cameraView.match_face),
     path('api/admin/signup',views.adminSignup),
     path('api/admin/login',views.adminLogin),
     path('api/login/',views.login),

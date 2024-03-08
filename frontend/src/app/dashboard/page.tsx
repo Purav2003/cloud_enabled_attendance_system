@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Sidebar from "../Sidebar";
-import Demo from "./Demo";
 import Footer from "../footer";
 import Calendars from "./Calendar";
 import "rsuite/dist/rsuite.min.css";
@@ -10,7 +9,7 @@ import Cards from "./Cards";
 import Loading from "../../loading";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Select } from 'antd';
-
+import { calculateDuration } from '@/Helpers/CountHours';
 const { Option } = Select;
 
 interface UserData {
@@ -62,14 +61,14 @@ export default function Dashboard() {
         return;
       } else {
         // Generate IDs starting from 1
-  
+
         // Sort data by date in descending order
         const sortedData = result.sort((a: UserData, b: UserData) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
           return dateB - dateA;
         });
-  
+
         // Filter out data until today
         const today = new Date();
         const filteredData = sortedData.filter((item: UserData) => {
@@ -82,14 +81,14 @@ export default function Dashboard() {
           id: index + 1,
         }));
         setData(newData);
-  
+
         setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const companyName = localStorage.getItem("companyName");
@@ -120,6 +119,8 @@ export default function Dashboard() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+
 
   return (
     <div className="flex flex-col lg:flex-row w-full">
@@ -160,9 +161,11 @@ export default function Dashboard() {
                       <thead>
                         <tr>
                           <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
-                          <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th>
+                          {/* <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Day</th> */}
                           <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                          <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
+                          <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Entry</th>
+                          <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Exit</th>
+                          <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Hours</th>
                           <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Attendance</th>
                         </tr>
                       </thead>
@@ -170,9 +173,11 @@ export default function Dashboard() {
                         {currentItems.map((data, index) => (
                           <tr key={index + 1}>
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data.id}</td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
+                            {/* <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td> */}
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.time?.split(".")[0] : "-------"}</td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.entry?.split(".")[0] : "-------"}</td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.exit_time?.split(".")[0] : "-------"}</td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{calculateDuration(data.entry, data.exit_time)}</td>
                             <td className={`lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center `}>
                               <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} lg:px-3 text-[11px] lg:text-sm px-0 py-1 lg:py-2 rounded-md inline-block w-16 lg:w-24`}>
                                 {

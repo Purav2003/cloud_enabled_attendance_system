@@ -159,11 +159,11 @@ const HolidayComponent = () => {
                     {days.map((day) => (
                         <button
                             key={day}
-                            className={`py-2 px-3 rounded-full text-center ${selectedDates.includes(`${day}/${currentMonth + 1}/${currentYear}`) ? 'bg-blue-500 text-white' : 'hover:bg-blue-100'
-
-                                }`}
+                            className={`py-2 px-3 rounded-full text-center ${selectedDates.includes(`${day}/${currentMonth + 1}/${currentYear}`) ? 'bg-blue-500 text-white' : 'hover:bg-blue-100'}`}
+                            disabled={new Date(`${currentYear}-${currentMonth + 1}-${day}`).getTime() < today.getTime() || 
+                            'sunday' === new Date(`${currentYear}-${currentMonth + 1}-${day}`).toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() ||
+                            'saturday' === new Date(`${currentYear}-${currentMonth + 1}-${day}`).toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase() }
                             onClick={() => handleDateClick(day)}
-                            disabled={new Date(`${currentYear}-${currentMonth + 1}-${day}`).getTime() < today.getTime()}
                         >
                             {day}
                         </button>

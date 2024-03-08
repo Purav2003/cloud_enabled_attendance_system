@@ -7,10 +7,11 @@ import { HiArrowDown } from "react-icons/hi2";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Loading from "../../../loading"
 import Last from './Last';
-
+import CountHours from '@/Helpers/CountHours';
 const Attendance = () => {
     const [data, setData] = useState([]);
     const [presentCount, setPresentCount] = useState(0);
+    const { calculateDuration } = CountHours();
     const [absentCount, setAbsentCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Number of items per page
@@ -57,9 +58,9 @@ const Attendance = () => {
     // Function to generate CSV content
     const generateCSV = () => {
         const csvContent = "data:text/csv;charset=utf-8," +
-            "ID,Name,Time,Attendance\n" +
+            "ID,Name,Entry,Exit,Total Hours,Attendance\n" +
             data.filter((datas) => new Date(datas.date).toLocaleDateString() === new Date().toLocaleDateString()).map((datas, index) =>
-                `${index + 1},${datas.user},${datas.attendance ? data.time?.split(".")[0] : "-------"},${datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"}`
+                `${index + 1},${datas.user},${datas.attendance ? datas.entry?.split(".")[0] : "-------"},${datas.attendance ? datas.exit_time?.split(".")[0] : "-------"},${calculateDuration(datas?.entry,datas?.exit_time)},${datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"}`
             ).join("\n");
         const encodedURI = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -83,7 +84,9 @@ const Attendance = () => {
                     <TableCell>{i + 1}</TableCell>
                     <TableCell>{datas.user}</TableCell>
                     <TableCell>{datas.date.split("-").reverse().join("-")}</TableCell>
-                    <TableCell>{datas.attendance ? datas.time?.split(".")[0] : "-------"}</TableCell>
+                    <TableCell>{datas.attendance ? datas.entry?.split(".")[0] : "-------"}</TableCell>
+                    <TableCell>{datas.attendance ? datas.exit_time?.split(".")[0] : "-------"}</TableCell>
+                    <TableCell>{calculateDuration(datas?.entry,datas?.exit_time)}</TableCell>
                     <TableCell> {
                               datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"
                             }</TableCell>
@@ -130,7 +133,9 @@ const Attendance = () => {
                                                 <TableCell>ID</TableCell>
                                                 <TableCell>Name</TableCell>
                                                 <TableCell>Date</TableCell>
-                                                <TableCell>Time</TableCell>
+                                                <TableCell>Entry</TableCell>
+                                                <TableCell>Exit</TableCell>
+                                                <TableCell>Total Hours</TableCell>
                                                 <TableCell>Attendance</TableCell>
                                             </TableRow>
                                         </TableHead>

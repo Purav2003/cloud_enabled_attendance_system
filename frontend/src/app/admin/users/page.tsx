@@ -109,7 +109,7 @@ const Users = () => {
                                 <div className="flex flex-col items-center pb-10">
                                     <img className="w-[130px] h-[130px] mb-3 items-center object-cover rounded-full shadow-lg" src={`http://localhost:8000${item.profilePhoto}`} alt="User image" />
                                     <div className="text-left items-left">
-                                    <h5 className="text-sm text-gray-700">Name: {item.name}</h5>
+                                    <span className="text-sm text-gray-700">Name: {item.name}</span><br></br>
                                     <span className="text-sm text-gray-700 ">Department: {item.department}</span>
                                     </div>
                                     <div className="mt-4">
