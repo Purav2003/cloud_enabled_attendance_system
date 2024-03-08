@@ -46,13 +46,13 @@ const FaceDetector = () => {
     }
   };
 
-  const sendPhotoToBackend = async (data) => {
+  const sendPhotoToBackend = async () => {
     // Send the captured photo to the backend
     // console.log(capturedPhoto);
-    if (data) {
+    if (capturedPhoto) {
       try {
         // Extract base64-encoded image data
-        const base64Data = data.split(',')[1];
+        const base64Data = capturedPhoto?.split(',')[1];
         console.log(base64Data)
         let response = await fetch('http://127.0.0.1:8000/api/faceMatch/', {
           method: 'POST',
@@ -82,7 +82,7 @@ const FaceDetector = () => {
     const photoCtx = photo.getContext("2d");
     photoCtx.drawImage(video, 0, 0, video.width, video.height);
     setCapturedPhoto(photo.toDataURL("image/jpeg")); 
-    sendPhotoToBackend(photo.toDataURL("image/jpeg"));
+    // sendPhotoToBackend(photo.toDataURL("image/jpeg"));
   };
 
   const detectFaces = async (model, prevPrediction) => {

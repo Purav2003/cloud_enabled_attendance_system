@@ -34,6 +34,7 @@ class Attendance(models.Model):
     attendance = models.BooleanField(default=False)
     companyCode = models.CharField(max_length=20)
     onLeave = models.BooleanField(default=False)
+    isHoliday = models.BooleanField(default=False)
     def __str__(self):
         return(f"{self.attendance} {self.user_id} {self.date} {self.time}")
 
