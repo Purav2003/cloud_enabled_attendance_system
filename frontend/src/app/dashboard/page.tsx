@@ -10,6 +10,7 @@ import Loading from "../../loading";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Select } from 'antd';
 import CountHours from '@/Helpers/CountHours';
+import { GrFormEdit } from "react-icons/gr";
 const { Option } = Select;
 
 interface UserData {
@@ -181,8 +182,8 @@ export default function Dashboard() {
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                               {data.attendance ? (data.entry.split(".")[0]) : "-------"}
                             </td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
-                              {data.attendance ? (data.exit_time < data.entry ? "-------" : data.exit_time.split(".")[0]) : "------"}
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center mt-2 ml-10 flex tems-center">
+                              {data.attendance ? (data.exit_time < data.entry ? "-------" : data.exit_time.split(".")[0]) : "------"}<GrFormEdit className="text-lg ml-2" />
                             </td>
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                               {data.attendance ? (data.exit_time < data.entry ? "-------" : calculateDuration(data.entry, data.exit_time)) : "-------"}

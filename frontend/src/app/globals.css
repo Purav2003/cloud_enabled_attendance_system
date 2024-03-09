@@ -46,3 +46,15 @@ a:hover{
 /* NAVBAR */
 /* Sidebar Component CSS */
 
+::-webkit-scrollbar {
+  width: 6px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #fff; /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(31 41 55);
+  border-radius: 6px; /* Roundness of the thumb */
+}

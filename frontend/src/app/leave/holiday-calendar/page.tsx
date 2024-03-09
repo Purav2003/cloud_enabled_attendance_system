@@ -4,7 +4,8 @@ import { IoCalendarClearOutline } from "react-icons/io5";
 import Footer from "../../footer";
 import Sidebar from "../../Sidebar";
 import Link from "next/link";
-
+import Loading from "../../../loading";
+import { DateRangePicker } from "rsuite";
 const HolidayCalendar = () => {
     const [date, setDate] = useState([]);
     const fetchData = async () => {
@@ -17,10 +18,10 @@ const HolidayCalendar = () => {
                 },
             });
             const res = await response.json();
-            console.log(res[0].dates);
-            res[0].dates.split(',').map((date) => {
-                setDate(date);
-            });
+            const validJSON = "[" + res[0].dates.replace(/'/g, '"') + "]";
+
+            console.log(JSON.parse(validJSON));
+            setDate(JSON.parse(validJSON)[0]);
         } catch (err) {
             console.log(err);
         }
@@ -59,16 +60,39 @@ const HolidayCalendar = () => {
                         <IoCalendarClearOutline />&nbsp; Holiday Calendar
                     </h1>
                 </div>
-                {date.length > 1 ? <div className="grid grid-cols-4 gap-4 px-12 mt-12">
-                    {months.map((month, index) => (
-                        <div key={month} className="bg-white p-4 rounded-md border border-gray-200">
-                            <h2 className="text-lg font-semibold mb-4">{month}</h2>
-                            <ul>
-                                {date }
-                            </ul>
-                        </div>
-                    ))}
-                </div> : "Loading..."}
+                {date.length > 1 ? (
+                    <div className="grid grid-cols-4 gap-4 px-12 mt-6">
+                        {months.map((month, index) => {
+                            let holidaysFound = false;
+                            return (
+                                <div key={month} className="bg-white p-4 rounded-md border h-48 min-h-48 max-h-64 border-gray-200">
+                                    <h2 className="text-lg font-semibold mb-4">{month}</h2>
+                                    <div className="overflow-y-auto max-h-28">
+                                        {date
+                                            .filter(date => date?.split('/')[1] == index + 1) // Filter holidays for the current month
+                                            .sort((a, b) => { // Sort the filtered holidays
+                                                const dateA = new Date(a?.split('/')[2], index, a?.split('/')[0]);
+                                                const dateB = new Date(b?.split('/')[2], index, b?.split('/')[0]);
+                                                return dateA - dateB;
+                                            })
+                                            .map((date, i) => {
+                                                holidaysFound = true
+                                                return (
+                                                    <p key={i} className="text-gray-800 mb-2 text-sm">{date} - {
+                                                        new Date(date?.split('/')[2], index, date?.split('/')[0]).toLocaleString("en-us", { weekday: "long" })
+                                                    }
+                                                    </p>)
+                                            })
+                                        }
+
+                                        {!holidaysFound && <p className="text-gray-400 text-sm h-24 grid items-center justify-center">No holidays This Month</p>}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : <Loading />}
+
                 <Footer />
             </div>
         </div>
