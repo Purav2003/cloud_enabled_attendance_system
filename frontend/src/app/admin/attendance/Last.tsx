@@ -53,7 +53,7 @@ const Last = () => {
     return (
         <>
             <div style={{ padding: '24px' }}>
-                <h1 className='pb-4 font-semibold text-xl'>Last 5 Day's Attendance</h1>
+                <h1 className='pb-4 font-semibold text-xl'>Last 5 Day&apos;s Attendance</h1>
             </div>
             {
                 loading ? <div className='flex justify-center items-center h-64'><Loading /></div> :

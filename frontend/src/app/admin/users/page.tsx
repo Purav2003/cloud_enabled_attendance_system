@@ -103,9 +103,9 @@ const Users = () => {
           :<div className="grid grid-cols-4">
 
                 {
-                data?.map((item) => {
+                data?.map((item,index) => {
                         return (
-                            <Link href={`/admin/users/${item.id}`}><div className="ml-12 pt-4 w-64 mb-4 border border-gray-100 rounded-lg shadow bg-gray-50">
+                            <Link href={`/admin/users/${item.id}`} key={index}><div className="ml-12 pt-4 w-64 mb-4 border border-gray-100 rounded-lg shadow bg-gray-50">
                                 <div className="flex flex-col items-center pb-10">
                                     <img className="w-[130px] h-[130px] mb-3 items-center object-cover rounded-full shadow-lg" src={`http://localhost:8000${item.profilePhoto}`} alt="User image" />
                                     <div className="text-left items-left">

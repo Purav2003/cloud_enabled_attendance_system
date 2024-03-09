@@ -132,7 +132,7 @@ const AllUsers = () => {
         <div className="py-4 px-12">
             <Toaster />
             <div className="flex justify-between">
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+                {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script> */}
 
                 <div>
                     <button

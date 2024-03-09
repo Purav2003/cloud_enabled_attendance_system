@@ -127,7 +127,7 @@ const Attendance = () => {
                 <div className="p-4 lg:p-8">
                     <div className='lg:flex justify-between'>
                         <div className='lg:w-[60%]'>
-                            <h1 className='pb-4 font-semibold text-xl'>Today's Attendance</h1>
+                            <h1 className='pb-4 font-semibold text-xl'>Today&apos;s Attendance</h1>
                             {data?.length === 0 ? <h1 className="text-center m-12 pt-8">There is No Attendance Data For Today </h1> :
                                 <div className="overflow-x-auto">
                                     <div>
@@ -163,7 +163,7 @@ const Attendance = () => {
                         </div>
                         <div className='lg:w-[40%] lg:grid items-center justify-center'>
                             <div className="p-4 lg:fixed">
-                                <h1 className='pb-4 ml-12 font-semibold text-xl'>Today's Attendance Summary</h1>
+                                <h1 className='pb-4 ml-12 font-semibold text-xl'>Today&apos;s Attendance Summary</h1>
                                 <div className='overflow-x-auto '>
                                     {data && data.length > 0 ? (
                                         <div>

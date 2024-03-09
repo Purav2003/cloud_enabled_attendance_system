@@ -144,7 +144,7 @@ const AdminSignup = () => {
 
                                 <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">
-                                        Your Company's Name</label>
+                                        Your Company&apos;s Name</label>
                                     <input
                                         type="text"
                                         id="companyName"

@@ -9,10 +9,12 @@ interface UserData {
     name: string;
     email: string;
     mobile: string;
-    department: string;
+    department: string;    
 }
 
-const Edit = ({ id }) => {
+
+
+const Edit = () => {
     const [data, setData] = useState<UserData | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
