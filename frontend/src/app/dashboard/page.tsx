@@ -9,7 +9,7 @@ import Cards from "./Cards";
 import Loading from "../../loading";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Select } from 'antd';
-import { calculateDuration } from '@/Helpers/CountHours';
+import CountHours from '@/Helpers/CountHours';
 const { Option } = Select;
 
 interface UserData {
@@ -20,6 +20,7 @@ interface UserData {
 
 export default function Dashboard() {
   const [data, setData] = useState<UserData[]>([]);
+  const { calculateDuration } = CountHours();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState<string | undefined>(new Date().getFullYear().toString());
@@ -174,17 +175,24 @@ export default function Dashboard() {
                           <tr key={index + 1}>
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data.id}</td>
                             {/* <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td> */}
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.date.split('-').reverse().join('-')}</td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.entry?.split(".")[0] : "-------"}</td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{data.attendance ? data.exit_time?.split(".")[0] : "-------"}</td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{calculateDuration(data.entry, data.exit_time)}</td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                              {data.date.split('-').reverse().join('-')}
+                            </td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                              {data.attendance ? (data.entry.split(".")[0]) : "-------"}
+                            </td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                              {data.attendance ? (data.exit_time < data.entry ? "-------" : data.exit_time.split(".")[0]) : "------"}
+                            </td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                              {data.attendance ? (data.exit_time < data.entry ? "-------" : calculateDuration(data.entry, data.exit_time)) : "-------"}
+                            </td>
                             <td className={`lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-white text-center `}>
                               <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} lg:px-3 text-[11px] lg:text-sm px-0 py-1 lg:py-2 rounded-md inline-block w-16 lg:w-24`}>
-                                {
-                                  data?.onLeave ? "On Leave" : data?.attendance ? "Present" : "Absent"
-                                }
+                                {data?.onLeave ? "On Leave" : data?.attendance ? "Present" : "Absent"}
                               </span>
                             </td>
+
 
                           </tr>
                         ))}

@@ -41,7 +41,7 @@ const Last = () => {
                     <TableCell><Link href={`/admin/attendance/${datas.date}`}>{datas.date.split("-").reverse().join("-")}</Link></TableCell>
                     <TableCell>{datas.total_users}</TableCell>
                     <TableCell>{datas.present_users}</TableCell>
-                    <TableCell>{datas.percentage_present}%</TableCell>
+                    <TableCell>{datas.percentage_present.toFixed(2)}%</TableCell>
                 </TableRow>
             );
         }

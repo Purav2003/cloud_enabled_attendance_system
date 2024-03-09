@@ -111,9 +111,9 @@ const ViewAttendanceUser = () => {
 
   return (
     <div className="w-full">
-      <Adminnavbar />     
+      <Adminnavbar />
       <div className="w-full mr-0 pt-24 items-center grid justify-center">
-  
+
         <div className="flex">
           <Select placeholder="Select Year" className="z-0" value={selectedYear} onChange={handleYearChange} style={{ width: 120, marginRight: 10 }}>
             <Option value="2023">2023</Option>
@@ -160,8 +160,12 @@ const ViewAttendanceUser = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data.date.split('-').reverse().join('-')}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data.attendance ? data.entry?.split(".")[0] : "-------"}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{data.attendance ? data.exit_time?.split(".")[0] : "-------"}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{calculateDuration(data.entry, data.exit_time)}</td>
+                      <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                        {data.attendance ? (data.exit_time < data.entry ? "-------" : data.exit_time.split(".")[0]) : "------"}
+                      </td>
+                      <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                        {data.attendance ? (data.exit_time < data.entry ? "-------" : calculateDuration(data.entry, data.exit_time)) : "-------"}
+                      </td>
                       <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-white text-center `}>
                         <span className={`${data?.onLeave ? "bg-blue-400" : data?.attendance ? "bg-green-500" : "bg-red-500"} px-3 py-2 rounded-md inline-block w-24`}>
                           {

@@ -60,7 +60,7 @@ const Attendance = () => {
         const csvContent = "data:text/csv;charset=utf-8," +
             "ID,Name,Entry,Exit,Total Hours,Attendance\n" +
             data.filter((datas) => new Date(datas.date).toLocaleDateString() === new Date().toLocaleDateString()).map((datas, index) =>
-                `${index + 1},${datas.user},${datas.attendance ? datas.entry?.split(".")[0] : "-------"},${datas.attendance ? datas.exit_time?.split(".")[0] : "-------"},${calculateDuration(datas?.entry,datas?.exit_time)},${datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"}`
+                `${index + 1},${datas.user},${datas.attendance ? datas.entry?.split(".")[0] : "-------"},${datas.attendance ? datas.exit_time?.split(".")[0] : "-------"},${datas.attendance ? (datas.exit_time < datas.entry ? "-------" : calculateDuration(datas.entry, datas.exit_time)) : "-------"},${datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"}`
             ).join("\n");
         const encodedURI = encodeURI(csvContent);
         const link = document.createElement("a");
@@ -85,11 +85,15 @@ const Attendance = () => {
                     <TableCell>{datas.user}</TableCell>
                     <TableCell>{datas.date.split("-").reverse().join("-")}</TableCell>
                     <TableCell>{datas.attendance ? datas.entry?.split(".")[0] : "-------"}</TableCell>
-                    <TableCell>{datas.attendance ? datas.exit_time?.split(".")[0] : "-------"}</TableCell>
-                    <TableCell>{calculateDuration(datas?.entry,datas?.exit_time)}</TableCell>
+                    <TableCell>
+                        {datas.attendance ? (datas.exit_time < datas.entry ? "-------" : datas.exit_time.split(".")[0]) : "------"}
+                    </TableCell>
+                    <TableCell>
+                        {datas.attendance ? (datas.exit_time < datas.entry ? "-------" : calculateDuration(datas.entry, datas.exit_time)) : "-------"}
+                    </TableCell>
                     <TableCell> {
-                              datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"
-                            }</TableCell>
+                        datas?.onLeave ? "On Leave" : datas?.attendance ? "Present" : "Absent"
+                    }</TableCell>
                 </TableRow>
             );
         }
@@ -116,7 +120,7 @@ const Attendance = () => {
 
     return (
         <>
-            <AdminNavbar  /><br /><br /><br />
+            <AdminNavbar /><br /><br /><br />
             {loading ? (
                 <Loading />
             ) : (
@@ -124,59 +128,59 @@ const Attendance = () => {
                     <div className='lg:flex justify-between'>
                         <div className='lg:w-[60%]'>
                             <h1 className='pb-4 font-semibold text-xl'>Today's Attendance</h1>
-                            {data?.length===0?            <h1 className="text-center m-12 pt-8">There is No Attendance Data For Today </h1>:
-                            <div className="overflow-x-auto">
-                                <div>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>ID</TableCell>
-                                                <TableCell>Name</TableCell>
-                                                <TableCell>Date</TableCell>
-                                                <TableCell>Entry</TableCell>
-                                                <TableCell>Exit</TableCell>
-                                                <TableCell>Total Hours</TableCell>
-                                                <TableCell>Attendance</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {renderItems()}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                                <div className='w-full lg:flex justify-between mt-4'>
-                                {/* Pagination */}
-                                <div className="flex items-center space-x-2">
-                                    <span>Page No: {currentPage} | {totalPages}</span>
-                                    <button onClick={prev} disabled={currentPage === 1}><SlArrowLeft className="text-sm" /></button>
-                                    <button onClick={next} disabled={lastPage}><SlArrowRight className="text-sm" /></button>
-                                </div>
-                                <button onClick={generateCSV} className='px-4 mt-4 lg:mt-0 py-2 bg-blue-600 rounded-md flex items-center text-white'><HiArrowDown className="mr-2" />Download CSV</button>
-                            </div>
-                            </div>}
+                            {data?.length === 0 ? <h1 className="text-center m-12 pt-8">There is No Attendance Data For Today </h1> :
+                                <div className="overflow-x-auto">
+                                    <div>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>ID</TableCell>
+                                                    <TableCell>Name</TableCell>
+                                                    <TableCell>Date</TableCell>
+                                                    <TableCell>Entry</TableCell>
+                                                    <TableCell>Exit</TableCell>
+                                                    <TableCell>Total Hours</TableCell>
+                                                    <TableCell>Attendance</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {renderItems()}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                    <div className='w-full lg:flex justify-between mt-4'>
+                                        {/* Pagination */}
+                                        <div className="flex items-center space-x-2">
+                                            <span>Page No: {currentPage} | {totalPages}</span>
+                                            <button onClick={prev} disabled={currentPage === 1}><SlArrowLeft className="text-sm" /></button>
+                                            <button onClick={next} disabled={lastPage}><SlArrowRight className="text-sm" /></button>
+                                        </div>
+                                        <button onClick={generateCSV} className='px-4 mt-4 lg:mt-0 py-2 bg-blue-600 rounded-md flex items-center text-white'><HiArrowDown className="mr-2" />Download CSV</button>
+                                    </div>
+                                </div>}
 
-                           
+
                         </div>
                         <div className='lg:w-[40%] lg:grid items-center justify-center'>
                             <div className="p-4 lg:fixed">
                                 <h1 className='pb-4 ml-12 font-semibold text-xl'>Today's Attendance Summary</h1>
-                                <div  className='overflow-x-auto '>
-                                {data && data.length > 0 ? (
-                                    <div>
-                                    <PieChart
-                                        series={[
-                                            {
-                                                arcLabel: (item) => `${(item.value * 100 / (presentCount + absentCount)).toFixed(2)}%`,
-                                                data: pieChartData
-                                            },
-                                        ]}
-                                        width={400}
-                                        height={200} 
-                                    /></div>
-                                ) : (
-                                    <Typography variant="body1" className='text-center m-12 pt-8'>No data available</Typography>
+                                <div className='overflow-x-auto '>
+                                    {data && data.length > 0 ? (
+                                        <div>
+                                            <PieChart
+                                                series={[
+                                                    {
+                                                        arcLabel: (item) => `${(item.value * 100 / (presentCount + absentCount)).toFixed(2)}%`,
+                                                        data: pieChartData
+                                                    },
+                                                ]}
+                                                width={400}
+                                                height={200}
+                                            /></div>
+                                    ) : (
+                                        <Typography variant="body1" className='text-center m-12 pt-8'>No data available</Typography>
                                     )}
-                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
