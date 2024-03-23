@@ -221,6 +221,8 @@ def leave_status_update_approve(request, pk):
             attendance.onLeave = True
             attendance.companyCode = company_code
             attendance.save()
+    
+    attendance.save()
 
     
     return Response({'status': 'success', 'message': 'Leave Approved'}, status=status.HTTP_200_OK)
