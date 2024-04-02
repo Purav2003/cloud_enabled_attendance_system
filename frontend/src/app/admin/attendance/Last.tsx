@@ -5,9 +5,15 @@ import {  Typography, Table, TableHead, TableBody, TableRow, TableCell, Button }
 import Loading from "../../../loading"
 import Link from 'next/link';
 
+interface Data {
+    date: any;
+    total_users: any;
+    present_users: any;
+    percentage_present: any;
+}
 
 const Last = () => {
-    let [data, setData] = useState([]);
+    let [data, setData] = useState<Data[]>([]);
     const [loading, setLoading] = useState(true);
     const fetchData = async () => {
         const token = localStorage.getItem("token");

@@ -11,13 +11,13 @@ const ForgotVal = () => {
     });
 
     const inputRefs = [
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null),
-        useRef<HTMLInputElement>(null),
+        useRef(null),
+        useRef(null),
+        useRef(null),
+        useRef(null),
     ];
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
+    const handleInputChange = (e, index) => {
         const value = e.target.value;
 
         setOtp((prevOtp) => {
@@ -32,7 +32,7 @@ const ForgotVal = () => {
         });
     };
 
-    const handleBackspace = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
+    const handleBackspace = (e, index) => {
         if (e.key === 'Backspace' && index > 0 && !otp[`otp_${index + 1}`]) {
             // Move focus to the previous input on backspace if the current input is empty
             inputRefs[index - 1].current?.focus();

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const CountHours = () => {
-    const calculateDuration = (entry: string, exit_time: string) => {
+    const calculateDuration = (entry, exit_time) => {
         if (entry && exit_time) {
           // Split entry and exit times into components
           const entryComponents = entry.split(":");

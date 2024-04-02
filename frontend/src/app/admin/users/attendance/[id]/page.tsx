@@ -12,6 +12,10 @@ interface UserData {
   id: number;
   date: string;
   time: string;
+  entry: any;
+  exit_time: any;
+  user: any;
+  onLeave: any;
   attendance: boolean;
 }
 const ViewAttendanceUser = () => {
@@ -20,8 +24,8 @@ const ViewAttendanceUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const [selectedYear, setSelectedYear] = useState<string | undefined>(new Date().getFullYear().toString());
-  const [selectedMonth, setSelectedMonth] = useState<string | undefined>((new Date().getMonth() + 1).toString().padStart(2, '0'));
+  const [selectedYear, setSelectedYear] = useState<any>(new Date().getFullYear().toString());
+  const [selectedMonth, setSelectedMonth] = useState<any>((new Date().getMonth() + 1).toString().padStart(2, '0'));
   const itemsPerPage = 5;
 
   const handleYearChange = (value: string) => {

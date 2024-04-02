@@ -9,21 +9,31 @@ import Loading from "../../../../loading"
 import CountHours from '@/Helpers/CountHours';
 import Link from 'next/link';
 
+interface Data {
+    attendance?: string; // You can change the type if attendance is not a string
+    user: any;
+    entry:any;
+    exit_time:any;
+    date:any;
+    id:any;
+    // Add other properties if necessary
+}
+
 const Attendance = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Data[]>([]);
     const [presentCount, setPresentCount] = useState(0);
     const [absentCount, setAbsentCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(5); // Number of items per page
     const [loading, setLoading] = useState(true); // Initially set loading to true
     const { calculateDuration } = CountHours();
-    const date = window.location.pathname.split('/').pop();
+    const date:any = window.location.pathname.split('/').pop();
 
     // Memoize fetchData function
     const fetchData = useCallback(async () => {
         const token = localStorage.getItem("token");
         const companyCode = localStorage.getItem("companyCode");
-        const date = window.location.pathname.split('/').pop();
+        const date:any = window.location.pathname.split('/').pop();
 
         const response = await fetch(`http://localhost:8000/api/dayAttendance/${companyCode}/${date}`, {
             method: "GET",
@@ -76,7 +86,7 @@ const Attendance = () => {
         const items = [];
         for (let i = 0; i < data.length; i++) {
             const datas = data[i];
-            const date = new Date(datas.date);
+            const date:any = new Date(datas.date);
 
             items.push(
                 <TableRow key={datas.id} className={datas.attendance ? "bg-green-100" : "bg-red-100"}>

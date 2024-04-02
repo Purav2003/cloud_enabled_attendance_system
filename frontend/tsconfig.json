@@ -34,7 +34,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/navbar.jsx", "src/app/signup/page.jsx", "src/app/camera/page.jsx", "src/app/leave/RecentLeave.jsx"  ],
+, "src/app/navbar.jsx", "src/app/signup/page.jsx", "src/app/camera/page.jsx", "src/app/leave/RecentLeave.jsx", "src/app/leave/holiday-calendar/page.jsx", "src/app/leave/LeaveRemaining.jsx", "src/app/verification/page.jsx", "src/app/forgot-password/validation/page.jsx", "src/Helpers/CountHours.jsx", "src/app/admin/dashboard/DashCards.jsx", "src/app/admin/holiday/page.jsx"  ],
   "exclude": [
     "node_modules"
   ]

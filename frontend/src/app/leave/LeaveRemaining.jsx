@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import Loading from "../../loading"
+
+
+
 const Leave = () => {
-    const [leave, setLeave] = useState(null);
+    const [leave, setLeave] = useState([]);
     const [loading, setLoading] = useState(true);
     const fetchLeave = async () => {
         const id = localStorage.getItem("id");

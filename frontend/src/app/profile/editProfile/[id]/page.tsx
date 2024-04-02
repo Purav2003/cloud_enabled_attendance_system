@@ -12,9 +12,13 @@ interface UserData {
   email: string;
   mobile: string;
   department: string;
+  status: any;
+  message: any;
+  profilePhoto: any;
+
 }
 
-const EditProfile = ({ id }) => {
+const EditProfile = () => {
   const [data, setData] = useState<UserData | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);

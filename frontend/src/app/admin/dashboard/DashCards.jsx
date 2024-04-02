@@ -1,5 +1,7 @@
+"use client";
 import React from 'react';
 import { useState, useEffect ,useCallback} from 'react';
+
 
 const DashCards = () => {
     const [data, setData] = useState([]);
@@ -8,7 +10,7 @@ const DashCards = () => {
     const [leaveCount, setLeaveCount] = useState(0);
     const companyName = localStorage.getItem("companyName");
 
-    const fetchData = useCallback(async () => {
+    const fetchData = async () => {
         const token = localStorage.getItem("token");
         const companyCode = localStorage.getItem("companyCode");
         const response = await fetch(`http://localhost:8000/api/allAttendance/${companyCode}`, {
@@ -19,13 +21,13 @@ const DashCards = () => {
         });
         const result = await response.json();
         setData(result);
-    }, []);
+    };
 
     useEffect(() => {
         fetchData();
-    }, [fetchData]); 
+    }, []); 
 
-    useEffect(() => {
+    const fetchValues = () => {
         let presentCount = 0;
         let leaveCount = 0;
         let absentCount = 0;
@@ -37,6 +39,9 @@ const DashCards = () => {
         setPresentCount(presentCount);
         setAbsentCount(absentCount);
         setLeaveCount(leaveCount);
+    }
+    useEffect(() => {
+      fetchValues(); 
     }, [data]);
     
     return (

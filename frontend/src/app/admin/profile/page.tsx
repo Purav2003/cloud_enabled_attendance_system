@@ -1,8 +1,4 @@
-// import Sidebar from "../Sidebar"
 "use client";
-// import Sidebar from "../Sidebar"
-
-// import Sidebar from "../Sidebar"
 import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
@@ -12,6 +8,8 @@ interface UserData {
   name: string;
   email: string;
   mobile: string;
+  companyCode: any;
+  companyName: any;
   department: string;
 }
 
@@ -24,11 +22,12 @@ const AdminProfile = () => {
     email: '',
     mobile: '',
     department: '',
-
+    companyCode: '',
+    companyName: '',
   });
 
 
-const id = localStorage.getItem("id");
+// const id = localStorage.getItem("id");
 
 
   const fetchData = async () => {
@@ -76,7 +75,9 @@ const id = localStorage.getItem("id");
       window.location.replace("/dashboard");
     }
     const userData = localStorage.getItem("isAuthorized")
-        
+      if (userData === "false") {
+          window.location.replace("/admin/login");
+      }
 
     fetchData();
   }, []);

@@ -5,7 +5,7 @@ import { useState,useEffect } from 'react';
 const Landing = () => {
         const [datab, setDatab] = useState({});
         const fetchData = async () => {
-            let id = localStorage.getItem("id");
+            let id:any = localStorage.getItem("id");
             let idAsInt = parseInt(id, 10);
             const API_URL = `http://localhost:8000/api/user/${idAsInt}`;
     

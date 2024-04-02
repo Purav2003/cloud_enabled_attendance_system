@@ -4,14 +4,26 @@ import Sidebar from "../../Sidebar";
 import { toast, Toaster } from 'react-hot-toast';
 import Link from "next/link";
 import Footer from "../../footer"
+
+interface LeaveRemaining {
+    leaveType: any;
+    remaining: any;
+}
+
+interface FormDatas {
+    leaveType: any;
+    startDate: any;
+    endDate: any;
+    reason: any;
+}
 const LeaveApply = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormDatas>({
         leaveType: '',
         startDate: '',
         endDate: '',
         reason: ''
     });
-    const [remainingLeaves, setRemainingLeaves] = useState({});
+    const [remainingLeaves, setRemainingLeaves] = useState<LeaveRemaining[]>();
 
     useEffect(()=>{
         const token = localStorage.getItem("token")
@@ -44,21 +56,21 @@ const LeaveApply = () => {
         fetchRemainingLeaves();
     }, []);
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e:any) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
 
-        const remainingLeaveCount = remainingLeaves[formData.leaveType].remaining;
+        const remainingLeaveCount = remainingLeaves ? remainingLeaves[formData.leaveType].remaining:0;
         console.log(remainingLeaveCount);
 
-        const startDate = new Date(formData.startDate);
-        const endDate = new Date(formData.endDate);
+        const startDate:any = new Date(formData.startDate);
+        const endDate:any = new Date(formData.endDate);
 
     let differenceInDays = 0;
     let currentDate = new Date(startDate);
@@ -86,14 +98,15 @@ const LeaveApply = () => {
     if (startDate < today || endDate < today) {
         return toast.error("Start and end dates should be in the future");
     }
-
+    const userId:any = localStorage.getItem("id");
+    const companyCode:any = localStorage.getItem("cc");
     const formDataToSend = new FormData();
-    formDataToSend.append('user_id', localStorage.getItem("id"));
+    formDataToSend.append('user_id', userId);
     formDataToSend.append('start_date', formData.startDate);
     formDataToSend.append('end_date', formData.endDate);
     formDataToSend.append('reason', formData.reason);
     formDataToSend.append('leave_type', formData.leaveType);
-    formDataToSend.append('companyCode', localStorage.getItem("cc"));
+    formDataToSend.append('companyCode', companyCode);
 
         try {
             const response = await fetch('http://localhost:8000/api/leaveApplication', {

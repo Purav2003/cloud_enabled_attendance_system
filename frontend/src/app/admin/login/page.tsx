@@ -22,7 +22,7 @@ const AdminLogin = () => {
         });
     };
 
-    const handleLoginClick = async (e: SyntheticEvent) => {
+    const handleLoginClick = async (e: any) => {
         e.preventDefault();
         if(formData.email === '' || formData.password === ''){
             toast.error("All fields are required")

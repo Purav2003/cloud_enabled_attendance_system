@@ -14,6 +14,10 @@ interface UserData {
     mobile: string;
     password: string;
     companyCode: string;
+    name: string;
+    department: string;
+    profilePhoto: string;
+    status: string;    
 }
 const AllUsers = () => {
     const [data, setData] = useState<UserData[] | undefined>(undefined);
@@ -27,7 +31,7 @@ const AllUsers = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
-    const handleItemClick = (value) => {
+    const handleItemClick = (value:any) => {
         setSelectedValue(value);
         setIsDropdownOpen(false);
     };
@@ -36,7 +40,7 @@ const AllUsers = () => {
     const apiUrlData = selectedValue === 'All Users' ? 'all' : selectedValue === 'Request Approved' ? 'approved' : selectedValue === 'Request Denied' ? 'rejected' : 'all'
     const fetchData = async () => {
 
-        let companyCode = localStorage.getItem("companyCode");
+        let companyCode:any = localStorage.getItem("companyCode");
         let idAsInt = parseInt(companyCode, 10);
         const API_URL = `http://localhost:8000/api/${apiUrlData}/${idAsInt}`;
         console.log(API_URL);
@@ -68,7 +72,7 @@ const AllUsers = () => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = data?.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(data?.length / itemsPerPage);
+    const totalPages =  data? Math.ceil(data?.length / itemsPerPage) :1;
     // Change page
     const nextPage = () => {
         if (currentPage < totalPages) {
@@ -111,7 +115,7 @@ const AllUsers = () => {
         }
     }
 
-    const editProfile = async (id) => {
+    const editProfile = async (id:any) => {
         window.location.replace(`/admin/dashboard/edit/${id}`)
 
     }

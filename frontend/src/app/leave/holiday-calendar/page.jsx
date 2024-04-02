@@ -6,6 +6,7 @@ import Sidebar from "../../Sidebar";
 import Link from "next/link";
 import Loading from "../../../loading";
 import { DateRangePicker } from "rsuite";
+
 const HolidayCalendar = () => {
     const [date, setDate] = useState([]);
     const fetchData = async () => {

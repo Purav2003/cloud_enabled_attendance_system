@@ -10,6 +10,7 @@ interface UserData {
   email: string;
   mobile: string;
   department: string;
+  profilePhoto: string;  
 }
 
 const ProfileUser = () => {

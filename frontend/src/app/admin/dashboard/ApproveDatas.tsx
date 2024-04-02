@@ -10,6 +10,11 @@ interface UserData {
     password: string;
     companyCode: string;
     isAuthorized: string;
+    name: string;
+    department: string;
+    profilePhoto: string;
+    createdAt: string;
+    updatedAt: string;    
 }
 
 const ApproveData = () => {
@@ -57,7 +62,7 @@ const ApproveData = () => {
                     'Authorization': `${token}`,
                 },
             });
-            const authResponse = response.json();
+            const authResponse:any = response.json();
             setAuthData(authResponse)
             console.log(authResponse)
 
@@ -82,7 +87,7 @@ const ApproveData = () => {
                     'Authorization': `${token}`,
                 },
             });
-            const authResponse = response.json();
+            const authResponse:any = response.json();
             setAuthData(authResponse)
             console.log(authResponse)
 

@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ApproveData from './ApproveDatas'
-import Adminnavbar from '@/app/AdminNavbar';
-import DashCards from "./Cards";
+import Adminnavbar from '../../AdminNavbar';
+import DashCards from "./DashCards";
 import AllUsers from './AllUsers';
-const AdminDashboard = () => {
+const Dashboard = () => {
 
 
     useEffect(() => {
@@ -15,19 +15,18 @@ const AdminDashboard = () => {
         }
         if (!companyName) {
             window.location.replace('/dashboard')
-
         }
     });
     return (
-        <div>
+        <>
+        
             <Adminnavbar />
             <br></br><br></br><br></br><br></br>
-            <DashCards /><br></br><br></br>
+            {/* <DashCards /><br></br><br></br> */}
             <ApproveData />
-            {/* <br></br><br></br> */}
             <AllUsers />
-        </div>
+        </>
     );
 }
 
-export default AdminDashboard;
+export default Dashboard;

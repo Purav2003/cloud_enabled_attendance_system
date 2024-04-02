@@ -16,6 +16,11 @@ const { Option } = Select;
 interface UserData {
   date: string;
   time: string;
+  entry: any;
+  exit_time: any;
+  user: any;
+  onLeave: any;
+  id:any;  
   attendance: boolean;
 }
 
@@ -24,8 +29,8 @@ export default function Dashboard() {
   const { calculateDuration } = CountHours();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [selectedYear, setSelectedYear] = useState<string | undefined>(new Date().getFullYear().toString());
-  const [selectedMonth, setSelectedMonth] = useState<string | undefined>((new Date().getMonth() + 1).toString().padStart(2, '0'));
+  const [selectedYear, setSelectedYear] = useState<any>(new Date().getFullYear().toString());
+  const [selectedMonth, setSelectedMonth] = useState<any>((new Date().getMonth() + 1).toString().padStart(2, '0'));
   const itemsPerPage = 5;
 
   const handleYearChange = (value: string) => {
@@ -66,8 +71,8 @@ export default function Dashboard() {
 
         // Sort data by date in descending order
         const sortedData = result.sort((a: UserData, b: UserData) => {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
+          const dateA:any = new Date(a.date);
+          const dateB:any = new Date(b.date);
           return dateB - dateA;
         });
 
@@ -129,7 +134,7 @@ export default function Dashboard() {
       <Sidebar />
       <div className="lg:ml-16 mt-8 w-full">
         <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6"><LuLayoutDashboard />&nbsp; Dashboard</h1>
-        <Cards />
+        {/* <Cards /> */}
         <div className="flex-grow py-10 px-4 sm:px-8 md:px-12 lg:px-16">
           <div className="mx-auto flex flex-col lg:flex-row justify-between">
             <div className="lg:w-3/4 mr-0 lg:mr-6 mb-8 lg:mb-0">

@@ -4,8 +4,19 @@ import { useState, useEffect } from 'react';
 import { IoCheckmark } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { toast, Toaster } from 'react-hot-toast';
+
+interface LeaveData {
+    id: any;
+    user_name: any;
+    start_date: any;
+    end_date: any;
+    leave_type: any;
+    reason: any;
+    onLeave: any;
+}
+
 const ApproveLeave = () => {
-  const [leave, setLeave] = useState([]);
+  const [leave, setLeave] = useState<LeaveData[]>([]);
   const fetchLeave = async () => {
     const companyCode = localStorage.getItem("companyCode");
     const response = await fetch(`http://localhost:8000/api/leaveStatus/pending/${companyCode}`);

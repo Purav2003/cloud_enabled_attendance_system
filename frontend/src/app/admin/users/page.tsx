@@ -9,6 +9,11 @@ interface UserData {
     mobile: string;
     password: string;
     companyCode: string;
+    name:any;
+    department: any;
+    profilePhoto: any;
+    createdAt: any;
+    updatedAt: any;    
 }
 
 const Users = () => {
@@ -19,7 +24,7 @@ const Users = () => {
 
     const fetchData = async () => {
 
-        let companyCode = localStorage.getItem("companyCode");
+        let companyCode:any = localStorage.getItem("companyCode");
         let idAsInt = parseInt(companyCode, 10);
         const API_URL = `http://localhost:8000/api/approved/${idAsInt}`;
         console.log(API_URL);

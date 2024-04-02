@@ -8,8 +8,20 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Loading from "../../../loading"
 import Last from './Last';
 import CountHours from '@/Helpers/CountHours';
+
+interface Data {
+    attendance?: any; // You can change the type if attendance is not a string
+    user: any;
+    entry: any;
+    exit_time: any;
+    date: any;
+    id: any;
+    onLeave: any;    
+    // Add other properties if necessary
+}
+
 const Attendance = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Data[]>([]);
     const [presentCount, setPresentCount] = useState(0);
     const { calculateDuration } = CountHours();
     const [absentCount, setAbsentCount] = useState(0);
