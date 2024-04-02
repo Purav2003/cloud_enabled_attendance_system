@@ -5,8 +5,8 @@ import Footer from "../footer";
 import Calendars from "./Calendar";
 import "rsuite/dist/rsuite.min.css";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import Cards from "./Cards";
 import Loading from "../../loading";
+import UserDetails from "./UserDetails";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { Select } from 'antd';
 import CountHours from '@/Helpers/CountHours';
@@ -135,6 +135,7 @@ export default function Dashboard() {
       <div className="lg:ml-16 mt-8 w-full">
         <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6"><LuLayoutDashboard />&nbsp; Dashboard</h1>
         {/* <Cards /> */}
+        <UserDetails />
         <div className="flex-grow py-10 px-4 sm:px-8 md:px-12 lg:px-16">
           <div className="mx-auto flex flex-col lg:flex-row justify-between">
             <div className="lg:w-3/4 mr-0 lg:mr-6 mb-8 lg:mb-0">

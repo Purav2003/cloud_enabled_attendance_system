@@ -1,14 +1,13 @@
+"use client";
 import { useState, useEffect } from "react";
 import { IoHandLeftOutline } from "react-icons/io5";
 import { ImTree } from "react-icons/im";
 import { LiaUsersSolid } from "react-icons/lia";
 import Loading from "../../loading";
 
-const Cards = () => {
+const UserDetails = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const id = localStorage.getItem("id");
 
     const fetchData = async () => {
         const id = localStorage.getItem("id");
@@ -24,7 +23,12 @@ const Cards = () => {
                 },
             });
             const data_new = await response.json();
-            setData(data_new);
+            if(data_new){
+                setData(data_new);
+            }
+            else{
+                window.location.replace("/login");        
+            }
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -106,4 +110,4 @@ const Cards = () => {
     );
 };
 
-export default Cards;
+export default UserDetails;
