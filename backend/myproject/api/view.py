@@ -426,6 +426,11 @@ def update_exit_time_by_id(request, pk):
     except ValueError:
         return Response({'status': 'error', 'message': 'Invalid exit time format'}, status=status.HTTP_400_BAD_REQUEST)
     
+    current_time = datetime.now().time()
+    
+    if exit_time > current_time:
+        return Response({'status': 'error', 'message': 'Exit time cannot be in the future'}, status=status.HTTP_400_BAD_REQUEST)
+    
     if exit_time < attendance.entry:
         return Response({'status': 'error', 'message': 'Exit time cannot be before entry time'}, status=status.HTTP_400_BAD_REQUEST)
     

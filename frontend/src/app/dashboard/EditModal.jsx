@@ -3,7 +3,7 @@ import { Modal,Button,Form,Input,TimePicker } from 'antd';
 const EditModal = ({isModalOpen,handleOk,handleCancel,setEditData}) => {
   return (
     <div>
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
+      <Modal title="Change your Exit time" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}
       footer={[
         <Button key="back" onClick={handleCancel}>
             Return
