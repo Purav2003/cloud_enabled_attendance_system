@@ -22,7 +22,7 @@ const Dashboard = () => {
         
             <Adminnavbar />
             <br></br><br></br><br></br><br></br>
-            {/* <DashCards /><br></br><br></br> */}
+            <DashCards /><br></br><br></br>
             <ApproveData />
             <AllUsers />
         </>

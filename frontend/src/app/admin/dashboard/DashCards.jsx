@@ -8,8 +8,10 @@ const DashCards = () => {
     const [presentCount, setPresentCount] = useState(0);
     const [absentCount, setAbsentCount] = useState(0);
     const [leaveCount, setLeaveCount] = useState(0);
-    const companyName = localStorage.getItem("companyName");
-
+    let companyName;
+    if (typeof window !== 'undefined') {
+        companyName = window.localStorage.getItem("companyName");
+    }
     const fetchData = async () => {
         const token = localStorage.getItem("token");
         const companyCode = localStorage.getItem("companyCode");

@@ -62,7 +62,7 @@ const HolidayCalendar = () => {
                     </h1>
                 </div>
                 {date.length > 1 ? (
-                    <div className="grid grid-cols-4 gap-4 px-12 mt-6">
+                    <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4 px-12 mt-6">
                         {months.map((month, index) => {
                             let holidaysFound = false;
                             return (

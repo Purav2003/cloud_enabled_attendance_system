@@ -228,7 +228,8 @@ console.log(editData)
               {loading ? <Loading /> :
                 data?.length === 0 ? <div className="text-center p-32 text-gray-500">No attendance data available</div> :
                   <div className="rounded-lg w-full lg:w-full lg:max-w-full sm:w-full sm:max-w-full max-w-3/4">
-                    <table className="overflow-visible max-w-3/4 lg:w-full lg:max-w-full sm:w-full sm:max-w-full  divide-y divide-gray-200 ">
+                    <div className="overflow-x-auto">
+                    <table className="max-w-3/4 lg:w-full lg:max-w-full sm:w-full sm:max-w-full  divide-y divide-gray-200 ">
                       <thead>
                         <tr>
                           <th className="lg:px-6 px-2 py-2 lg:py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">ID</th>
@@ -268,6 +269,7 @@ console.log(editData)
                         ))}
                       </tbody>
                     </table>
+                    </div>
                     <div className="flex items-center justify-between px-6 py-4 bg-white border-gray-200 sm:px-6 w-full">
                       <div className="text-sm text-gray-700 w-full">
                         Page {currentPage} of {totalPages}
