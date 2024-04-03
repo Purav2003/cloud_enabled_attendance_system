@@ -41,5 +41,6 @@ urlpatterns = [
     path('api/addHolidays/<int:pk>',view.add_holidays),
     path('api/getHolidays/<int:pk>',view.view_holidays),
     path('api/updateHolidays/<int:pk>',view.update_holidays),
+    path('api/updateExitTime/<int:pk>',view.update_exit_time_by_id),
 ]
 

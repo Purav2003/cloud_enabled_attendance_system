@@ -8,9 +8,11 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Loading from "../../loading";
 import UserDetails from "./UserDetails";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { Select } from 'antd';
+import { Select, Button,Modal } from 'antd';
+import EditModal from './EditModal';
 import CountHours from '@/Helpers/CountHours';
 import { GrFormEdit } from "react-icons/gr";
+import {toast,Toaster} from "react-hot-toast";
 const { Option } = Select;
 
 interface UserData {
@@ -21,7 +23,11 @@ interface UserData {
   user: any;
   onLeave: any;
   id:any;  
+  ids:any;
   attendance: boolean;
+  status:any;
+  message:any;
+  exitTime: any;
 }
 
 export default function Dashboard() {
@@ -31,21 +37,19 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState<any>(new Date().getFullYear().toString());
   const [selectedMonth, setSelectedMonth] = useState<any>((new Date().getMonth() + 1).toString().padStart(2, '0'));
-  const itemsPerPage = 5;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editData, setEditData] = useState<UserData | null>(null);
+  const [editDataId, setEditDataId] = useState<any>(null);
+  const [editLaoding,setEditLaoding] = useState(false);
+console.log(editData)
 
-  const handleYearChange = (value: string) => {
-    setSelectedYear(value);
+
+  const showModal = (id:any) => {
+    console.log(id)
+    setEditDataId(id);
+    setIsModalOpen(true);
   };
-
-  const handleMonthChange = (value: string) => {
-    setSelectedMonth(value);
-  };
-
-  const props = {
-    selectedYear,
-    selectedMonth,
-  };
-
+    
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -85,7 +89,7 @@ export default function Dashboard() {
         setData(filteredData);
         const newData = filteredData?.map((item: UserData, index: number) => ({
           ...item,
-          id: index + 1,
+          ids: index + 1,
         }));
         setData(newData);
 
@@ -95,6 +99,66 @@ export default function Dashboard() {
       console.error("Error fetching data:", error);
     }
   };
+
+
+  const editDates = async () => {
+    try{
+      setEditLaoding(true);
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
+      const formDataToSend = new FormData();      
+      formDataToSend.append('exit_time', editData?.exitTime);
+      const response = await fetch(`http://localhost:8000/api/updateExitTime/${editDataId}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formDataToSend,
+      });
+      const data = await response.json();
+      if(data?.status === "success"){
+        fetchData()
+        toast.success(data?.message)
+      }
+      else{
+        toast.error(data?.message)
+      }
+      setEditLaoding(false);
+    }
+    catch(error){
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const handleOk = () => {
+    editDates()
+    if(editLaoding){
+      return "Loading ..."
+    }  
+    else{
+    setIsModalOpen(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const itemsPerPage = 5;
+
+  const handleYearChange = (value: string) => {
+    setSelectedYear(value);
+  };
+
+  const handleMonthChange = (value: string) => {
+    setSelectedMonth(value);
+  };
+
+  const props = {
+    selectedYear,
+    selectedMonth,
+  };
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -127,11 +191,10 @@ export default function Dashboard() {
     }
   };
 
-
-
   return (
     <div className="flex flex-col lg:flex-row w-full">
       <Sidebar />
+      <Toaster />
       <div className="lg:ml-16 mt-8 w-full">
         <h1 className="lg:text-3xl lg:ml-12 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6"><LuLayoutDashboard />&nbsp; Dashboard</h1>
         {/* <Cards /> */}
@@ -180,7 +243,7 @@ export default function Dashboard() {
                       <tbody className="divide-y divide-gray-200">
                         {currentItems.map((data, index) => (
                           <tr key={index + 1}>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data.id}</td>
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">{data.ids}</td>
                             {/* <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">{new Date(data.date).toLocaleDateString("en-US", { weekday: "long" })}</td> */}
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                               {data.date.split('-').reverse().join('-')}
@@ -188,8 +251,8 @@ export default function Dashboard() {
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                               {data.attendance ? (data.entry.split(".")[0]) : "-------"}
                             </td>
-                            <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center mt-2 ml-10 flex tems-center">
-                              {data.attendance ? (data.exit_time < data.entry ? "-------" : data.exit_time.split(".")[0]) : "------"}<GrFormEdit className="text-lg ml-2" />
+                            <td className="lg:px-6 px-2 py-2 lg:py-4 items-center justify-center whitespace-nowrap text-sm text-gray-500 text-center mt-2 ml-10 flex tems-center">
+                              {data.attendance ? (data.exit_time < data.entry ? <>-------<GrFormEdit className="hover:cursor-pointer text-lg ml-2" onClick={()=>showModal(data?.id)}/></> :<>{data.exit_time.split(".")[0]}<GrFormEdit className="hover:cursor-pointer text-lg ml-2" onClick={()=>showModal(data?.id)}/></>) : "------"}
                             </td>
                             <td className="lg:px-6 px-2 py-2 lg:py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                               {data.attendance ? (data.exit_time < data.entry ? "-------" : calculateDuration(data.entry, data.exit_time)) : "-------"}
@@ -223,7 +286,7 @@ export default function Dashboard() {
                   </div>
               }
             </div>
-
+                <EditModal setEditData={setEditData} isModalOpen={isModalOpen} handleOk={handleOk} handleCancel={handleCancel} />
             <div className="w-full lg:w-auto">
               <div className="bg-white rounded-md">
                 <Calendars {...props} />

@@ -411,3 +411,24 @@ def update_holidays(request, pk):
         return Response({'status': 'success', 'message': 'Holidays Updated'}, status=status.HTTP_200_OK)
     else:
         return Response({'status': 'error', 'message': 'No holidays found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PUT'])
+def update_exit_time_by_id(request, pk):
+    try:
+        attendance = Attendance.objects.get(id=pk)
+    except Attendance.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Attendance not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    exit_time_str = request.data.get('exit_time')
+    try:
+        exit_time = datetime.strptime(exit_time_str, '%H:%M:%S').time()
+    except ValueError:
+        return Response({'status': 'error', 'message': 'Invalid exit time format'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if exit_time < attendance.entry:
+        return Response({'status': 'error', 'message': 'Exit time cannot be before entry time'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    attendance.exit_time = exit_time
+    attendance.save()
+    return Response({'status': 'success', 'message': 'Exit time updated'}, status=status.HTTP_200_OK)
