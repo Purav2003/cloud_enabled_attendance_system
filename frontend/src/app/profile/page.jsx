@@ -3,6 +3,7 @@ import Sidebar from "../Sidebar"
 import Footer from '../footer';
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { LuUser2 } from "react-icons/lu";
 import { Image } from "antd";
 import Loading from "../../loading"
 // interface UserData {
@@ -103,7 +104,7 @@ const UserProfile = () => {
       <div className="min-h-screen w-full items-center justify-center bg-white font-sans">
 <div className="flex min-h-screen items-center justify-center">
         <div className="mt-8 lg:mt-0 md:mt-0 bg-white w-full max-w-2xl p-8 rounded-md lg:shadow-md">
-          <h1 className="lg:text-3xl lg:ml-0 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl font-bold text-gray-800 flex items-center mb-6">👨🏻‍💻 User Profile</h1>
+          <h1 className="lg:text-[27px] lg:ml-0 sm:ml-8 ml-4 mt-12 lg:mt-0 text-xl flext items-center gap-3 font-bold text-gray-800 flex items-center mb-6"><LuUser2 className="text-[27px] items-center justify-center mt-[2px]" /> User Profile</h1>
 
        {loading?<Loading />:<div className="lg:flex sm:flex items-center space-x-4">
             <div
