@@ -18,8 +18,10 @@ const EditModal = ({isModalOpen,handleOk,handleCancel,setEditData}) => {
           <TimePicker onChange={
             (time,timeString) => {
               setEditData({...setEditData,exitTime:timeString})
-            }
-          } />
+            }            
+          }
+          />
+          {/* /> */}
         </Form.Item>
        </Form>
       </Modal>
