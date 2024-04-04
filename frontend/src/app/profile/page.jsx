@@ -3,6 +3,7 @@ import Sidebar from "../Sidebar"
 import Footer from '../footer';
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Image } from "antd";
 import Loading from "../../loading"
 // interface UserData {
 //   name: string;
@@ -106,12 +107,11 @@ const UserProfile = () => {
 
        {loading?<Loading />:<div className="lg:flex sm:flex items-center space-x-4">
             <div
-              className="lg:flex flex items-center justify-center cursor-pointer"
-              onClick={() => setShowModal(true)}
+              className="lg:flex flex items-center justify-center cursor-pointer"              
             >
-              <img
+              <Image width={200} height={200}
                 src={`http://localhost:8000${data?.profilePhoto}`}
-                className="rounded-full lg:w-[200px] w-[150px] h-[150px] lg:h-[200px] object-cover border-2 border-gray-300"
+                className="rounded-full lg:w-[150px] w-[150px] h-[150px] lg:h-[200px] object-cover border-2 border-gray-300"
                 alt="User Profile"
               />
             </div>

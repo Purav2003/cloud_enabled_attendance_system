@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import Link from "next/link";
 import Adminnavbar from "@/app/AdminNavbar";
+import { Image } from "antd";
 interface UserData {
     name: string;
     email: string;
@@ -166,10 +167,9 @@ const Edit = () => {
 
         <div className="flex items-center space-x-4">
           <div
-            className="flex items-center justify-center cursor-pointer"
-            onClick={() => setShowModal(true)}
+            className="flex items-center justify-center cursor-pointer"            
           >
-            <img
+            <Image width={250} height={250} 
               src={`http://localhost:8000${data?.profilePhoto}`}
               className="rounded-full w-[200px] h-[200px] object-cover border-2 border-gray-300"
               alt="User Profile"
@@ -182,14 +182,7 @@ const Edit = () => {
                 <label htmlFor="name" className="block text-md font-medium text-gray-600">
                   Name:
                 </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full"
-                  placeholder="Enter your name"
-                  value={formData?.name}
-                  required
-                />
+                <span className="hover:cursor-not-allowed">{formData?.name}</span>
               </div>
 
               <div className="mb-4">

@@ -96,7 +96,7 @@ const Users = () => {
             <input
                             type="text"
                             id="search"
-                            className="w-[40%] flex px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
+                            className="lg:w-[40%] w-[80%] flex px-4 py-2 mt-2 border rounded-md focus:outline-none focus:border-blue-500"
                             placeholder="Search"
                             onChange={handleSearchChange}
                             required
@@ -105,12 +105,12 @@ const Users = () => {
           { loading?<Loading />:data?.length===0?
                       <h1 className="text-center m-12 pt-8">There are no Users </h1>
 
-          :<div className="grid grid-cols-4">
+          :<div className="grid grid-cols-1 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 ">
 
                 {
                 data?.map((item,index) => {
                         return (
-                            <Link href={`/admin/users/${item.id}`} key={index}><div className="ml-12 pt-4 w-64 mb-4 border border-gray-100 rounded-lg shadow bg-gray-50">
+                            <Link href={`/admin/users/${item.id}`} key={index}><div className="lg:ml-12 border border-gray-300 border-dashed pt-4 lg:w-64 mb-4 rounded-lg bg-gray-50">
                                 <div className="flex flex-col items-center pb-10">
                                     <img className="w-[130px] h-[130px] mb-3 items-center object-cover rounded-full shadow-lg" src={`http://localhost:8000${item.profilePhoto}`} alt="User image" />
                                     <div className="text-left items-left">

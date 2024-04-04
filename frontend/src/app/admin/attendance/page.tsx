@@ -173,10 +173,10 @@ const Attendance = () => {
 
 
                         </div>
-                        <div className='lg:w-[40%] lg:grid items-center justify-center'>
+                        <div className='lg:w-[40%] lg:grid items-center justify-center hidden lg:visible sm:visible md:visible'>
                             <div className="p-4 lg:fixed">
                                 <h1 className='pb-4 ml-12 font-semibold text-xl'>Today&apos;s Attendance Summary</h1>
-                                <div className='overflow-x-auto '>
+                                <div className='overflow-x-auto'>
                                     {data && data.length > 0 ? (
                                         <div>
                                             <PieChart
@@ -187,7 +187,7 @@ const Attendance = () => {
                                                     },
                                                 ]}
                                                 width={400}
-                                                height={200}
+                                                height={200}                                                
                                             /></div>
                                     ) : (
                                         <Typography variant="body1" className='text-center m-12 pt-8'>No data available</Typography>

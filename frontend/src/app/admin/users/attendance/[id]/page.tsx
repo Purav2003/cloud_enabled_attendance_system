@@ -116,7 +116,7 @@ const ViewAttendanceUser = () => {
   return (
     <div className="w-full">
       <Adminnavbar />
-      <div className="w-full mr-0 pt-24 items-center grid justify-center">
+      <div className="w-full lg:mr-0 pt-24 lg:items-center lg:grid overflow-auto justify-center ">
 
         <div className="flex">
           <Select placeholder="Select Year" className="z-0" value={selectedYear} onChange={handleYearChange} style={{ width: 120, marginRight: 10 }}>

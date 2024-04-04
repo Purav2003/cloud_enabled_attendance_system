@@ -52,7 +52,7 @@ const DashCards = () => {
                 <div className="border rounded-lg p-6 bg-[#FEF4E4]">
                     <h2 className="text-xl font-semibold mb-4">Company Name</h2>
                     <div>
-                        <p className="text-gray-600">{companyName} </p>
+                        <div className="text-gray-600">{companyName ? companyName : ""} </div>
                     </div>
                 </div>
 

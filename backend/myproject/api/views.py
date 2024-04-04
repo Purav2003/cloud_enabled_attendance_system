@@ -260,7 +260,7 @@ def send_verification_mail(receiver_email, companyName,userName,admin_email):
     <p>Dear <strong style="color: #000;font-weight:700">{userName}</strong>,</p>
     <p>We are thrilled to inform you that your request to join the <strong style="color: #000;font-weight:700">{companyName}</strong> on our attendance portal has been accepted. You are now a valued member, and you can start using the portal to manage your attendance.</p>    
     <p>Click the button below to access the attendance portal:</p>
-    <a href="http://localhost:3000/login" class="button">Access Attendance Portal</a>
+    <a href="https://cloud-enabled-attendance-system.vercel.app/login" class="button">Access Attendance Portal</a>
     <p>If you have any questions or need assistance, feel free to reach out to our support team at <a href="mailto:{admin_email}" style="color: #3498db; text-decoration: none;">{admin_email}</a>.</p>
     <p>Best regards,<br> <span style="color: #3498db;">{companyName} Team</span></p>
   </div>
@@ -372,7 +372,7 @@ def checkOtp(request,pk):
     otp = str(otp)
     otp_1 = str(items.otp)
     print(otp)
-    print(items.otp)
+    print(items.otp) 
     if otp_1 == otp:
         return Response({'status': 'success', 'message': 'User authenticated'}, status=status.HTTP_200_OK)
     else:

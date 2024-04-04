@@ -205,7 +205,7 @@ const AllUsers = () => {
             {loading ? <Loading />
 
                 :currentItems?.length===0?<div className="text-center p-16 text-gray-500">NO DATA</div>:
-                <> <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
+                <div className="overflow-auto"> <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 text-white">
                         <tr>
                             <th scope="col" className="text-center px-6 py-3">
@@ -264,7 +264,7 @@ const AllUsers = () => {
                             </button>
                         </div>
                     </div>
-                </>
+                </div>
 
 
             }
