@@ -115,9 +115,9 @@ const ApproveData = () => {
     return (
         <>
         {approveData?.length > 0 ? (
-        <div className="py-4 px-12">
+        <div className="py-4 px-12 ">
             <h1 className="font-bold text-2xl pb-4">Pending Requests</h1>
-        
+        <div className="overflow-auto">
                 <table className="table-striped w-full text-sm text-gray-500 text-white overflow-scroll">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 text-white">
                         <tr>
@@ -165,7 +165,9 @@ const ApproveData = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table><br></br><br></br>
+                </table>
+                </div>
+                <br></br><br></br>
              
         </div>): (
             <div>

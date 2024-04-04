@@ -180,6 +180,8 @@ def leave_user_pending(request,pk):
 def leave_user_approved(request,pk):
     current_month = datetime.now().month
     current_year = datetime.now().year
+    entry_time = datetime.now().time()
+    exit_time = datetime.now().time()
     items = Leave.objects.filter(status="Leave Granted", companyCode = pk, timestamp__month=current_month, timestamp__year=current_year)
     serializer = LeaveSerializer(items, many=True)  
     for leave_data in serializer.data:
@@ -205,6 +207,8 @@ def leave_status_update_approve(request, pk):
     user = get_object_or_404(User, id=user_id)
     name = user.name
     company_code = user.companyCode 
+    entry_time = datetime.now().time()
+    exit_time = datetime.now().time()
     print(start_date)
     
     for current_date in range((end_date - start_date).days + 1):
@@ -215,6 +219,8 @@ def leave_status_update_approve(request, pk):
             date=current_date,
             user=name,
             onLeave=True, 
+            entry=entry_time,
+            exit_time=exit_time,
             companyCode= company_code
         )
         if not created:
