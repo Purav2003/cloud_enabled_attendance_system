@@ -26,7 +26,7 @@ const Users = () => {
 
         let companyCode:any = localStorage.getItem("companyCode");
         let idAsInt = parseInt(companyCode, 10);
-        const API_URL = `http://localhost:8000/api/approved/${idAsInt}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/approved/${idAsInt}`;
         console.log(API_URL);
         const token = localStorage.getItem("token")
         // alert(token)

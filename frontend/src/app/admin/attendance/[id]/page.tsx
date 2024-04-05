@@ -35,7 +35,7 @@ const Attendance = () => {
         const companyCode = localStorage.getItem("companyCode");
         const date:any = window.location.pathname.split('/').pop();
 
-        const response = await fetch(`http://localhost:8000/api/dayAttendance/${companyCode}/${date}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/dayAttendance/${companyCode}/${date}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

@@ -79,7 +79,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/api/signup/', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/signup/`, {
                 method: 'POST',
                 body: formDataToSend,
             });

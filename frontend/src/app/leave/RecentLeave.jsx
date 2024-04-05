@@ -10,7 +10,7 @@ const RecentLeave = () => {
 
   const fetchLeave = async () => {
     const id = localStorage.getItem('id');
-    const response = await fetch(`http://localhost:8000/api/leaveHistory/${id}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/leaveHistory/${id}`);
     const data = await response.json();
     setLeave(data);
     setLoading(false);

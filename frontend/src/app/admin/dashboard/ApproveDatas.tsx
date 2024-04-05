@@ -24,7 +24,7 @@ const ApproveData = () => {
     const fetchData = async () => {
         let companyCode = localStorage.getItem("companyCode");
         let idAsInt = parseInt(companyCode || "0", 10);
-        const API_URL = `http://localhost:8000/api/all/${idAsInt}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/all/${idAsInt}`;
         const token = localStorage.getItem("token");
 
         try {
@@ -50,7 +50,7 @@ const ApproveData = () => {
     };
 
     const approve = (id: string) => async () => {
-        const API_URL = `http://localhost:8000/api/access/${id}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/access/${id}`;
         console.log(API_URL);
         const token = localStorage.getItem("token")
         // alert(token)
@@ -75,7 +75,7 @@ const ApproveData = () => {
     }
 
     const deny = (id: string) => async () => {
-        const API_URL = `http://localhost:8000/api/deny/${id}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/deny/${id}`;
         console.log(API_URL);
         const token = localStorage.getItem("token")
         // alert(token)

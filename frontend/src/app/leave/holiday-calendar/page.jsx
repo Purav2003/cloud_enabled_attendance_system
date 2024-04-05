@@ -12,7 +12,7 @@ const HolidayCalendar = () => {
     const fetchData = async () => {
         const companyCode = localStorage.getItem('cc');
         try {
-            const response = await fetch(`http://localhost:8000/api/getHolidays/${companyCode}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/getHolidays/${companyCode}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ const HolidayComponent = () => {
         const dates = selectedDates
         const companyCode = localStorage.getItem('companyCode')
         try {
-            const response = await fetch(`http://localhost:8000/api/addHolidays/${companyCode}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/addHolidays/${companyCode}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const HolidayComponent = () => {
                 dates: selectedDates
             };
             try {
-                const response = await fetch(`http://localhost:8000/api/updateHolidays/${companyCode}`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/updateHolidays/${companyCode}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const HolidayComponent = () => {
     const fetchData = async () => {
         const companyCode = localStorage.getItem('companyCode')
         try {
-            const response = await fetch(`http://localhost:8000/api/getHolidays/${companyCode}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/getHolidays/${companyCode}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

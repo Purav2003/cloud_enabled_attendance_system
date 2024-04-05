@@ -49,7 +49,7 @@ const Verification = () => {
       const otp_final = otp.otp_1 + otp.otp_2 + otp.otp_3 + otp.otp_4;
       otp_final.toString();
       const email = localStorage.getItem('userEmail');
-      const apiUrl = `http://localhost:8000/api/checkOtp/${email}`;
+      const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URI}/checkOtp/${email}`;
 
       const response = await fetch(apiUrl, {
         method: 'POST',

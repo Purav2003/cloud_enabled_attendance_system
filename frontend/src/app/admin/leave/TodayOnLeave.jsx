@@ -11,7 +11,7 @@ const TodayOnLeave = () => {
 
     const fetchLeave = async () => {
         const companyCode = localStorage.getItem("companyCode");
-        const response = await fetch(`http://localhost:8000/api/todayOnLeave/${companyCode}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/todayOnLeave/${companyCode}`);
         const data = await response.json();
         setLeave(data);
         setLoading(false);

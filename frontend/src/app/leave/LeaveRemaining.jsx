@@ -8,7 +8,7 @@ const Leave = () => {
     const [loading, setLoading] = useState(true);
     const fetchLeave = async () => {
         const id = localStorage.getItem("id");
-        const response = await fetch(`http://localhost:8000/api/leaveRemaining/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/leaveRemaining/${id}`, {
           method: "GET",
         });        
         const data = await response.json();

@@ -11,7 +11,7 @@ const UserDetails = () => {
 
     const fetchData = async () => {
         const id = localStorage.getItem("id");
-        const API_URL = `http://localhost:8000/api/user/${id}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/user/${id}`;
         const token = localStorage.getItem("token");
 
         try {

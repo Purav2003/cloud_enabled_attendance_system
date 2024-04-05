@@ -19,14 +19,14 @@ const ApproveLeave = () => {
   const [leave, setLeave] = useState<LeaveData[]>([]);
   const fetchLeave = async () => {
     const companyCode = localStorage.getItem("companyCode");
-    const response = await fetch(`http://localhost:8000/api/leaveStatus/pending/${companyCode}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/leaveStatus/pending/${companyCode}`);
     const data = await response.json();
     setLeave(data);
     console.log(data);
   }
 
   const approveLeave = (id: string) => async () => {
-    const API_URL = `http://localhost:8000/api/leaveUpdateStatus/approved/${id}`;
+    const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/leaveUpdateStatus/approved/${id}`;
     const token = localStorage.getItem("token")
     try {
       const response = await fetch(API_URL, {
@@ -51,7 +51,7 @@ const ApproveLeave = () => {
   }
 
   const denyLeave = (id: string) => async () => {
-    const API_URL = `http://localhost:8000/api/leaveUpdateStatus/denied/${id}`;
+    const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/leaveUpdateStatus/denied/${id}`;
     const token = localStorage.getItem("token")
     try {
       const response = await fetch(API_URL, {

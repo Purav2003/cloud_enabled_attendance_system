@@ -70,7 +70,7 @@ const AdminSignup = () => {
         formDataToSend.append('companyName', formData.companyName);
 
         try {
-            const response = await fetch('http://localhost:8000/api/admin/signup', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/admin/signup`, {
                 method: 'POST',
                 body: formDataToSend,
             });

@@ -45,7 +45,7 @@ const LeaveApply = () => {
         const fetchRemainingLeaves = async () => {
             try {
                 const id = localStorage.getItem("id");
-                const response = await fetch(`http://localhost:8000/api/leaveRemaining/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/leaveRemaining/${id}`);
                 const data = await response.json();
                 setRemainingLeaves(data);
             } catch (error) {
@@ -109,7 +109,7 @@ const LeaveApply = () => {
     formDataToSend.append('companyCode', companyCode);
 
         try {
-            const response = await fetch('http://localhost:8000/api/leaveApplication', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/leaveApplication`, {
                 method: "POST",
                 body: formDataToSend,
             });

@@ -32,7 +32,7 @@ const AdminProfile = () => {
 
   const fetchData = async () => {
     const id = localStorage.getItem("id")
-    const API_URL = `http://localhost:8000/api/admin/${id}`;
+    const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/admin/${id}`;
     console.log(API_URL);
     const token = localStorage.getItem("token");
 

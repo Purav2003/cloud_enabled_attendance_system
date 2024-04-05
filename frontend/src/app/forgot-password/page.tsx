@@ -37,7 +37,7 @@ const ForgotPassword = () => {
         };
         console.log(dataToSend);
         try {
-            const response = await fetch('http://localhost:8000/api/forgotPassword/', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/forgotPassword/`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

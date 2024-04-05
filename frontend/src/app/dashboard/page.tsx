@@ -57,7 +57,7 @@ console.log(editData)
       const formDataToSend = new FormData();
       formDataToSend.append('year', selectedYear);
       formDataToSend.append('month', selectedMonth);
-      const response = await fetch(`http://localhost:8000/api/attendance/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/attendance/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -100,7 +100,6 @@ console.log(editData)
     }
   };
 
-
   const editDates = async () => {
     try{
       setEditLaoding(true);
@@ -108,7 +107,7 @@ console.log(editData)
       const id = localStorage.getItem("id");
       const formDataToSend = new FormData();      
       formDataToSend.append('exit_time', editData?.exitTime);
-      const response = await fetch(`http://localhost:8000/api/updateExitTime/${editDataId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/updateExitTime/${editDataId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

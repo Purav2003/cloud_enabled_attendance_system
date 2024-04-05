@@ -11,7 +11,7 @@ const Calendars = (props) => {
 
     const fetchAbsent = async () => {
         const id = localStorage.getItem("id");
-        const API_URL = `http://localhost:8000/api/absent/${id}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/absent/${id}`;
         const token = localStorage.getItem("token");
 
         try {
@@ -32,7 +32,7 @@ const Calendars = (props) => {
     const fetchHolidays = async () => {
         const companyCode = localStorage.getItem("cc");
         try {
-            const response = await fetch(`http://localhost:8000/api/getHolidays/${companyCode}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/getHolidays/${companyCode}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const Calendars = (props) => {
 
     const fetchLeave = async () => {
         const id = localStorage.getItem("id");
-        const API_URL = `http://localhost:8000/api/leave/${id}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/leave/${id}`;
         const token = localStorage.getItem("token");
 
         try {

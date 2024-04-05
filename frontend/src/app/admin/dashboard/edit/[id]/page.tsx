@@ -58,7 +58,7 @@ const Edit = () => {
 
     const fetchData = async () => {
         const id = window.location.pathname.split('/').pop();
-        const API_URL = `http://localhost:8000/api/user/${id}`;
+        const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/user/${id}`;
         console.log(API_URL);
         const token = localStorage.getItem("token");
 
@@ -110,7 +110,7 @@ const Edit = () => {
         console.log(formDataToSend)
         try {
             const id = window.location.pathname.split('/').pop();
-            const response = await fetch(`http://localhost:8000/api/update/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/update/${id}`, {
                 method: 'PUT',
                 body: formDataToSend,
             });

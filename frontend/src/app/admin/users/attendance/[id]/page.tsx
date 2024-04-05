@@ -46,7 +46,7 @@ const ViewAttendanceUser = () => {
 
       formDataToSend.append('year', selectedYear);
       formDataToSend.append('month', selectedMonth);
-      const response = await fetch(`http://localhost:8000/api/attendance/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/attendance/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

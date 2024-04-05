@@ -77,7 +77,7 @@ const EditProfile = () => {
 
   const fetchData = async () => {
     const id = window.location.pathname.split('/').pop();
-    const API_URL = `http://localhost:8000/api/user/${id}`;
+    const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/user/${id}`;
     console.log(API_URL);
     const token = localStorage.getItem("token");
     console.log(token)
@@ -139,7 +139,7 @@ const EditProfile = () => {
     try {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id")
-      const response = await fetch(`http://localhost:8000/api/update/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/update/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `${token}`

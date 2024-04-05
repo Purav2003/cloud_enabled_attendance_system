@@ -26,7 +26,7 @@ const ForgotPassEmail = () => {
         }
         localStorage.setItem("ForgotEmail",formData.email)
         try {
-            const response = await fetch(`http://localhost:8000/api/forgotPassEmail/${formData.email}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/forgotPassEmail/${formData.email}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

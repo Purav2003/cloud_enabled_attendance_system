@@ -29,7 +29,7 @@ const AdminLogin = () => {
             return
         }
         try {                   
-            const response = await fetch('http://localhost:8000/api/admin/login', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/admin/login`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

@@ -33,7 +33,7 @@ const Attendance = () => {
     const fetchData = useCallback(async () => {
         const token = localStorage.getItem("token");
         const companyCode = localStorage.getItem("companyCode");
-        const response = await fetch(`http://localhost:8000/api/allAttendance/${companyCode}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/allAttendance/${companyCode}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

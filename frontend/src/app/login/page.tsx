@@ -26,7 +26,7 @@ const Login = () => {
             return;
         }
         try {
-            const response = await fetch('http://localhost:8000/api/login/', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/login/`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

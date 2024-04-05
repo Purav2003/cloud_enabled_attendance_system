@@ -39,7 +39,7 @@ const ResetPassword = () => {
         const token = localStorage.getItem("token");
         console.log(token);
         try {
-            const response = await fetch('http://localhost:8000/api/resetPassword/', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/resetPassword/`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

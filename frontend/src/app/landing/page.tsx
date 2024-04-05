@@ -7,7 +7,7 @@ const Landing = () => {
         const fetchData = async () => {
             let id:any = localStorage.getItem("id");
             let idAsInt = parseInt(id, 10);
-            const API_URL = `http://localhost:8000/api/user/${idAsInt}`;
+            const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/user/${idAsInt}`;
     
             const token = localStorage.getItem("token");
     

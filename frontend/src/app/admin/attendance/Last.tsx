@@ -18,7 +18,7 @@ const Last = () => {
     const fetchData = async () => {
         const token = localStorage.getItem("token");
         const companyCode = localStorage.getItem("companyCode");
-        const response = await fetch(`http://localhost:8000/api/lastFiveDaysAttendance/${companyCode}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/lastFiveDaysAttendance/${companyCode}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

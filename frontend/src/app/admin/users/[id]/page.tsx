@@ -30,7 +30,7 @@ const ProfileUser = () => {
 
   const fetchData = async () => {
     const id = window.location.pathname.split('/').pop();
-    const API_URL = `http://localhost:8000/api/user/${id}`;
+    const API_URL = `${process.env.NEXT_PUBLIC_BASE_URI}/user/${id}`;
     console.log(API_URL);
     const token = localStorage.getItem("token");
 

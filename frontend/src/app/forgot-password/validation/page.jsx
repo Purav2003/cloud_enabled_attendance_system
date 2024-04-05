@@ -49,7 +49,7 @@ const ForgotVal = () => {
             const otp_final = otp.otp_1 + otp.otp_2 + otp.otp_3 + otp.otp_4;
             otp_final.toString();
             const email = localStorage.getItem('ForgotEmail');
-            const apiUrl = `http://localhost:8000/api/forgotPassword/checkOtp/${email}`;
+            const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URI}/forgotPassword/checkOtp/${email}`;
 
             const response = await fetch(apiUrl, {
                 method: 'POST',
