@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import logo from "../assets/images/logo.png"
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <title>Cloud Enabled Attendance System</title>
-      <body className={inter.className}>{children}
+      <body className={inter.className}>
+      <NextTopLoader   showSpinner={false}/>
+        {children}
       </body>
     </html>
   )
