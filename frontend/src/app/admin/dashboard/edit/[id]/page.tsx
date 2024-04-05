@@ -106,12 +106,16 @@ const Edit = () => {
         formDataToSend.append('email', formData.email);
         formDataToSend.append('mobile', formData.mobile);
         formDataToSend.append('department', formData.department);
-
+        const token = localStorage.getItem("token");
         console.log(formDataToSend)
         try {
             const id = window.location.pathname.split('/').pop();
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URI}/update/${id}`, {
                 method: 'PUT',
+                headers: {
+                  "Content-Type": "application/json",
+                  'Authorization': `${token}`,
+              },
                 body: formDataToSend,
             });
 
