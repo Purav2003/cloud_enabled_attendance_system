@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from . import view
 from . import cameraView
-
+from . import reportView
 urlpatterns = [
     path('api/all/<int:pk>',views.getData),
     path('api/access/<int:pk>',views.access),
@@ -33,7 +33,7 @@ urlpatterns = [
     path('api/leaveStatus/approved/<int:pk>',view.leave_user_approved),
     path('api/leaveUpdateStatus/approved/<int:pk>',view.leave_status_update_approve),
     path('api/leaveUpdateStatus/denied/<int:pk>',view.leave_status_update_deny),
-    path('api/todayOnLeave/<int:pk>',view.today_on_leave),
+    path('api/todayOnLeave/<int:pk>',   view.today_on_leave),
     path('api/resetPassword/',view.reset_password),
     path('api/forgotPassEmail/<str:email>',view.send_email_forgot_password),
     path('api/forgotPassword/checkOtp/<str:pk>',view.forgotPass_checkOtp),
@@ -42,5 +42,7 @@ urlpatterns = [
     path('api/getHolidays/<int:pk>',view.view_holidays),
     path('api/updateHolidays/<int:pk>',view.update_holidays),
     path('api/updateExitTime/<int:pk>',view.update_exit_time_by_id),
+    path('api/admin/report/month/<int:pk>',reportView.get_attendance_month),
+    path('api/admin/report/year/leave/<int:pk>',reportView.get_leave_year),
 ]
 
