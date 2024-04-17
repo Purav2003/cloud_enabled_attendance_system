@@ -3,6 +3,8 @@ import React,{useState} from 'react';
 import { PieChart } from '@mui/x-charts';
 import { Select, Button,Modal } from 'antd';
 
+const { Option } = Select;
+
 const PresentDayWisePie = ({ data,setSelectedMonth,setSelectedYear,selectedMonth,selectedYear }) => {   
     // Display the pie chart of how many were present on every day of the month from 
     // get values from data

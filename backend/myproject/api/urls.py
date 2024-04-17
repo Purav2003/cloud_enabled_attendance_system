@@ -44,5 +44,6 @@ urlpatterns = [
     path('api/updateExitTime/<int:pk>',view.update_exit_time_by_id),
     path('api/admin/report/month/<int:pk>',reportView.get_attendance_month),
     path('api/admin/report/year/leave/<int:pk>',reportView.get_leave_year),
+    path('api/admin/report/year/workingHours/<int:pk>',reportView.get_working_hours),
 ]
 

@@ -28,8 +28,6 @@ COPY myproject /app/
 # Activate virtual environment and collect static files
 RUN python manage.py
 
-# Expose the port that the app runs on
-EXPOSE 8000
+EXPOSE 80
 
-# Run the application
-CMD ["gunicorn", "--bind", "127.0.0.1:8000", "myproject.wsgi:application"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]  

@@ -12,7 +12,12 @@ const FaceDetector = () => {
   const [responseData, setResponseData] = useState({ response: '' })
   const loadModel = async () => {
     try {
-      const model = await blazeface.load();
+      const model = await blazeface.load({
+        modelUrl: "https://tfhub.dev/tensorflow/tfjs-model/blazeface/1/default/1",
+        model: "backbone",
+        maxFaces: 1,
+        mode:"no-cors"
+      });      
       console.log("BlazeFace model loaded successfully:", model);
       return model;
     } catch (error) {
@@ -70,6 +75,9 @@ const FaceDetector = () => {
       } catch (error) {
         console.error('Error sending photo to backend:', error);
       }
+    }
+    else{
+      alert('nope')
     }
   };
 
