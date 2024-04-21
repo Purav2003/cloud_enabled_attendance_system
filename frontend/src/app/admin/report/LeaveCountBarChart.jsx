@@ -32,7 +32,21 @@ const LeaveCountBarChart = ({ data, setSelectedYear, selectedYear, users, setLea
       }
     });
 
-    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8000', '#8000ff', '#00ff80', '#0080ff'];
+    const colors = [
+      'rgba(255, 99, 132, 0.7)',
+      'rgba(54, 162, 235, 0.7)',
+      'rgba(255, 206, 86, 0.7)',
+      'rgba(75, 192, 192, 0.7)',
+      'rgba(153, 102, 255, 0.7)',
+      'rgba(255, 159, 64, 0.7)',
+      'rgba(50, 205, 50, 0.7)',
+      'rgba(220, 20, 60, 0.7)',
+      'rgba(0, 191, 255, 0.7)',
+      'rgba(255, 140, 0, 0.7)',
+      'rgba(255, 0, 255, 0.7)',
+      'rgba(128, 0, 0, 0.7)',
+    ]
+
     let colorIndex = 0;
     for (const employee in datasets) {
       datasets[employee].backgroundColor = colors[colorIndex];

@@ -21,7 +21,7 @@ const CompanyReport = () => {
     const fetchDataPie = async () => {
         try{
             const companyCode = localStorage.getItem('companyCode')
-            const response = await axios.post(`http://localhost:8000/api/admin/report/month/${companyCode}`,
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/admin/report/month/${companyCode}`,
             {month: presentDayWisePieMonth, year: presentDayWisePieYear},
             )
             const data = await response
@@ -35,7 +35,7 @@ const CompanyReport = () => {
     const fetchDataYear = async () => {
         try{
             const companyCode = localStorage.getItem('companyCode')
-            const response = await axios.post(`http://localhost:8000/api/admin/report/year/leave/${companyCode}`,{
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/admin/report/year/leave/${companyCode}`,{
                 year: leavePerYear,
                 userId: leaveUserId
             })            
@@ -74,7 +74,7 @@ const CompanyReport = () => {
     const fetchDataWorkingHours = async () => {
         try{
             const companyCode = localStorage.getItem('companyCode')
-            const response = await axios.post(`http://localhost:8000/api/admin/report/year/workingHours/${companyCode}`,
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URI}/admin/report/year/workingHours/${companyCode}`,
             {month:workingHoursMonth , year: workingHoursYear,userId:workingHoursUserId},
             )
             const data = await response
@@ -102,7 +102,7 @@ const CompanyReport = () => {
     <div>
         <Adminnavbar />        <br></br><br></br><br></br><br></br>
       <h1 className='px-12 text-2xl font-bold'>Report</h1>
-      <div className="grid grid-cols-3 gap-0 mt-12">
+      <div className="grid grid-cols-2 max-h-[500px] gap-0 mt-12">
         <div className="px-12">
         <h1 className='pb-4 font-bold'>Count of Attendance By Date</h1>
 

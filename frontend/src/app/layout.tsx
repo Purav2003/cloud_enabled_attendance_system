@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <title>Cloud Enabled Attendance System</title>
       <body className={inter.className}>
-      <NextTopLoader   showSpinner={false}/>
+      <NextTopLoader  showSpinner={false}/>
         {children}
       </body>
     </html>
