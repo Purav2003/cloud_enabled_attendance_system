@@ -29,9 +29,9 @@ class User(models.Model):
 class Attendance(models.Model):
     user_id = models.CharField(max_length=50)
     user = models.CharField(max_length=50)
-    date = models.DateField()
-    entry = models.TimeField()
-    exit_time = models.TimeField()
+    date = models.DateField(auto_now_add=True)
+    entry = models.TimeField(auto_now_add=True)
+    exit_time = models.TimeField(auto_now_add=True)
     attendance = models.BooleanField(default=False)
     companyCode = models.CharField(max_length=20)
     onLeave = models.BooleanField(default=False)
