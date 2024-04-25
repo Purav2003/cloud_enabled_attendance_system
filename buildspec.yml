@@ -12,11 +12,12 @@ phases:
     commands:
       # Collect static files
       - cd backend/myproject
-      - python manage.py collectstatic --noinput
+      - ls
 
   build:
     commands:
       # Run migrations
+      - ls
       - cd backend/myproject
       - python manage.py migrate
 
