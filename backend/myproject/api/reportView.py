@@ -82,10 +82,10 @@ def get_working_hours(request,pk):
     today = datetime.now()
     month = request.data['month']
     year = request.data['year']
-    # user_id = request.data['userId']
-    # if user_id==0 or user_id == "0":
-        # attendances = Attendance.objects.filter(companyCode=pk,date__month=month,date__year=year,user_id=1)
-    attendances = Attendance.objects.filter(companyCode=pk,date__month=month,date__year=year,user_id=1)
+    user_id = request.data['userId']
+    if user_id==0 or user_id == "0":
+        attendances = Attendance.objects.filter(companyCode=pk,date__month=month,date__year=year,user_id=1)
+    attendances = Attendance.objects.filter(companyCode=pk,date__month=month,date__year=year,user_id=user_id)
     serializer = AttendanceSerializer(attendances,many=True)
     if serializer.data:
         return Response(serializer.data)
