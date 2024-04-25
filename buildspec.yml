@@ -16,7 +16,7 @@ phases:
 
   build:
     commands:
-      - python manage.py runserver
+      - python manage.py migrate
 
 artifacts:
   files:
