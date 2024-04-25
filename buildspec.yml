@@ -11,13 +11,13 @@ phases:
   pre_build:
     commands:
       # Collect static files
-      - cd backend/myproject
-      - python manage.py collectstatic --noinput
+      - cd ./backend/myproject
+      - ls
 
   build:
     commands:
       # Run migrations
-      - cd backend/myproject
+      - ls
       - python manage.py migrate
 
 artifacts:
