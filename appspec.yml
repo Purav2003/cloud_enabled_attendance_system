@@ -1,15 +1,16 @@
 version: 0.0
-os: ubiuntu
+os: ubuntu
 files:
   - source: /
     destination: /backend
 hooks:
   BeforeInstall:
-    - location: scripts/before_install.sh
+    - location: ""
       runas: ubuntu
       commands:
-        - echo "Executing BeforeInstall steps..."
-        - pip install gunicorn
+        - sudo apt-get update
+        - sudo apt-get install python3-pip -y
+        - sudo pip install gunicorn
   AfterInstall:
     - location: scripts/install_dependencies.sh
       runas: ubuntu
