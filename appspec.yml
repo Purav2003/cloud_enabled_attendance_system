@@ -4,6 +4,7 @@ files:
   - source: /
     destination: /backend
 hooks:
+  hooks:
   BeforeInstall:
     - location: ""
       runas: ubuntu
