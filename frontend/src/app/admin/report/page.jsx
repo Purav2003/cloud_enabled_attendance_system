@@ -15,7 +15,7 @@ const CompanyReport = () => {
     const [approvedUsers, setApprovedUsers] = useState()
     const [leaveUserId, setLeaveUserId] = useState(0)
     const [workingHoursData, setWorkingHoursData] = useState()
-    const [workingHoursUserId, setWorkingHoursUserId] = useState(0)
+    const [workingHoursUserId, setWorkingHoursUserId] = useState(1)
     const [workingHoursYear, setWorkingHoursYear] = useState(new Date().getFullYear().toString())
     const [workingHoursMonth, setWorkingHoursMonth] = useState((new Date().getMonth() + 1).toString().padStart(2, '0'))
     const fetchDataPie = async () => {

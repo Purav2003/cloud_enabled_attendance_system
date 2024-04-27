@@ -1,25 +1,23 @@
-import { LineChart } from '@mui/x-charts';
 import React from 'react';
 import CountHours from '@/Helpers/CountHours';
 import { Select } from 'antd';
+import ReactApexChart from 'react-apexcharts';
 const { Option } = Select;
 
-const InTime = ({ data, users, workingHoursUserId, setWorkingHoursUserId, setWorkingHoursMonth, setWorkingHoursYear, workingHoursMonth, workingHoursYear }) => {
+const InTime = ({ data, users, workingHoursUserId, setWorkingHoursUserId, setWorkingHoursMonth, setWorkingHoursYear, workingHoursMonth, workingHoursYear, type = null }) => {
   const { calculateDuration } = CountHours();
 
-  // Data preperation for line chart of Intime
-  const entryTimes = data?.length > 0 && data?.map((item) => item.entry)
-  const present = data?.length > 0 && data?.filter((item) => item.attendance === true)
-  const workingHours = present?.length > 0 && present?.map((item) => calculateDuration(item.entry, item.exit_time))
-  console.log(workingHours)
-  const date = data?.length > 0 && data?.map((item) => item.date)
-  console.log(date)
-  console.log(entryTimes)
-  const uniqueEntryTimes = entryTimes && [...new Set(entryTimes)]
+  // Data preparation for line chart of InTime
+  const entryTimes = data?.length > 0 && data?.map((item) => item.entry);
+  const present = data?.length > 0 && data?.filter((item) => item.attendance === true);
+  const workingHours = present?.length > 0 && present?.map((item) => calculateDuration(item.entry, item.exit_time));
+  const date = data?.length > 0 && data?.map((item) => item.date);
+  const uniqueEntryTimes = entryTimes && [...new Set(entryTimes)];
   const inTime = uniqueEntryTimes && uniqueEntryTimes?.map((entry) => {
-    const present = data.filter((item) => item.entry === entry)
-    return { entry, present: present.length }
-  })
+    const present = data.filter((item) => item.entry === entry);
+    return { entry, present: present.length };
+  });
+
   const handleYearChange = (value) => {
     setWorkingHoursYear(value);
   };
@@ -32,9 +30,11 @@ const InTime = ({ data, users, workingHoursUserId, setWorkingHoursUserId, setWor
     setWorkingHoursUserId(value);
   };
 
+  // Prepare data for ApexCharts
+  const chartData = entryTimes.toString().split(',').map((item) => parseInt(item, 10));
+
   return (
     <div>
-
       <Select
         placeholder="Select Year"
         className="z-0"
@@ -51,7 +51,7 @@ const InTime = ({ data, users, workingHoursUserId, setWorkingHoursUserId, setWor
         placeholder="Select Month"
         value={workingHoursMonth}
         onChange={handleMonthChange}
-        style={{ width: 120,marginRight:10 }}
+        style={{ width: 120, marginRight: 10 }}
       >
         <Option value="01">January</Option>
         <Option value="02">February</Option>
@@ -66,26 +66,35 @@ const InTime = ({ data, users, workingHoursUserId, setWorkingHoursUserId, setWor
         <Option value="11">November</Option>
         <Option value="12">December</Option>
       </Select>
-      <Select placeholder="Select Employee" value={workingHoursUserId === 0 ? "Select User" : workingHoursUserId} onChange={handleEmployeeChange} style={{ width: 120, marginRight: 10 }}>
-        <Option value="0">All</Option>
-        {users?.map((name) => {
-          return <Option key={name.id} value={name.id}>{name.name}</Option>;
-        })}
-      </Select>
-      <LineChart
-        series={[
-          {
-            arcLabel: (item) => `${item.user}`,
-            data: entryTimes.toString().split(",").map((item) => parseInt(item, 10))
+      {type !== "user" && (
+        <Select
+          placeholder="Select Employee"
+          value={workingHoursUserId === 0 ? "Select User" : workingHoursUserId}
+          onChange={handleEmployeeChange}
+          style={{ width: 120, marginRight: 10 }}
+        >
+          <Option value="0">All</Option>
+          {users?.map((name) => (
+            <Option key={name.id} value={name.id}>{name.name}</Option>
+          ))}
+        </Select>
+      )}
+      <ReactApexChart
+        options={{
+          chart: {
+            type: 'area',
           },
-        ]}
-        height={300}
-        margin={{ left: 30, right: 30, top: 30, bottom: 30 }}
-        grid={{ vertical: true, horizontal: true }}
+          xaxis: {
+            categories: date, // Use date array for x-axis categories
+          },
+        }}
+        series={[{ name: 'Working Hours', data: chartData }]}
+        type="area"
+        height={400}
+        width={700}
       />
-
     </div>
   );
-}
+};
 
 export default InTime;
