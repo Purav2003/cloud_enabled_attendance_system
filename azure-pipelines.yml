@@ -52,3 +52,8 @@ steps:
     testResultsFiles: "**/TEST-*.xml"
     testRunTitle: 'Python $(PYTHON_VERSION)'
   condition: succeededOrFailed()
+
+- task: AzureStaticWebApp@0
+  inputs:
+    app_location: 'backend/myproject'
+    app_build_command: 'python manage.py runserver'
