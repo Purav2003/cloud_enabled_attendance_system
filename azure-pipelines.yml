@@ -1,13 +1,11 @@
-# Python Django
-# Test a Django project on multiple versions of Python.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+# Azure Pipelines YAML configuration
 
 trigger:
 - main
 
 pool:
   vmImage: ubuntu-latest
+
 strategy:
   matrix:
     Python3:
@@ -38,7 +36,7 @@ steps:
 - script: |
     python -m pip install --upgrade pip setuptools wheel
     pip install -r requirements.txt
-    pip install unittest-xml-reporting
+    pip install Django unittest-xml-reporting
   displayName: 'Install prerequisites'
 
 - script: |
